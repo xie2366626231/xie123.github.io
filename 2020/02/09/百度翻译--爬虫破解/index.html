@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>百度翻译sign值逆向 | 沫的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="百度翻译接口爬虫1.抓取百度翻译数据包用于判断那个语言的接口地址：https:&#x2F;&#x2F;fanyi.baidu.com&#x2F;langdetect  用于获取翻译内容的接口地址：https:&#x2F;&#x2F;fanyi.baidu.com&#x2F;v2transapi?from&#x3D;zh&amp;to&#x3D;en 需要注意一下用于获取翻译内容的接口地址里面除了提交我们需要翻译的语言外还需要提交额外几个参数 sign参数和token参数，fr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="百度翻译sign值逆向">
+<meta property="og:url" content="http://yoursite.com/2020/02/09/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91--%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3/index.html">
+<meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="百度翻译接口爬虫1.抓取百度翻译数据包用于判断那个语言的接口地址：https:&#x2F;&#x2F;fanyi.baidu.com&#x2F;langdetect  用于获取翻译内容的接口地址：https:&#x2F;&#x2F;fanyi.baidu.com&#x2F;v2transapi?from&#x3D;zh&amp;to&#x3D;en 需要注意一下用于获取翻译内容的接口地址里面除了提交我们需要翻译的语言外还需要提交额外几个参数 sign参数和token参数，fr">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/pasted-24.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-25.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-26.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-28.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-29.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-30.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-31.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-32.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-33.png">
+<meta property="article:published_time" content="2020-02-09T14:02:22.000Z">
+<meta property="article:modified_time" content="2020-02-09T14:28:55.855Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-24.png">
+  
+    <link rel="alternate" href="/atom.xml" title="沫的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">沫的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-百度翻译--爬虫破解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/09/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91--%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3/" class="article-date">
+  <time datetime="2020-02-09T14:02:22.000Z" itemprop="datePublished">2020-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      百度翻译sign值逆向
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="百度翻译接口爬虫"><a href="#百度翻译接口爬虫" class="headerlink" title="百度翻译接口爬虫"></a>百度翻译接口爬虫</h3><h6 id="1-抓取百度翻译数据包"><a href="#1-抓取百度翻译数据包" class="headerlink" title="1.抓取百度翻译数据包"></a>1.抓取百度翻译数据包</h6><pre><code>用于判断那个语言的接口地址：https://fanyi.baidu.com/langdetect 
+用于获取翻译内容的接口地址：https://fanyi.baidu.com/v2transapi?from=zh&amp;to=en
+需要注意一下用于获取翻译内容的接口地址里面除了提交我们需要翻译的语言外还需要提交额外几个参数
+sign参数和token参数，from参数和to参数可以选择固定也可以选择通过判断那个语言接口进行获取</code></pre><p><img src="/images/pasted-24.png" alt="upload successful"></p>
+<h6 id="2-token参数"><a href="#2-token参数" class="headerlink" title="2.token参数"></a>2.token参数</h6><pre><code>token参数存在于该网页本页可以通过访问html文件，来获取到这个值</code></pre><p><img src="/images/pasted-25.png" alt="upload successful"></p>
+<h6 id="3-sign参数"><a href="#3-sign参数" class="headerlink" title="3.sign参数"></a>3.sign参数</h6><pre><code>这个参数就需要懂一些js了
+我们使用浏览器search进行对sign这个值进行查询会发现有很多和sign相关的参数，这个时候我们需要找他对sign这个变量赋值的地方，然后进去开始打断点</code></pre><p><img src="/images/pasted-26.png" alt="upload successful"></p>
+<p>通过寻找发现这个sign的值来自y(a)这个函数，a这个变量刚好是我们输入的这个值</p>
+<p><img src="/images/pasted-28.png" alt="upload successful"></p>
+<p>通过断点跟踪发现他最终调用了e这个函数，r是传入进来我们需要加密成sign的这个值，现在我们只需要把这段代码用自己的v8引擎调试就可以了</p>
+<p><img src="/images/pasted-29.png" alt="upload successful"></p>
+<p>调试过程中发现2个问题，第一个是u=null !== i这一行报错，我们需要把windows对象改成console对象还有一个报错原因是因为没有变量i哦我们还需要写上 var i；进行声明就可以绕过这个坑了</p>
+<p><img src="/images/pasted-30.png" alt="upload successful"></p>
+<p>然后我们继续运行会发现还缺少一个函数，然后就进行了报错<br>，这里也是一个踩坑点，编译器提示的报错是26行，然后调用的函数明明是n(),他报错一个毫不想干的。其实是他那个地方调用产生的，刚好走到这一行发生了错误，继续回到网站去寻找n这个函数了现在就要</p>
+<p><img src="/images/pasted-31.png" alt="upload successful"></p>
+<p>我们必须要给调用点打上断点这样才能跳到n函数</p>
+<p><img src="/images/pasted-32.png" alt="upload successful"></p>
+<p>找到了n函数一切都齐全了现在在运行尝试一下,运行成功，这样就可以进行翻译了</p>
+<p><img src="/images/pasted-33.png" alt="upload successful"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/09/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91--%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3/" data-id="ck6f4jlpk0003cp5e807qewz3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/02/09/DVWA-sqlmap/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">DVWA--sql注入（sqlmap工具使用）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/02/09/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91--%E7%88%AC%E8%99%AB%E7%A0%B4%E8%A7%A3/">百度翻译sign值逆向</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/09/DVWA-sqlmap/">DVWA--sql注入（sqlmap工具使用）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/08/sql_injection/">DVWA-sql注入手注（low）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/06/python_F_Q/">python-Django的Q对象和F对象</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
