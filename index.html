@@ -86,18 +86,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h6 id="今天在做项目的时候，因为我想要省点事情就想要贪-emmm难搞"><a href="#今天在做项目的时候，因为我想要省点事情就想要贪-emmm难搞" class="headerlink" title="今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞"></a>今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞</h6><pre><code>问题的发生是这样的，这个地址关联的是一个上传图片的目录，我自己是用mac系统进行开发的如果我写/那么就会发生报错，于是我就写了一个\斜杠试了一下，当时我还沾沾自喜的以为解决了这个问题，没想到给自己挖了一个大坑。</code></pre><p><span style="color:blue;">代码改动提交版本多加了一个&lt;/span&gt;<br><img src="/images/pasted-35.png" alt="upload successful"></p>
-<pre><code>于是我的朋友就去pull我的代码，他自己用的是windows系统，然后他git的时发生了一个错误，就是因为我那个地方改动的\造成,于是我们两个人都去进行了百度，代码回滚等等一系列操作。</code></pre><p> <span style="color:blue;">朋友拉取代码产生的错误</span><br><img src="/images/pasted-36.png" alt="upload successful"></p>
-<pre><code>最后我发现了一个血色的大坑，什么鬼竟然还多处了一个文件和文件夹，我一个\能产生这么大的错误，当时直接裂开了，我朋友疯狂的进行pull clone于是。。。他把代码丢垃圾站了，去下载压缩包，当时这样搞肯定不行啊，这样我们就没办法进行git管理了</code></pre><p><span style="color:blue;">莫名其妙多出的文件夹</span><br><img src="/images/pasted-37.png" alt="upload successful"></p>
+        <h6 id="今天在做项目的时候，因为我想要省点事情就想要贪-emmm难搞"><a href="#今天在做项目的时候，因为我想要省点事情就想要贪-emmm难搞" class="headerlink" title="今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞"></a>今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞</h6><p>问题的发生是这样的，这个地址关联的是一个上传图片的目录，我自己是用mac系统进行开发的如果我写/那么就会发生报错，于是我就写了一个\斜杠试了一下，当时我还沾沾自喜的以为解决了这个问题，没想到给自己挖了一个大坑。</p>
+<p><span style="color:blue;">代码改动提交版本多加了一个&lt;/span&gt;<br><img src="/images/pasted-35.png" alt="upload successful"></p>
+<p>于是我的朋友就去pull我的代码，他自己用的是windows系统，然后他git的时发生了一个错误，就是因为我那个地方改动的\造成,于是我们两个人都去进行了百度，代码回滚等等一系列操作。</p>
+<p> <span style="color:blue;">朋友拉取代码产生的错误</span><br><img src="/images/pasted-36.png" alt="upload successful"></p>
+<p>最后我发现了一个血色的大坑，什么鬼竟然还多处了一个文件和文件夹，我一个\能产生这么大的错误，当时直接裂开了，我朋友疯狂的进行pull clone于是。。。他把代码丢垃圾站了，去下载压缩包，当时这样搞肯定不行啊，这样我们就没办法进行git管理了</p>
+<p><span style="color:blue;">莫名其妙多出的文件夹</span><br><img src="/images/pasted-37.png" alt="upload successful"></p>
 <p><span style="color:blue;">当时情况多不可控，于是乎我就去把git上面的那个文件夹删掉了</span><br><img src="/images/pasted-38.png" alt="upload successful"></p>
-<pre><code>解决方案：我删掉了这个文件夹，他依然还是pull失败，于是乎他发来给我了一张图，我看到了报错，但是报错后，他还依然在执行，也就是或git pull在一个版本一个版本的进行下载刚好在存在\的这几个版本报错，我之后把\去掉的这个版本恢复正常。于是莫名其妙这个问题就解决了</code></pre><p><img src="/images/pasted-39.png" alt="upload successful"></p>
+<p>解决方案：我删掉了这个文件夹，他依然还是pull失败，于是乎他发来给我了一张图，我看到了报错，但是报错后，他还依然在执行，也就是或git pull在一个版本一个版本的进行下载刚好在存在\的这几个版本报错，我之后把\去掉的这个版本恢复正常。于是莫名其妙这个问题就解决了</p>
+<p><img src="/images/pasted-39.png" alt="upload successful"></p>
 <p><span style="color:blue;">看见下面的下载成功，总算松了一口气</span><br><img src="/images/pasted-40.png" alt="upload successful"></p>
-<pre><code>总结一下 我不知道这个bug产生原理，我甚至可以把他理解成为是一个git的bug，因为本地文件存储并没有发生变化，但是在git上，却莫名其妙在跟目录创建了一个文件夹，这个问题关于网络的帖子很少.
-   错误：error: filename in tree entry contains backslash （用于给搜索引擎看，希望在遇到同样的问题，我能帮你踩了这个坑）</code></pre>
+<p>总结一下 我不知道这个bug产生原理，我甚至可以把他理解成为是一个git的bug，因为本地文件存储并没有发生变化，但是在git上，却莫名其妙在跟目录创建了一个文件夹，这个问题关于网络的帖子很少.</p>
+<p>错误：error: filename in tree entry contains backslash （用于给搜索引擎看，希望在遇到同样的问题，我能帮你踩了这个坑）</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/10/giterror/" data-id="ck6gjgmsw0002k75e8bz9fc17" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/10/giterror/" data-id="ck6gjkoe60003lh5egur0800t" class="article-share-link">Share</a>
       
       
     </footer>
@@ -152,7 +157,7 @@ sign参数和token参数，from参数和to参数可以选择固定也可以选�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/service_fanyi/" data-id="ck6gjgmsz0005k75e1icrgxqt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/09/service_fanyi/" data-id="ck6gjkoe70005lh5e3sfx7cvj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -242,7 +247,7 @@ sign参数和token参数，from参数和to参数可以选择固定也可以选�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/09/DVWA-sqlmap/" data-id="ck6gjgmsx0003k75eemtd8773" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/09/DVWA-sqlmap/" data-id="ck6gjkoe50002lh5e8iwvfv8z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -330,7 +335,7 @@ sign参数和token参数，from参数和to参数可以选择固定也可以选�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/08/sql_injection/" data-id="ck6gjgmt00006k75ebt78327o" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/08/sql_injection/" data-id="ck6gjkoeh0006lh5eh2aagxx5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -391,7 +396,7 @@ sign参数和token参数，from参数和to参数可以选择固定也可以选�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/02/06/python_F_Q/" data-id="ck6gjgmsy0004k75efbmiavej" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/02/06/python_F_Q/" data-id="ck6gjkoe70004lh5efoo43a0e" class="article-share-link">Share</a>
       
       
     </footer>
