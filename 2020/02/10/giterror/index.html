@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -20,13 +20,13 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="title: jQuery对表单的操作及更多应用date: 2017-05-26 12:12:57categories: 1234  web前端   今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞问题的发生是这样的，这个地址关联的是一个上传图片的目录，我自己是用mac系统进行开发的如果我写&#x2F;那么就会发生报错，于是我就写了一个\斜杠试了一下，当时我还沾沾自喜的以为解决了这个问题，没想">
+  <meta name="description" content="title: hexo next 为文章添加分类date: 2016-03-16 08:12:43categories:  今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞问题的发生是这样的，这个地址关联的是一个上传图片的目录，我自己是用mac系统进行开发的如果我写&#x2F;那么就会发生报错，于是我就写了一个\斜杠试了一下，当时我还沾沾自喜的以为解决了这个问题，没想到给自己挖了一个大坑。 代">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一脸懵逼的踩了git的坑">
 <meta property="og:url" content="http://yoursite.com/2020/02/10/giterror/index.html">
 <meta property="og:site_name" content="沫的博客">
-<meta property="og:description" content="title: jQuery对表单的操作及更多应用date: 2017-05-26 12:12:57categories: 1234  web前端   今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞问题的发生是这样的，这个地址关联的是一个上传图片的目录，我自己是用mac系统进行开发的如果我写&#x2F;那么就会发生报错，于是我就写了一个\斜杠试了一下，当时我还沾沾自喜的以为解决了这个问题，没想">
-<meta property="og:locale" content="en_US">
+<meta property="og:description" content="title: hexo next 为文章添加分类date: 2016-03-16 08:12:43categories:  今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞问题的发生是这样的，这个地址关联的是一个上传图片的目录，我自己是用mac系统进行开发的如果我写&#x2F;那么就会发生报错，于是我就写了一个\斜杠试了一下，当时我还沾沾自喜的以为解决了这个问题，没想到给自己挖了一个大坑。 代">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/images/pasted-35.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-36.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-37.png">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://yoursite.com/images/pasted-39.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-40.png">
 <meta property="article:published_time" content="2020-02-10T13:48:09.000Z">
-<meta property="article:modified_time" content="2020-02-11T05:33:25.791Z">
+<meta property="article:modified_time" content="2020-02-11T06:14:12.474Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/pasted-35.png">
@@ -102,7 +102,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -116,42 +116,27 @@
   <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
-
-  </li>
-        <li class="menu-item menu-item-schedule">
-
-    <a href="/schedule/" rel="section"><i class="fa fa-fw fa-calendar"></i>Schedule</a>
-
-  </li>
-        <li class="menu-item menu-item-sitemap">
-
-    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>Sitemap</a>
-
-  </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>Commonweal 404</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
 
   </li>
   </ul>
@@ -179,7 +164,7 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/10/giterror/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -201,16 +186,16 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2020-02-10 21:48:09" itemprop="dateCreated datePublished" datetime="2020-02-10T21:48:09+08:00">2020-02-10</time>
+              <time title="创建时间：2020-02-10 21:48:09" itemprop="dateCreated datePublished" datetime="2020-02-10T21:48:09+08:00">2020-02-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-11 13:33:25" itemprop="dateModified" datetime="2020-02-11T13:33:25+08:00">2020-02-11</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-11 14:14:12" itemprop="dateModified" datetime="2020-02-11T14:14:12+08:00">2020-02-11</time>
               </span>
 
           
@@ -225,10 +210,7 @@
 
       
         <hr>
-<p>title: jQuery对表单的操作及更多应用<br>date: 2017-05-26 12:12:57<br>categories: 1234</p>
-<ul>
-<li>web前端</li>
-</ul>
+<p>title: hexo next 为文章添加分类<br>date: 2016-03-16 08:12:43<br>categories:</p>
 <hr>
 <h6 id="今天在做项目的时候，因为我想要省点事情就想要贪-emmm难搞"><a href="#今天在做项目的时候，因为我想要省点事情就想要贪-emmm难搞" class="headerlink" title="今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞"></a>今天在做项目的时候，因为我想要省点事情就想要贪,emmm难搞</h6><p>问题的发生是这样的，这个地址关联的是一个上传图片的目录，我自己是用mac系统进行开发的如果我写/那么就会发生报错，于是我就写了一个\斜杠试了一下，当时我还沾沾自喜的以为解决了这个问题，没想到给自己挖了一个大坑。</p>
 <p><span style="color:blue;">代码改动提交版本多加了一个&lt;/span&gt;<br><img src="/images/pasted-35.png" alt="upload successful"></p>
@@ -311,10 +293,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -335,7 +317,7 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">5</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
   </nav>
@@ -366,10 +348,10 @@
   </span>
   <span class="author" itemprop="copyrightHolder">John Doe</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.1
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.1
   </div>
 
         
