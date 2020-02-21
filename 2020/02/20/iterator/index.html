@@ -20,17 +20,24 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1.什么是迭代器迭代器是访问集合元素的一种方式 123456789# 可以通过for循环将nums里面的数据依次获取nums &#x3D; [1,2,3]for n in nums:	print(num)    name &#x3D; &#39;modeya&#39;    # 获取字符串里的每一个字符for temp in name:	print(temp)  我们已经知道可以对list tuple str 等数据类型使用 for">
+  <meta name="description" content="前言别再问我什么是迭代器了，太苦逼了，如果这篇文章还是不能告诉你什么叫迭代器，打扰了，反手一个删除好友。 1.什么是迭代器迭代器是访问集合元素的一种方式 123456789# 可以通过for循环将nums里面的数据依次获取nums &#x3D; [1,2,3]for n in nums:	print(num)    name &#x3D; &#39;modeya&#39;    # 获取字符串里的每一个字符for temp in n">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python高级迭代器">
 <meta property="og:url" content="http://yoursite.com/2020/02/20/iterator/index.html">
 <meta property="og:site_name" content="沫的博客">
-<meta property="og:description" content="1.什么是迭代器迭代器是访问集合元素的一种方式 123456789# 可以通过for循环将nums里面的数据依次获取nums &#x3D; [1,2,3]for n in nums:	print(num)    name &#x3D; &#39;modeya&#39;    # 获取字符串里的每一个字符for temp in name:	print(temp)  我们已经知道可以对list tuple str 等数据类型使用 for">
+<meta property="og:description" content="前言别再问我什么是迭代器了，太苦逼了，如果这篇文章还是不能告诉你什么叫迭代器，打扰了，反手一个删除好友。 1.什么是迭代器迭代器是访问集合元素的一种方式 123456789# 可以通过for循环将nums里面的数据依次获取nums &#x3D; [1,2,3]for n in nums:	print(num)    name &#x3D; &#39;modeya&#39;    # 获取字符串里的每一个字符for temp in n">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/images/pasted-79.png">
-<meta property="article:published_time" content="2020-02-20T08:34:29.000Z">
-<meta property="article:modified_time" content="2020-02-20T09:10:01.516Z">
-<meta property="article:author" content="John Doe">
+<meta property="og:image" content="http://yoursite.com/images/pasted-83.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-84.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-85.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-86.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-87.png">
+<meta property="article:published_time" content="2020-02-20T08:34:00.000Z">
+<meta property="article:modified_time" content="2020-02-21T09:27:55.710Z">
+<meta property="article:author" content="沫">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="python高级">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/pasted-79.png">
 
@@ -164,7 +171,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="沫">
       <meta itemprop="description" content="">
     </span>
 
@@ -182,9 +189,26 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-02-20 16:34:29 / 修改时间：17:10:01" itemprop="dateCreated datePublished" datetime="2020-02-20T16:34:29+08:00">2020-02-20</time>
+              <time title="创建时间：2020-02-20 16:34:00" itemprop="dateCreated datePublished" datetime="2020-02-20T16:34:00+08:00">2020-02-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-21 17:27:55" itemprop="dateModified" datetime="2020-02-21T17:27:55+08:00">2020-02-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习</span>
+                  </a>
+                </span>
             </span>
 
           
@@ -198,7 +222,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-什么是迭代器"><a href="#1-什么是迭代器" class="headerlink" title="1.什么是迭代器"></a>1.什么是迭代器</h3><p>迭代器是访问集合元素的一种方式</p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>别再问我什么是迭代器了，太苦逼了，如果这篇文章还是不能告诉你什么叫迭代器，打扰了，反手一个删除好友。</p>
+<h3 id="1-什么是迭代器"><a href="#1-什么是迭代器" class="headerlink" title="1.什么是迭代器"></a>1.什么是迭代器</h3><p>迭代器是访问集合元素的一种方式</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可以通过for循环将nums里面的数据依次获取</span></span><br><span class="line">nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">	print(num)</span><br><span class="line">    </span><br><span class="line">name = <span class="string">'modeya'</span>    </span><br><span class="line"><span class="comment"># 获取字符串里的每一个字符</span></span><br><span class="line"><span class="keyword">for</span> temp <span class="keyword">in</span> name:</span><br><span class="line">	print(temp)</span><br></pre></td></tr></table></figure>
 
 <p>我们已经知道可以对list tuple str 等数据类型使用 for循环的语法依次从中获取数据并使用，我们吧这个过程叫做遍历，也叫迭代器</p>
@@ -212,7 +237,48 @@
 <p>那么在这个过程中肯定是有一个变量去记录每次的访问记录，访问到了第几条，以便下一次迭代返回的吓一条数据，我们把这个能帮助我们进行数据获取的东西称为<span style="color:red;">迭代器lterable</span></p>
 <p><span style="background-color:#0f0;">可迭代对象的本质就是向我们提供一个这样的中间人，即迭代器帮助我们进行迭代遍历循环使用</span></p>
 <p>list,tuple等都是可迭代对象，我们可以通过<span style="color:blue;">iter()</span>函数获取这些可迭代对象的迭代器，然后通过<span style="color:blue;">next（）</span>函数来获取下一条数据。</p>
+<h3 id="3-2获取可迭代对象的迭代器"><a href="#3-2获取可迭代对象的迭代器" class="headerlink" title="3.2获取可迭代对象的迭代器"></a>3.2获取可迭代对象的迭代器</h3><p>测试代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterator</span><br><span class="line"></span><br><span class="line">arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="comment"># 获取列表迭代器</span></span><br><span class="line">arr_iter = iter(arr)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断是否是迭代器</span></span><br><span class="line">print(isinstance(arr, Iterator))</span><br><span class="line">print(isinstance(arr_iter, Iterator))</span><br></pre></td></tr></table></figure>
+<p>运行结果如下<br><img src="/images/pasted-83.png" alt="upload successful"></p>
+<p>通过代码测试我们发现可迭代对象不一定是迭代器，实验截图如上</p>
+<h3 id="3-3获取迭代的数据"><a href="#3-3获取迭代的数据" class="headerlink" title="3.3获取迭代的数据"></a>3.3获取迭代的数据</h3><p>3.2提到通过iter()可以得到一个可迭代对象的迭代器，可以通过next()函数多次提取迭代器中的数据，下图是测试代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterator</span><br><span class="line"></span><br><span class="line">arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="comment"># 获取列表迭代器对象</span></span><br><span class="line">arr_iter = iter(arr)</span><br><span class="line">print(next(arr_iter))</span><br><span class="line">print(next(arr_iter))</span><br><span class="line">print(next(arr_iter))</span><br><span class="line">print(next(arr_iter))</span><br><span class="line">print(next(arr_iter))</span><br><span class="line">print(next(arr_iter))</span><br></pre></td></tr></table></figure>
+<p>运行结果<br><img src="/images/pasted-84.png" alt="upload successful"><br>迭代器重第一个元素开始访问只能向前访问</p>
+<h3 id="3-4-StopIteration异常"><a href="#3-4-StopIteration异常" class="headerlink" title="3.4 StopIteration异常"></a>3.4 StopIteration异常</h3><p>出现这个异常是因为，是因为列表里面只有4个数据，但是我们获取了五次next函数，因为他没有第5个数据所以产生了异常，异常可以理解为迭代结束的标志</p>
+<h3 id="4-自定义可迭代对象"><a href="#4-自定义可迭代对象" class="headerlink" title="4.自定义可迭代对象"></a>4.自定义可迭代对象</h3><p>需要使用到2个魔法方法分别是</p>
+<pre><code>__iter__方法
+__next__方法</code></pre><h3 id="4-1-–iter–方法"><a href="#4-1-–iter–方法" class="headerlink" title="4.1 –iter–方法"></a>4.1 –iter–方法</h3><p>之前提到Iter()方法必须是对可迭代对象可能提取到迭代器对象，但是怎么才能保证自定义的对象是可迭代对象</p>
+<p>答：</p>
+<pre><code>只要在类中定义了__iter__()方法，那么这个创建出来的对象一定是可迭代对象
+简单的说：一个具备了__iter__的方法对象，就是一个可迭代对象</code></pre><p>测试代码如下 未定义–iter–方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterable</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyList</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.arr = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        self.arr.append(item)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">arr = MyList()</span><br><span class="line"><span class="comment"># 添加数据</span></span><br><span class="line">arr.add(<span class="number">1</span>)</span><br><span class="line">arr.add(<span class="number">2</span>)</span><br><span class="line">arr.add(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">'arr是否是可迭代对象'</span>, isinstance(arr, Iterable))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> arr:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
 
+<p>测试结果他不是一个可迭代对象<br><img src="/images/pasted-85.png" alt="upload successful"></p>
+<p>测试代码如下 定义–iter–方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterable</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyList</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.arr = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        self.arr.append(item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">arr = MyList()</span><br><span class="line"><span class="comment"># 添加数据</span></span><br><span class="line">arr.add(<span class="number">1</span>)</span><br><span class="line">arr.add(<span class="number">2</span>)</span><br><span class="line">arr.add(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">'arr是否是可迭代对象'</span>, isinstance(arr, Iterable))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> arr:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+<p>测试结果他是一个可迭代对象但是还报错</p>
+<p><img src="/images/pasted-86.png" alt="upload successful"></p>
+<p>通过测试可以发现，一个类只要有<span style="color:blue;">–iter–</span>方法，那么这个类创建出来的对象就是可迭代对象，但是还是报错</p>
+<p>其实当我们调用iter()函数提取一个可迭代对象的迭代器时，会自动调用<span style="color:blue;">–iter–</span>方法，并且这个方法会返回迭代器，我们并没有返回迭代器所以报错</p>
+<h3 id="4-2-–next–方法"><a href="#4-2-–next–方法" class="headerlink" title="4.2 –next–方法"></a>4.2 –next–方法</h3><p>通过上面分析，迭代器是用来帮我们记录每次迭代和访问的位置，当我们使用<span style="background-color:#0f0;">next()</span>函数的时候，迭代器会向我们返回他所以记录的位置的下一个位置的数据</p>
+<p>实际上，在使用next()函数的时候，调用的就是迭代器对象<span style="color:blue;">–next–</span>方法（python3中对象是<span style="color:blue;">–next–</span>方法,python2中的对象是<span style="background-color:#0f0;">next()</span>方法）</p>
+<p>但是这还不够，python要求迭代器本身也是可迭代的，所以我们还要为迭代器实现<span style="color:blue;">–iter–</span>方法，而<span style="color:blue;">–iter–</span>方法要返回一个迭代器，迭代器自身就是一个迭代器，所以返回迭代器的<span style="color:blue;">–iter–</span>方法即可</p>
+<p>一个实现了<span style="color:blue;">–iter–</span>方法和<span style="color:blue;">–next–</span>方法的对象就是迭代器</p>
+<p>如何判断一个对象是否是迭代器</p>
+<p>可以使用isinstance()判断一个对象是否是Iterator对象</p>
+<p>自定义迭代器例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterable</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyList</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.arr = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        self.arr.append(item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        my_iterator = MyIterator(self)</span><br><span class="line">        <span class="keyword">return</span> my_iterator</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyIterator</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, mylist)</span>:</span></span><br><span class="line">        self.mylist = mylist</span><br><span class="line">        <span class="comment"># count用于记录当前访问的位置</span></span><br><span class="line">        self.count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 判断是否已迭代完毕</span></span><br><span class="line">        <span class="keyword">if</span> self.count &lt; len(self.mylist.arr):</span><br><span class="line">            <span class="comment"># 每次获取一个值进行返回</span></span><br><span class="line">            item = self.mylist.arr[self.count]</span><br><span class="line">            self.count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> item</span><br><span class="line">        <span class="comment"># 如果迭代完毕就抛出异常</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 返回迭代器自身</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">arr = MyList()</span><br><span class="line"><span class="comment"># 添加数据</span></span><br><span class="line">arr.add(<span class="number">1</span>)</span><br><span class="line">arr.add(<span class="number">2</span>)</span><br><span class="line">arr.add(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">'arr是否是可迭代对象'</span>, isinstance(arr, Iterable))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> arr:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<p><img src="/images/pasted-87.png" alt="upload successful"></p>
+<p>通过实验我们发现 可迭代兑现<span style="color:blue;">–iter–</span>方法向我们返回一个迭代器，我们在一个可迭代对象的时候，实际上就是先获取该对象提供的迭代器，然后通过这个迭代器来获取对象中的每一个数据，当我们抛出异常的时候，迭代结束。</p>
+<h3 id="5-for…in…循环的本质"><a href="#5-for…in…循环的本质" class="headerlink" title="5.for…in…循环的本质"></a>5.for…in…循环的本质</h3><p>1.先通过<span style="background-color:#0f0;">iter()</span>函数获取可迭代对象Iterable的迭代器</p>
+<p>2.对获取到的迭代器不断调试<span style="background-color:#0f0;">next()</span>方法来获取下一个值并将其赋值到item</p>
+<p>3.当遇到StopIteration异常后循环结束</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><pre><code>凡是可用作于for循环的对象都是Iterable类型；
+凡是可用于next()函数的对象都是Iterator类型；
+集合数据类型如 list,dict,str等都是Iterable但不是Iterator，不过可以通过iter()函数获得一个Iterator对象
+for 循环迭代结束不会报StopIteration异常是因为内部处理过来，但next迭代完在执行的话会报StopItertion的异常
+并不是只有for循环能接收可迭代对象，除了for循环可迭代对象list，tuple，str等也能接收</code></pre>
     </div>
 
     
@@ -220,6 +286,10 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/python%E9%AB%98%E7%BA%A7/" rel="tag"># python高级</a>
+          </div>
 
         
 
@@ -293,13 +363,13 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是迭代器"><span class="nav-number">1.</span> <span class="nav-text">1.什么是迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-可迭代对象"><span class="nav-number">2.</span> <span class="nav-text">2.可迭代对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-迭代器"><span class="nav-number">3.</span> <span class="nav-text">3.迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1可迭代对象的本质"><span class="nav-number">4.</span> <span class="nav-text">3.1可迭代对象的本质</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是迭代器"><span class="nav-number">2.</span> <span class="nav-text">1.什么是迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-可迭代对象"><span class="nav-number">3.</span> <span class="nav-text">2.可迭代对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-迭代器"><span class="nav-number">4.</span> <span class="nav-text">3.迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1可迭代对象的本质"><span class="nav-number">5.</span> <span class="nav-text">3.1可迭代对象的本质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2获取可迭代对象的迭代器"><span class="nav-number">6.</span> <span class="nav-text">3.2获取可迭代对象的迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3获取迭代的数据"><span class="nav-number">7.</span> <span class="nav-text">3.3获取迭代的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-StopIteration异常"><span class="nav-number">8.</span> <span class="nav-text">3.4 StopIteration异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-自定义可迭代对象"><span class="nav-number">9.</span> <span class="nav-text">4.自定义可迭代对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-–iter–方法"><span class="nav-number">10.</span> <span class="nav-text">4.1 –iter–方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-–next–方法"><span class="nav-number">11.</span> <span class="nav-text">4.2 –next–方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-for…in…循环的本质"><span class="nav-number">12.</span> <span class="nav-text">5.for…in…循环的本质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">13.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">沫</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -314,13 +384,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -349,7 +419,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">沫</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
