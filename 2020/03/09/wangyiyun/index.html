@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="爬虫这一快说实话我也很久没有跟进过了，前天需要做一个软件，然后验证码他使用的网易云盾，emm，现在过网易云盾有2种方式第一种方式就是打码平台识别，自动返回给你token，使用第三方平台收取一定费用，但是简单高效率，第二种就是自己做图片图像识别进行破解。。。异常复杂化emmm，本博客给予学习和逆向思路，不开放源码。1.需要的参数1.图片验证码内容2.抓取获取图片验证码的包详细的请求参数通过包来看，一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网易云盾分析破解">
+<meta property="og:url" content="http://yoursite.com/2020/03/09/wangyiyun/index.html">
+<meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="爬虫这一快说实话我也很久没有跟进过了，前天需要做一个软件，然后验证码他使用的网易云盾，emm，现在过网易云盾有2种方式第一种方式就是打码平台识别，自动返回给你token，使用第三方平台收取一定费用，但是简单高效率，第二种就是自己做图片图像识别进行破解。。。异常复杂化emmm，本博客给予学习和逆向思路，不开放源码。1.需要的参数1.图片验证码内容2.抓取获取图片验证码的包详细的请求参数通过包来看，一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/pasted-108.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-106.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-110.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-111.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-112.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-113.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-114.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-115.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-116.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-119.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-118.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-120.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-121.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-122.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-124.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-126.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-127.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-128.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-125.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-129.png">
+<meta property="article:published_time" content="2020-03-09T08:53:00.000Z">
+<meta property="article:modified_time" content="2020-03-09T10:17:37.141Z">
+<meta property="article:author" content="沫">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="js逆向">
+<meta property="article:tag" content="Javascript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-108.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/09/wangyiyun/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>网易云盾分析破解 | 沫的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沫的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/09/wangyiyun/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网易云盾分析破解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-09 16:53:00 / 修改时间：18:17:37" itemprop="dateCreated datePublished" datetime="2020-03-09T16:53:00+08:00">2020-03-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js%E9%80%86%E5%90%91/" itemprop="url" rel="index">
+                    <span itemprop="name">js逆向</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h6 id="爬虫这一快说实话我也很久没有跟进过了，前天需要做一个软件，然后验证码他使用的网易云盾，emm，现在过网易云盾有2种方式第一种方式就是打码平台识别，自动返回给你token，使用第三方平台收取一定费用，但是简单高效率，第二种就是自己做图片图像识别进行破解。。。异常复杂化emmm，本博客给予学习和逆向思路，不开放源码。"><a href="#爬虫这一快说实话我也很久没有跟进过了，前天需要做一个软件，然后验证码他使用的网易云盾，emm，现在过网易云盾有2种方式第一种方式就是打码平台识别，自动返回给你token，使用第三方平台收取一定费用，但是简单高效率，第二种就是自己做图片图像识别进行破解。。。异常复杂化emmm，本博客给予学习和逆向思路，不开放源码。" class="headerlink" title="爬虫这一快说实话我也很久没有跟进过了，前天需要做一个软件，然后验证码他使用的网易云盾，emm，现在过网易云盾有2种方式第一种方式就是打码平台识别，自动返回给你token，使用第三方平台收取一定费用，但是简单高效率，第二种就是自己做图片图像识别进行破解。。。异常复杂化emmm，本博客给予学习和逆向思路，不开放源码。"></a>爬虫这一快说实话我也很久没有跟进过了，前天需要做一个软件，然后验证码他使用的网易云盾，emm，现在过网易云盾有2种方式第一种方式就是打码平台识别，自动返回给你token，使用第三方平台收取一定费用，但是简单高效率，第二种就是自己做图片图像识别进行破解。。。异常复杂化emmm，本博客给予学习和逆向思路，不开放源码。</h6><h3 id="1-需要的参数"><a href="#1-需要的参数" class="headerlink" title="1.需要的参数"></a>1.需要的参数</h3><p>1.图片验证码内容<br><img src="/images/pasted-108.png" alt="upload successful"><br>2.抓取获取图片验证码的包<br><img src="/images/pasted-106.png" alt="upload successful"><br>详细的请求参数<br><img src="/images/pasted-110.png" alt="upload successful"><br>通过包来看，一个get请求传入了很多参数，来获取背景图和缺口图的图片的地址<br><img src="/images/pasted-111.png" alt="upload successful"><br>emmm，以为这就完了么，网易挖坑重来是来自于无形的，每次的js文件改变，导致参数发生不同，我先简单的接受一下我们需要逆向的值，第一个就是fp，这个是浏览器指纹收集，第二个就是cb参数，生成了一个32位的uuid加密没啥东西，剩余的都是固定值。下面会详细的去围绕这2个参数去进行逆向。</p>
+<p>每次都会修改的js包<br><img src="/images/pasted-112.png" alt="upload successful"><br>这个请求是用户获取发起上面那个请求的js文件加载，但是你们可能没有注意到一点，他后面跟了一个参数，其实我当时心态是裂开的，我是把js下载到本地然后进行调试，最后运算出了结果，但是还是无法对应，一直错误，就在我想要放弃的时候，我去检查了这个包，发现了猫腻，这个坑，我是跳进去了emmm。在这里默默的说一句，mmp</p>
+<h3 id="2-fp参数，浏览器指纹收集"><a href="#2-fp参数，浏览器指纹收集" class="headerlink" title="2.fp参数，浏览器指纹收集"></a>2.fp参数，浏览器指纹收集</h3><p>老方法定位这个参数赋值的点，在这里我使用的是search直接搜索</p>
+<p><img src="/images/pasted-113.png" alt="upload successful"><br>找到了fp:s那么s这个变量又是i.fingerprint进行的赋值，那我们可以继续去追i.fingerprint这个值</p>
+<p><img src="/images/pasted-114.png" alt="upload successful"><br>通过进一步逆向，我们发现，变量i的fingerprint这个值指向n，n又指向window.gdxidpyhexde，emmm windows已经是js的顶级对象了，先去控制条调用一下看看结果</p>
+<p><img src="/images/pasted-115.png" alt="upload successful"><br>emm有了，你以为现在把这个js请求一下更改一下对象就可以了吗，你把网易想的太简单了，现在需要去追gdxidpyhexde这个参数，走到这一步才仅仅是开始。干货来了现在</p>
+<p>打断点，程序正常执行并没有去调用这个window.gdxidpyhxde对象，现在我们需要去找到是那段代码添加了windows对象这个参数到这里面去，在这个文件里搜索这个对象，失败就一个，也就是说，赋值点不是这里，继续使用search功能进行全局搜索<br><img src="/images/pasted-116.png" alt="upload successful"><br>我在cookie里面找到了这个参数，赶快去打断点看看，emmm，没错值一摸一样。<br><img src="/images/pasted-119.png" alt="upload successful"><br><img src="/images/pasted-118.png" alt="upload successful"><br>可能现在有小伙伴要问，这个cookie怎么获取，emmm刚刚通过cookie获取工具发现，他是通过访问这个站点返回的，所以这个参数的js解开了，他压根就是一个cookie</p>
+<h3 id="3-cb参数"><a href="#3-cb参数" class="headerlink" title="3.cb参数"></a>3.cb参数</h3><p>通过给cb参数打断点发现他是通过这个文件的6984行执行的函数，控制台走一波<br><img src="/images/pasted-120.png" alt="upload successful"><br>调用成功了如图下<br><img src="/images/pasted-121.png" alt="upload successful"><br>就生成了一个32为uuid丢给了A函数，继续跟进A函数<br><img src="/images/pasted-122.png" alt="upload successful"><br>A函数的内容，说实话现在的js加密代码工具都太恶心了，就给你搞一大堆这玩意，emmm，我八成寻思着，每次那个js请求文件修改的就是这个参数才导致的问题把，这个参数值就有意思了，他api接口的key。<br><img src="/images/pasted-124.png" alt="upload successful"><br>j函数<br><img src="/images/pasted-126.png" alt="upload successful"><br>y函数<br><img src="/images/pasted-127.png" alt="upload successful"><br>E函数<br><img src="/images/pasted-128.png" alt="upload successful"><br>网易云盾key的接口，他就是通过这个密钥告诉网易云盾我是你们家会员，快给我验证码，不然我就去隔壁腾讯老马家。<br><img src="/images/pasted-125.png" alt="upload successful"><br>emmm 没错你只需要补起这几个函数，粘贴赋值一下你就可以召唤神龙了，然后cb的值也就ok了</p>
+<h3 id="4-滑块识别方式"><a href="#4-滑块识别方式" class="headerlink" title="4.滑块识别方式"></a>4.滑块识别方式</h3><p>因为我爸老叫我下去吃饭，我就不写了，因为我用的是那个憨憨库selenium库，通过获取两张图片通过设置图片阀值来进行计算滑动模拟的</p>
+<h3 id="5-第三方API识别"><a href="#5-第三方API识别" class="headerlink" title="5.第三方API识别"></a>5.第三方API识别</h3><p>简单到你不敢想象，看到3.cb哪里面讲的告诉网易云盾我是你们家会员那个东西么，丢进去他就给你全自动过了，速度极快。<br><img src="/images/pasted-129.png" alt="upload successful"></p>
+<h3 id="6-总结"><a href="#6-总结" class="headerlink" title="6.总结"></a>6.总结</h3><p>没有难写的爬虫，只有懒的人，源代码表示我就不贡献了，博客在此分享破译方式，只作用于学习。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+              <a href="/tags/js%E9%80%86%E5%90%91/" rel="tag"># js逆向</a>
+              <a href="/tags/Javascript/" rel="tag"># Javascript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/05/bash-shell/" rel="prev" title="shell反弹原理">
+      <i class="fa fa-chevron-left"></i> shell反弹原理
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#爬虫这一快说实话我也很久没有跟进过了，前天需要做一个软件，然后验证码他使用的网易云盾，emm，现在过网易云盾有2种方式第一种方式就是打码平台识别，自动返回给你token，使用第三方平台收取一定费用，但是简单高效率，第二种就是自己做图片图像识别进行破解。。。异常复杂化emmm，本博客给予学习和逆向思路，不开放源码。"><span class="nav-number">1.</span> <span class="nav-text">爬虫这一快说实话我也很久没有跟进过了，前天需要做一个软件，然后验证码他使用的网易云盾，emm，现在过网易云盾有2种方式第一种方式就是打码平台识别，自动返回给你token，使用第三方平台收取一定费用，但是简单高效率，第二种就是自己做图片图像识别进行破解。。。异常复杂化emmm，本博客给予学习和逆向思路，不开放源码。</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-需要的参数"><span class="nav-number"></span> <span class="nav-text">1.需要的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-fp参数，浏览器指纹收集"><span class="nav-number"></span> <span class="nav-text">2.fp参数，浏览器指纹收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-cb参数"><span class="nav-number"></span> <span class="nav-text">3.cb参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-滑块识别方式"><span class="nav-number"></span> <span class="nav-text">4.滑块识别方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-第三方API识别"><span class="nav-number"></span> <span class="nav-text">5.第三方API识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-总结"><span class="nav-number"></span> <span class="nav-text">6.总结</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">沫</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沫</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
