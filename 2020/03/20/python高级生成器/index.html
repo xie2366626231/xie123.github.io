@@ -20,22 +20,23 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="今天朋友去面试字节跳动前端挂了，面试官给出了道题，emmm我帮他分析一梭子开始解题题目如下，这道题面试官问控制台分别输出的值是那三个，并且问你逻辑步骤，我刚刚拿到这道题的时候放眼看了一下 个人认为是0，1，3，最后朋友告诉我说是3，6，9然后我就思考了一会emmm 123456789101112131415161718var result &#x3D; [];var a &#x3D; 3;var total &#x3D; 0;">
+  <meta name="description" content="生成器1.生成器是什么东西通过列表生成式，可以创建一个列表，但是受到内存限制，列表容量是有限的，如果我们创建一个很大的列表去占用内存的空间，但是我们用到的仅仅就几个元素，后面的大多数元素都浪费了，所以列表元素可以按某种算法推算出来，我们可以一边循环一边推算出后续的元素，这样就不需要创建一个完整的列表，从而节省大量的内存空间。 在python中，这种一边循环一边计算的机制，称为生成器：generat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="字节跳动面试题">
-<meta property="og:url" content="http://yoursite.com/2020/02/20/byterun/index.html">
+<meta property="og:title" content="python高级生成器">
+<meta property="og:url" content="http://yoursite.com/2020/03/20/python%E9%AB%98%E7%BA%A7%E7%94%9F%E6%88%90%E5%99%A8/index.html">
 <meta property="og:site_name" content="沫的博客">
-<meta property="og:description" content="今天朋友去面试字节跳动前端挂了，面试官给出了道题，emmm我帮他分析一梭子开始解题题目如下，这道题面试官问控制台分别输出的值是那三个，并且问你逻辑步骤，我刚刚拿到这道题的时候放眼看了一下 个人认为是0，1，3，最后朋友告诉我说是3，6，9然后我就思考了一会emmm 123456789101112131415161718var result &#x3D; [];var a &#x3D; 3;var total &#x3D; 0;">
+<meta property="og:description" content="生成器1.生成器是什么东西通过列表生成式，可以创建一个列表，但是受到内存限制，列表容量是有限的，如果我们创建一个很大的列表去占用内存的空间，但是我们用到的仅仅就几个元素，后面的大多数元素都浪费了，所以列表元素可以按某种算法推算出来，我们可以一边循环一边推算出后续的元素，这样就不需要创建一个完整的列表，从而节省大量的内存空间。 在python中，这种一边循环一边计算的机制，称为生成器：generat">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/images/pasted-81.png">
-<meta property="article:published_time" content="2020-02-20T14:43:00.000Z">
-<meta property="article:modified_time" content="2020-02-20T15:14:18.633Z">
+<meta property="og:image" content="http://yoursite.com/images/pasted-146.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-148.png">
+<meta property="article:published_time" content="2020-03-20T11:56:00.000Z">
+<meta property="article:modified_time" content="2020-03-20T12:35:09.440Z">
 <meta property="article:author" content="沫">
-<meta property="article:tag" content="面试题">
+<meta property="article:tag" content="python高级">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/pasted-81.png">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-146.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/02/20/byterun/">
+<link rel="canonical" href="http://yoursite.com/2020/03/20/python%E9%AB%98%E7%BA%A7%E7%94%9F%E6%88%90%E5%99%A8/">
 
 
 <script id="page-configurations">
@@ -47,7 +48,7 @@
   };
 </script>
 
-  <title>字节跳动面试题 | 沫的博客</title>
+  <title>python高级生成器 | 沫的博客</title>
   
 
 
@@ -161,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/20/byterun/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/python%E9%AB%98%E7%BA%A7%E7%94%9F%E6%88%90%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +175,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          字节跳动面试题
+          python高级生成器
         </h1>
 
         <div class="post-meta">
@@ -185,7 +186,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-20 22:43:00 / 修改时间：23:14:18" itemprop="dateCreated datePublished" datetime="2020-02-20T22:43:00+08:00">2020-02-20</time>
+              <time title="创建时间：2020-03-20 19:56:00 / 修改时间：20:35:09" itemprop="dateCreated datePublished" datetime="2020-03-20T19:56:00+08:00">2020-03-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -193,8 +194,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Javascript/" itemprop="url" rel="index">
-                    <span itemprop="name">Javascript</span>
+                  <a href="/categories/python%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习</span>
                   </a>
                 </span>
             </span>
@@ -210,11 +211,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="今天朋友去面试字节跳动前端挂了，面试官给出了道题，emmm我帮他分析一梭子"><a href="#今天朋友去面试字节跳动前端挂了，面试官给出了道题，emmm我帮他分析一梭子" class="headerlink" title="今天朋友去面试字节跳动前端挂了，面试官给出了道题，emmm我帮他分析一梭子"></a>今天朋友去面试字节跳动前端挂了，面试官给出了道题，emmm我帮他分析一梭子</h3><h6 id="开始解题"><a href="#开始解题" class="headerlink" title="开始解题"></a>开始解题</h6><p>题目如下，这道题面试官问控制台分别输出的值是那三个，并且问你逻辑步骤，我刚刚拿到这道题的时候放眼看了一下 个人认为是0，1，3，最后朋友告诉我说是3，6，9然后我就思考了一会emmm</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = [];</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">var</span> total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">        result[i] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            total += i * a;</span><br><span class="line">            <span class="built_in">console</span>.log(total);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo(<span class="number">1</span>);</span><br><span class="line">result[<span class="number">0</span>]();</span><br><span class="line">result[<span class="number">1</span>]();</span><br><span class="line">result[<span class="number">2</span>]();</span><br></pre></td></tr></table></figure>
-<p>经过我的调试 i等于3，可能有人会疑问i=3 i&lt;3代码应该不成立，的确他并没有执行代码并且for循环他执行了三次 i分别为 1，2，3依次进行赋值，通过debug调试，分别执行了result的三个对象引用，total在代码中进行累加，正常逻辑来说 3<em>3 3</em>3 3*3，但是最终控制台输出结果是3，6，9，看完下图其实就懂了，这个题我也懵逼了一huo。</p>
-<p><img src="/images/pasted-81.png" alt="upload successful"></p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过这坑其实我发现了一个有趣的事情，js的变量权重引用，在函数里2个同样的名字会优先采用局部变量的值,这个事情也告诉我们写代码需要规范。</p>
+        <h3 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h3><h6 id="1-生成器是什么东西"><a href="#1-生成器是什么东西" class="headerlink" title="1.生成器是什么东西"></a>1.生成器是什么东西</h6><p>通过列表生成式，可以创建一个列表，但是受到内存限制，列表容量是有限的，如果我们创建一个很大的列表去占用内存的空间，但是我们用到的仅仅就几个元素，后面的大多数元素都浪费了，所以列表元素可以按某种算法推算出来，我们可以一边循环一边推算出后续的元素，这样就不需要创建一个完整的列表，从而节省大量的内存空间。</p>
+<p><span style="background-color:skyblue;">在python中，这种一边循环一边计算的机制，称为生成器：generator</span></p>
+<h6 id="2-生成器"><a href="#2-生成器" class="headerlink" title="2.生成器"></a>2.生成器</h6><p>利用迭代器，我们可以每次迭代获取数据(通过next()方法，但要实现一个迭代器时，关于当前的迭代状态需要我们自己记录，进而才能根据当前状态生成下一数据，为了达到记录当前状态，并配合next()函数进行迭代时候，可以采用比迭代器更简便的语法，就是生成器(generator))</p>
+<p><span style="background-color:skyblue;">生成器是一类特殊的迭代器</span></p>
+<h6 id="3-创建生成方法"><a href="#3-创建生成方法" class="headerlink" title="3.创建生成方法"></a>3.创建生成方法</h6><p>创建一个生成器有多种方法，第一种发放，吧列表生成式的[]改成()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b = [ i*<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>) ]</span><br><span class="line">print(b) [<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>]</span><br><span class="line">c = (x*<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line">print(c) <span class="comment"># 输出一个内存对象，需要通过next方法或者for循环来进行遍历</span></span><br></pre></td></tr></table></figure>
+<p>创建的b对象和c对象他们的区别就是外层一个是使用[]一个是使用（），a是一个列表，而c是一个生成器，对于生成器c，可以通过迭代器的使用方式来进行获取元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">c = (x*<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> c:</span><br><span class="line">	print(i)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/pasted-146.png" alt="upload successful"><br>第二种创建生成器的方法yield</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def gen():</span><br><span class="line">    i &#x3D; 0</span><br><span class="line">    while i &lt; 5:</span><br><span class="line">        yield i</span><br><span class="line">        i +&#x3D; 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">g &#x3D; gen()</span><br><span class="line">print(g)</span><br></pre></td></tr></table></figure>
+<p>gen本来这个是一个函数，<span style="background-color:skyblue">只要是函数内部有一个yield所以他就是一个生成器</span>，打印发现，他返回的是该对象，我们可以通过next方法进行获取或者for循环</p>
+<p><img src="/images/pasted-148.png" alt="upload successful"></p>
+<h6 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h6><p>使用了yield关键字的函数不再是函数，而是生成器</p>
+<p>使用next调用生成器，执行顺序：</p>
+<p>如果是第一次执行，则从def代码块的开始部分执行，直到遇到yield为止，并且把yield关键字后的数值返回，当做next()的返回值, yield在这里有了return返回值的作用。</p>
+<p>如果不是第一次执行，则从上一次暂停的位置执行(即从上一次yield关键字的下一个语句开始执行)，直到遇到下一次yield为止，，并且把yield关键字后的数值返回，当做next()的返回值</p>
 
     </div>
 
@@ -224,7 +237,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag"># 面试题</a>
+              <a href="/tags/python%E9%AB%98%E7%BA%A7/" rel="tag"># python高级</a>
           </div>
 
         
@@ -233,13 +246,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/02/20/iterator/" rel="prev" title="python高级迭代器">
-      <i class="fa fa-chevron-left"></i> python高级迭代器
+    <a href="/2020/03/12/qq-encryption/" rel="prev" title="qq空间密码加密全过程">
+      <i class="fa fa-chevron-left"></i> qq空间密码加密全过程
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/02/22/qrcode/" rel="next" title="python在图片中心加入二维码">
-      python在图片中心加入二维码 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -299,7 +309,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#今天朋友去面试字节跳动前端挂了，面试官给出了道题，emmm我帮他分析一梭子"><span class="nav-number">1.</span> <span class="nav-text">今天朋友去面试字节跳动前端挂了，面试官给出了道题，emmm我帮他分析一梭子</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#开始解题"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">开始解题</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成器"><span class="nav-number">1.</span> <span class="nav-text">生成器</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-生成器是什么东西"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">1.生成器是什么东西</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-生成器"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">2.生成器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-创建生成方法"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">3.创建生成方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#总结"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
