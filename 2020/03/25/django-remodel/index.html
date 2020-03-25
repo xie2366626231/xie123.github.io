@@ -20,24 +20,19 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="遇到的问题，在编写代码过程中，使用django或者flask的模型类去进行查询，但是他的条件只能支持单个无法支持多个查询条件问题代码如下 Q对象1.多个条件过滤方式 1all_data &#x3D; Complain.objects.filter(Q(complain_user_id&#x3D;request.user.username) | Q(be_complain_user_id&#x3D;">
+  <meta name="description" content="Django后台简介django默认后台admin它提供十分强大的数据处理，让我们可以在不需要写前端的情况下，编写一个后台，但是数据库的有写数据我们自己知道代表什么意思但是不代表所有人都知道，比如账号的状态，我们一般都是数字代替，但是我们想要让他以文字的方法进行表达，此篇文章就围绕这个进行说明。 定义一个类进行实际操作下面这个类的大概意思就是创建了一个account_number字段passwor">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python-Django的Q对象和F对象">
-<meta property="og:url" content="http://yoursite.com/2020/02/06/python_F_Q/index.html">
+<meta property="og:title" content="Django后台自定义数据修改">
+<meta property="og:url" content="http://yoursite.com/2020/03/25/django-remodel/index.html">
 <meta property="og:site_name" content="沫的博客">
-<meta property="og:description" content="遇到的问题，在编写代码过程中，使用django或者flask的模型类去进行查询，但是他的条件只能支持单个无法支持多个查询条件问题代码如下 Q对象1.多个条件过滤方式 1all_data &#x3D; Complain.objects.filter(Q(complain_user_id&#x3D;request.user.username) | Q(be_complain_user_id&#x3D;">
+<meta property="og:description" content="Django后台简介django默认后台admin它提供十分强大的数据处理，让我们可以在不需要写前端的情况下，编写一个后台，但是数据库的有写数据我们自己知道代表什么意思但是不代表所有人都知道，比如账号的状态，我们一般都是数字代替，但是我们想要让他以文字的方法进行表达，此篇文章就围绕这个进行说明。 定义一个类进行实际操作下面这个类的大概意思就是创建了一个account_number字段passwor">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/images/pasted-3.png">
-<meta property="article:published_time" content="2020-02-06T05:59:00.000Z">
-<meta property="article:modified_time" content="2020-02-12T05:44:21.104Z">
+<meta property="article:published_time" content="2020-03-25T13:07:00.000Z">
+<meta property="article:modified_time" content="2020-03-25T13:27:43.998Z">
 <meta property="article:author" content="沫">
-<meta property="article:tag" content="web开发">
-<meta property="article:tag" content="Django">
-<meta property="article:tag" content="sql">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/pasted-3.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/02/06/python_F_Q/">
+<link rel="canonical" href="http://yoursite.com/2020/03/25/django-remodel/">
 
 
 <script id="page-configurations">
@@ -49,7 +44,7 @@
   };
 </script>
 
-  <title>python-Django的Q对象和F对象 | 沫的博客</title>
+  <title>Django后台自定义数据修改 | 沫的博客</title>
   
 
 
@@ -163,7 +158,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/06/python_F_Q/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/25/django-remodel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -176,7 +171,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          python-Django的Q对象和F对象
+          Django后台自定义数据修改
         </h1>
 
         <div class="post-meta">
@@ -185,16 +180,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-06 13:59:00" itemprop="dateCreated datePublished" datetime="2020-02-06T13:59:00+08:00">2020-02-06</time>
+              <time title="创建时间：2020-03-25 21:07:00 / 修改时间：21:27:43" itemprop="dateCreated datePublished" datetime="2020-03-25T21:07:00+08:00">2020-03-25</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-12 13:44:21" itemprop="dateModified" datetime="2020-02-12T13:44:21+08:00">2020-02-12</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -224,31 +213,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h5 id="遇到的问题，在编写代码过程中，使用django或者flask的模型类去进行查询，但是他的条件只能支持单个无法支持多个查询条件"><a href="#遇到的问题，在编写代码过程中，使用django或者flask的模型类去进行查询，但是他的条件只能支持单个无法支持多个查询条件" class="headerlink" title="遇到的问题，在编写代码过程中，使用django或者flask的模型类去进行查询，但是他的条件只能支持单个无法支持多个查询条件"></a>遇到的问题，在编写代码过程中，使用django或者flask的模型类去进行查询，但是他的条件只能支持单个无法支持多个查询条件</h5><p>问题代码如下<br><img src="/images/pasted-3.png" alt="upload successful"></p>
-<h3 id="Q对象"><a href="#Q对象" class="headerlink" title="Q对象"></a>Q对象</h3><p>1.多个条件过滤方式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">all_data &#x3D; Complain.objects.filter(Q(complain_user_id&#x3D;request.user.username) | Q(be_complain_user_id&#x3D;request.user.username)).all()</span><br></pre></td></tr></table></figure>
+        <h4 id="Django后台简介"><a href="#Django后台简介" class="headerlink" title="Django后台简介"></a>Django后台简介</h4><p>django默认后台admin它提供十分强大的数据处理，让我们可以在不需要写前端的情况下，编写一个后台，但是数据库的有写数据我们自己知道代表什么意思但是不代表所有人都知道，比如账号的状态，我们一般都是数字代替，但是我们想要让他以文字的方法进行表达，此篇文章就围绕这个进行说明。</p>
+<h4 id="定义一个类进行实际操作"><a href="#定义一个类进行实际操作" class="headerlink" title="定义一个类进行实际操作"></a>定义一个类进行实际操作</h4><p>下面这个类的大概意思就是创建了一个account_number字段password字段和status字段,表名为users，进行数据库迁移后就在mysql可以看到了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Users</span><span class="params">(model.Model)</span>:</span></span><br><span class="line">    user_status = (</span><br><span class="line">        (<span class="number">0</span>, <span class="string">'未实名'</span>),</span><br><span class="line">        (<span class="number">1</span>, <span class="string">'已实名'</span>)</span><br><span class="line">    )</span><br><span class="line">	account_number = model.CharField(max_length=<span class="number">128</span>,null=<span class="literal">False</span>)</span><br><span class="line">    password = model.CharField(max_length=<span class="number">128</span>,null=<span class="literal">False</span>)</span><br><span class="line">    status = models.SmallIntegerField(choices=user_status, default=<span class="number">0</span>, verbose_name=<span class="string">'账号状态'</span>)</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">meta</span><span class="params">()</span>:</span></span><br><span class="line">    	db_table = <span class="string">'users'</span></span><br></pre></td></tr></table></figure>
+<p>迁移命令</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 manage makemigration </span><br><span class="line">python3 manage migarte</span><br></pre></td></tr></table></figure>
+<h4 id="改变正常返回的结果"><a href="#改变正常返回的结果" class="headerlink" title="改变正常返回的结果"></a>改变正常返回的结果</h4><p>正常情况下使用枚举我们写入数字就行了，但是问题来了，我们后台通过admin的display现实也是1，2，3，但是我们想让他显示成中文，更加明确，这个时候我们只需要写一个方法进行修改就行了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Users</span><span class="params">(model.Model)</span>:</span></span><br><span class="line">    user_status = (</span><br><span class="line">        (<span class="number">0</span>, <span class="string">'未实名'</span>),</span><br><span class="line">        (<span class="number">1</span>, <span class="string">'已实名'</span>)</span><br><span class="line">    )</span><br><span class="line">	account_number = model.CharField(max_length=<span class="number">128</span>,null=<span class="literal">False</span>)</span><br><span class="line">    password = model.CharField(max_length=<span class="number">128</span>,null=<span class="literal">False</span>)</span><br><span class="line">    status = models.SmallIntegerField(choices=user_status, default=<span class="number">0</span>, verbose_name=<span class="string">'账号状态'</span>)</span><br><span class="line">     <span class="comment"># # 重写status这个值，显示账号状态</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">restatus</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.status == <span class="string">'0'</span>:</span><br><span class="line">            <span class="keyword">return</span> format_html(<span class="string">'&lt;span style="color:#f00;"&gt;未实名&lt;/span&gt;'</span>)</span><br><span class="line">        <span class="keyword">elif</span> self.status == <span class="string">'1'</span>:</span><br><span class="line">            <span class="keyword">return</span> format_html(<span class="string">'&lt;span style="color:#f00;"&gt;已实名&lt;/span&gt;'</span>)</span><br><span class="line">    restatus.short_description = <span class="string">u'账号状态'</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">meta</span><span class="params">()</span>:</span></span><br><span class="line">    	db_table = <span class="string">'users'</span></span><br></pre></td></tr></table></figure>
+<p>然后在admin文件里面的display元组里面写上restatus这个名字就行了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ControlUsers</span><span class="params">(admin.ModelAdmin)</span>:</span></span><br><span class="line">    <span class="comment"># 对后台需要展示的字段值进行写入</span></span><br><span class="line">    list_display = (<span class="string">'username'</span>, <span class="string">'password'</span>,<span class="string">'restatus'</span>)</span><br><span class="line">admin.site.regitset(Users,ControlUsers)</span><br></pre></td></tr></table></figure>
 
-<p>代码对比换成sql语句</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> ds_test <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p>使用了Q对象这种写法sql语句</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> ds_test <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span> <span class="keyword">or</span> <span class="keyword">id</span> =<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="解决了上面我自己代码的问题，下面就对Q对象和F对象进行扩展吧"><a href="#解决了上面我自己代码的问题，下面就对Q对象和F对象进行扩展吧" class="headerlink" title="解决了上面我自己代码的问题，下面就对Q对象和F对象进行扩展吧"></a>解决了上面我自己代码的问题，下面就对Q对象和F对象进行扩展吧</h3><p>非条件过滤<br>Q对象可以使用～操作符，表示非 not</p>
-<p>例：查询，id不等于3的数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Complain.objects.filter(~Q(id&#x3D;3))</span><br></pre></td></tr></table></figure>
-
-
-<p>例：逻辑运算符查询，查询id大于3，小于10的数据，（正常模型写法）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Complain.objects.filter(id__gt&#x3D;3,id__lt&#x3D;10)</span><br></pre></td></tr></table></figure>
-
-<p>例：Q对象写法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BookInfo.objects.filter(Q(id__gt&#x3D;3)|Q(id__lt&#x3D;10))</span><br></pre></td></tr></table></figure>
-<p>例：sql语句</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> ds_test <span class="keyword">where</span> <span class="keyword">id</span>&gt;<span class="number">3</span> <span class="keyword">and</span> <span class="keyword">id</span> &lt; <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
-
-<h3 id="F对象"><a href="#F对象" class="headerlink" title="F对象"></a>F对象</h3><p>使用F对象，被定义在django.db.models中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from django.db.models import F</span><br></pre></td></tr></table></figure>
-<p>说实话这个有点抽象，他可以用于算数运算。</p>
-<p>QQ:2366626231</p>
 
     </div>
 
@@ -257,22 +231,17 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/web%E5%BC%80%E5%8F%91/" rel="tag"># web开发</a>
-              <a href="/tags/Django/" rel="tag"># Django</a>
-              <a href="/tags/sql/" rel="tag"># sql</a>
-          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2020/02/08/sql_injection/" rel="next" title="DVWA-sql注入手注（low）">
-      DVWA-sql注入手注（low） <i class="fa fa-chevron-right"></i>
+    <a href="/2020/03/20/python%E9%AB%98%E7%BA%A7%E7%94%9F%E6%88%90%E5%99%A8/" rel="prev" title="python高级生成器">
+      <i class="fa fa-chevron-left"></i> python高级生成器
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -332,7 +301,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#遇到的问题，在编写代码过程中，使用django或者flask的模型类去进行查询，但是他的条件只能支持单个无法支持多个查询条件"><span class="nav-number">1.</span> <span class="nav-text">遇到的问题，在编写代码过程中，使用django或者flask的模型类去进行查询，但是他的条件只能支持单个无法支持多个查询条件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q对象"><span class="nav-number"></span> <span class="nav-text">Q对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决了上面我自己代码的问题，下面就对Q对象和F对象进行扩展吧"><span class="nav-number"></span> <span class="nav-text">解决了上面我自己代码的问题，下面就对Q对象和F对象进行扩展吧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#F对象"><span class="nav-number"></span> <span class="nav-text">F对象</span></a></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Django后台简介"><span class="nav-number">1.</span> <span class="nav-text">Django后台简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义一个类进行实际操作"><span class="nav-number">2.</span> <span class="nav-text">定义一个类进行实际操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#改变正常返回的结果"><span class="nav-number">3.</span> <span class="nav-text">改变正常返回的结果</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
