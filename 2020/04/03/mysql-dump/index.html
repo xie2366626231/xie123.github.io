@@ -20,15 +20,19 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="沫的博客">
-<meta property="og:url" content="http://yoursite.com/categories/web%E5%BC%80%E5%8F%91/index.html">
+  <meta name="description" content="前言我们维护过程中需要经常去操作mysql给他备份，或者吧备份导入，但是这些命令可能会因为框架的这些原因，导致我们经常不怎么会去使用，或者使用的时候就忘掉了这些命令。 常用备份命令如下1.导出整个数据库，包含数据和结构 1mysql -uroot  -p 数据库名 &gt;  xxx.sql 2.导出表结构，不导出数据 1mysqldump --opt -d 数据库名 -uroot -p &gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql常用备份命令">
+<meta property="og:url" content="http://yoursite.com/2020/04/03/mysql-dump/index.html">
 <meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="前言我们维护过程中需要经常去操作mysql给他备份，或者吧备份导入，但是这些命令可能会因为框架的这些原因，导致我们经常不怎么会去使用，或者使用的时候就忘掉了这些命令。 常用备份命令如下1.导出整个数据库，包含数据和结构 1mysql -uroot  -p 数据库名 &gt;  xxx.sql 2.导出表结构，不导出数据 1mysqldump --opt -d 数据库名 -uroot -p &gt;">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-03T06:02:08.000Z">
+<meta property="article:modified_time" content="2020-04-03T06:26:31.516Z">
 <meta property="article:author" content="沫">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/categories/web%E5%BC%80%E5%8F%91/">
+<link rel="canonical" href="http://yoursite.com/2020/04/03/mysql-dump/">
 
 
 <script id="page-configurations">
@@ -36,11 +40,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>分类: web开发 | 沫的博客</title>
+  <title>mysql常用备份命令 | 沫的博客</title>
   
 
 
@@ -149,90 +153,89 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">web开发
-          <small>分类</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/03/mysql-dump/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mysql常用备份命令
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-03 14:02:08 / 修改时间：14:26:31" itemprop="dateCreated datePublished" datetime="2020-04-03T14:02:08+08:00">2020-04-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>我们维护过程中需要经常去操作mysql给他备份，或者吧备份导入，但是这些命令可能会因为框架的这些原因，导致我们经常不怎么会去使用，或者使用的时候就忘掉了这些命令。</p>
+<h3 id="常用备份命令如下"><a href="#常用备份命令如下" class="headerlink" title="常用备份命令如下"></a>常用备份命令如下</h3><p>1.导出整个数据库，包含数据和结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot  -p 数据库名 &gt;  xxx.sql</span><br></pre></td></tr></table></figure>
+<p>2.导出表结构，不导出数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump --opt -d 数据库名 -uroot -p &gt; xxx.sql</span><br></pre></td></tr></table></figure>
+<p>3.导出数据不导出结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -t 数据库名 -uroot -p &gt; xxx.sql</span><br></pre></td></tr></table></figure>
+<p>4.导出数据和表结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -d 数据库名 -uroot -p &gt; xxx.sql</span><br></pre></td></tr></table></figure>
+<p>5.导出特定表的结构(高版本无法使用)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -uroot -p -B 数据库名 --table 表名 &gt; xxx.sql</span><br></pre></td></tr></table></figure>
+<p>6.导入数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -d 数据库名 -uroot -p &lt; xxx.sql</span><br></pre></td></tr></table></figure>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-03-25T21:07:00+08:00"
-              content="2020-03-25">
-          03-25
-        </time>
-      </div>
+      <footer class="post-footer">
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/03/25/django-remodel/" itemprop="url">
-            <span itemprop="name">Django后台自定义数据修改</span>
-          </a>
-      </h2>
+        
 
-    </header>
-  </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-02-22T16:47:00+08:00"
-              content="2020-02-22">
-          02-22
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/02/22/qrcode/" itemprop="url">
-            <span itemprop="name">python在图片中心加入二维码</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-02-06T13:59:00+08:00"
-              content="2020-02-06">
-          02-06
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/02/06/python_F_Q/" itemprop="url">
-            <span itemprop="name">python-Django的Q对象和F对象</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/02/first-vue/" rel="prev" title="vue入门之第一个vue程序">
+      <i class="fa fa-chevron-left"></i> vue入门之第一个vue程序
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
@@ -283,6 +286,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用备份命令如下"><span class="nav-number">2.</span> <span class="nav-text">常用备份命令如下</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
