@@ -155,6 +155,74 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/14/python-%E6%98%A0%E5%B0%84%E4%B8%8E%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/14/python-%E6%98%A0%E5%B0%84%E4%B8%8E%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">映射与函数(高数)</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-14 20:10:28 / 修改时间：22:05:13" itemprop="dateCreated datePublished" datetime="2020-05-14T20:10:28+08:00">2020-05-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="映射与函数"><a href="#映射与函数" class="headerlink" title="映射与函数"></a>映射与函数</h3><p>X，Y非空集合，法则f对x中&lt;br/ &gt;<br>大的X数集合，小的x为元素，每个元素x，会和y唯一的与之对应&lt;br/ &gt;<br>f 映射 f：X → Y&lt;br/ &gt;<br>X被称只为像，Y为原像&lt;br/ &gt;<br>X为定义域，记为Df&lt;br/ &gt;<br>Y为值域，记为Rf&lt;br/ &gt;<br>以上为映射函数的最基础定义</p>
+<h3 id="注意：三要素X，f，Rf"><a href="#注意：三要素X，f，Rf" class="headerlink" title="注意：三要素X，f，Rf"></a>注意：三要素X，f，Rf</h3><p>在python中比进行举例，因为python中集合的值不可以直接通过下标来取，所以用元组进行代替</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment"># 假设X为像</span></span><br><span class="line">Y = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment"># 假设Y为原像</span></span><br><span class="line">x1 = X[<span class="number">0</span>] <span class="comment"># X中的一个元素</span></span><br><span class="line">y1 = Y[<span class="number">0</span>] <span class="comment"># Y中的一个元素</span></span><br></pre></td></tr></table></figure>
+<p>通过以上例子可以发现，y1至是Y中的一个值，被记做Rf，也就是Rf ⊂ Y，也就是Rf属于Y，值域为1，在这里比喻是用的数字相对，来进行匹配。<br>&lt;br/ &gt;<br>x1只需要对应其中任意一种Rf即可，不是所有的Rf都必须要用到，但是x必须要用到，上面代码中的x1 = 1，其实也可以对应其他的Y元素，只要保证x进行对应就是可以的。</p>
+<h3 id="x-∈-X-x的对应必须是唯一的"><a href="#x-∈-X-x的对应必须是唯一的" class="headerlink" title="x ∈ X x的对应必须是唯一的"></a>x ∈ X x的对应必须是唯一的</h3><p>因为x和X是属于关系，x是X集合中的一个元素，所以记做x ∈ X，就好比上面代码中的，X定义了一个1，2，3的集合，但是<br /><br>x1 可以指向 y1，x1只能指向一个值也就是Rf，Rf是存于y中<br /><br>但是y1可以指向多个x，也就是x1可以等于y1，x2也可以等于y1</p>
+<h3 id="满射-Rf-Y"><a href="#满射-Rf-Y" class="headerlink" title="满射 Rf = Y"></a>满射 Rf = Y</h3><p>当y里的元素全部对应，也就是X和Y的元素一样多，当他们完全对应，并且原像里没有剩余的元素则为满射，也就是Rf = Y。<br /><br>图解如下：<br><img src="/images/pasted-163.png" alt="upload successful"></p>
+<h3 id="单射"><a href="#单射" class="headerlink" title="单射"></a>单射</h3><p>x1 != x2 f(x1) != f(x2)<br>也就是单个x元素对应不同的Rf，Y的元素可以不完全用于，只要匹配x1 = y1就满足单射</p>
+<h3 id="逆映射"><a href="#逆映射" class="headerlink" title="逆映射"></a>逆映射</h3><p>假设 f:x → 单射&lt;br/ &gt;<br>每个y ∈ Rf 有唯一的x ∈ X<br /><br>f(x) = y<br /><br>g:Rf → x 记为 f-1<br /><br>Df-1 = Rf Rf-1 = X<br /><br>只有单射才有逆映射</p>
+<h3 id="复合映射"><a href="#复合映射" class="headerlink" title="复合映射"></a>复合映射</h3><p>g:X → y1  f:y2 → z<br>记做为 f[g(x)] ∈ z<br>z里存在多个元素，所以X → z，所以f != Z 但是 Z ⊂ f<br /><br>复合映射图解:<br><img src="/images/pasted-161.png" alt="upload successful"><br>图画的虽然不咋地，但是差不多是这个意思吧，重图中，可以看出来X里的一个元素，指向了y1，也就是Y里的某一个元素，在y1里面还有一个值叫Rg，他指向了Z，值域是在Z里面，也许只是Z的一小部分，所以Z ⊂ f，两者不是等于关于关系。<br /></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/09/python-class/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -908,93 +976,6 @@ jinja2模板中使用{ {} }语法表示，他是一个变量，它是一种特�
   
   
 
-        
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/20/python%E9%AB%98%E7%BA%A7%E7%94%9F%E6%88%90%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/20/python%E9%AB%98%E7%BA%A7%E7%94%9F%E6%88%90%E5%99%A8/" class="post-title-link" itemprop="url">python高级生成器</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-20 19:56:00 / 修改时间：20:35:09" itemprop="dateCreated datePublished" datetime="2020-03-20T19:56:00+08:00">2020-03-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">python学习</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h3><h6 id="1-生成器是什么东西"><a href="#1-生成器是什么东西" class="headerlink" title="1.生成器是什么东西"></a>1.生成器是什么东西</h6><p>通过列表生成式，可以创建一个列表，但是受到内存限制，列表容量是有限的，如果我们创建一个很大的列表去占用内存的空间，但是我们用到的仅仅就几个元素，后面的大多数元素都浪费了，所以列表元素可以按某种算法推算出来，我们可以一边循环一边推算出后续的元素，这样就不需要创建一个完整的列表，从而节省大量的内存空间。</p>
-<p><span style="background-color:skyblue;">在python中，这种一边循环一边计算的机制，称为生成器：generator</span></p>
-<h6 id="2-生成器"><a href="#2-生成器" class="headerlink" title="2.生成器"></a>2.生成器</h6><p>利用迭代器，我们可以每次迭代获取数据(通过next()方法，但要实现一个迭代器时，关于当前的迭代状态需要我们自己记录，进而才能根据当前状态生成下一数据，为了达到记录当前状态，并配合next()函数进行迭代时候，可以采用比迭代器更简便的语法，就是生成器(generator))</p>
-<p><span style="background-color:skyblue;">生成器是一类特殊的迭代器</span></p>
-<h6 id="3-创建生成方法"><a href="#3-创建生成方法" class="headerlink" title="3.创建生成方法"></a>3.创建生成方法</h6><p>创建一个生成器有多种方法，第一种发放，吧列表生成式的[]改成()</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b = [ i*<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>) ]</span><br><span class="line">print(b) [<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>]</span><br><span class="line">c = (x*<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line">print(c) <span class="comment"># 输出一个内存对象，需要通过next方法或者for循环来进行遍历</span></span><br></pre></td></tr></table></figure>
-<p>创建的b对象和c对象他们的区别就是外层一个是使用[]一个是使用（），a是一个列表，而c是一个生成器，对于生成器c，可以通过迭代器的使用方式来进行获取元素。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">c = (x*<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> c:</span><br><span class="line">	print(i)</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/pasted-146.png" alt="upload successful"><br>第二种创建生成器的方法yield</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def gen():</span><br><span class="line">    i &#x3D; 0</span><br><span class="line">    while i &lt; 5:</span><br><span class="line">        yield i</span><br><span class="line">        i +&#x3D; 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">g &#x3D; gen()</span><br><span class="line">print(g)</span><br></pre></td></tr></table></figure>
-<p>gen本来这个是一个函数，<span style="background-color:skyblue">只要是函数内部有一个yield所以他就是一个生成器</span>，打印发现，他返回的是该对象，我们可以通过next方法进行获取或者for循环</p>
-<p><img src="/images/pasted-148.png" alt="upload successful"></p>
-<h6 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h6><p>使用了yield关键字的函数不再是函数，而是生成器</p>
-<p>使用next调用生成器，执行顺序：</p>
-<p>如果是第一次执行，则从def代码块的开始部分执行，直到遇到yield为止，并且把yield关键字后的数值返回，当做next()的返回值, yield在这里有了return返回值的作用。</p>
-<p>如果不是第一次执行，则从上一次暂停的位置执行(即从上一次yield关键字的下一个语句开始执行)，直到遇到下一次yield为止，，并且把yield关键字后的数值返回，当做next()的返回值</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1067,7 +1048,7 @@ jinja2模板中使用{ {} }语法表示，他是一个变量，它是一种特�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
