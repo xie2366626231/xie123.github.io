@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="映射与函数X，Y非空集合，法则f对x中&lt;br&#x2F; &gt;大的X数集合，小的x为元素，每个元素x，会和y唯一的与之对应&lt;br&#x2F; &gt;f 映射 f：X → Y&lt;br&#x2F; &gt;X被称只为像，Y为原像&lt;br&#x2F; &gt;X为定义域，记为Df&lt;br&#x2F; &gt;Y为值域，记为Rf&lt;br&#x2F; &gt;以上为映射函数的最基础定义 注意：三要素X，f，Rf在python中比进行">
+  <meta name="description" content="映射与函数X，Y非空集合，法则f对x中大的X数集合，小的x为元素，每个元素x，会和y唯一的与之对应f 映射 f：X → YX被称只为像，Y为原像X为定义域，记为DfY为值域，记为Rf以上为映射函数的最基础定义 注意：三要素X，f，Rf在python中比进行举例，因为python中集合的值不可以直接通过下标来取，所以用元组进行代替 1234X &#x3D; (1, 2, 3) # 假设X为像Y &#x3D; (1, 2">
 <meta property="og:type" content="article">
 <meta property="og:title" content="映射与函数(高数)">
 <meta property="og:url" content="http://yoursite.com/2020/05/14/python-%E6%98%A0%E5%B0%84%E4%B8%8E%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="沫的博客">
-<meta property="og:description" content="映射与函数X，Y非空集合，法则f对x中&lt;br&#x2F; &gt;大的X数集合，小的x为元素，每个元素x，会和y唯一的与之对应&lt;br&#x2F; &gt;f 映射 f：X → Y&lt;br&#x2F; &gt;X被称只为像，Y为原像&lt;br&#x2F; &gt;X为定义域，记为Df&lt;br&#x2F; &gt;Y为值域，记为Rf&lt;br&#x2F; &gt;以上为映射函数的最基础定义 注意：三要素X，f，Rf在python中比进行">
+<meta property="og:description" content="映射与函数X，Y非空集合，法则f对x中大的X数集合，小的x为元素，每个元素x，会和y唯一的与之对应f 映射 f：X → YX被称只为像，Y为原像X为定义域，记为DfY为值域，记为Rf以上为映射函数的最基础定义 注意：三要素X，f，Rf在python中比进行举例，因为python中集合的值不可以直接通过下标来取，所以用元组进行代替 1234X &#x3D; (1, 2, 3) # 假设X为像Y &#x3D; (1, 2">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/images/pasted-163.png">
 <meta property="og:image" content="http://yoursite.com/images/pasted-161.png">
 <meta property="article:published_time" content="2020-05-14T12:10:28.000Z">
-<meta property="article:modified_time" content="2020-05-14T14:05:13.605Z">
+<meta property="article:modified_time" content="2020-05-14T14:12:04.786Z">
 <meta property="article:author" content="沫">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/pasted-163.png">
@@ -179,7 +179,7 @@
 
 <br>
 <span style="font-size:10px;"  title="post.wordcount">
-   字数统计:<span style="color:red;"> 691</span>
+   字数统计:<span style="color:red;"> 685</span>
 </span>
 <span style="font-size:10px;" title="post.min2read">
  个字,阅读时间约:  <span style="color:red;"> 3</span>分钟。
@@ -195,7 +195,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-05-14 20:10:28 / 修改时间：22:05:13" itemprop="dateCreated datePublished" datetime="2020-05-14T20:10:28+08:00">2020-05-14</time>
+              <time title="创建时间：2020-05-14 20:10:28 / 修改时间：22:12:04" itemprop="dateCreated datePublished" datetime="2020-05-14T20:10:28+08:00">2020-05-14</time>
             </span>
 
           
@@ -209,7 +209,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="映射与函数"><a href="#映射与函数" class="headerlink" title="映射与函数"></a>映射与函数</h3><p>X，Y非空集合，法则f对x中&lt;br/ &gt;<br>大的X数集合，小的x为元素，每个元素x，会和y唯一的与之对应&lt;br/ &gt;<br>f 映射 f：X → Y&lt;br/ &gt;<br>X被称只为像，Y为原像&lt;br/ &gt;<br>X为定义域，记为Df&lt;br/ &gt;<br>Y为值域，记为Rf&lt;br/ &gt;<br>以上为映射函数的最基础定义</p>
+        <h3 id="映射与函数"><a href="#映射与函数" class="headerlink" title="映射与函数"></a>映射与函数</h3><p>X，Y非空集合，法则f对x中<br /><br>大的X数集合，小的x为元素，每个元素x，会和y唯一的与之对应<br /><br>f 映射 f：X → Y<br /><br>X被称只为像，Y为原像<br /><br>X为定义域，记为Df<br /><br>Y为值域，记为Rf<br /><br>以上为映射函数的最基础定义</p>
 <h3 id="注意：三要素X，f，Rf"><a href="#注意：三要素X，f，Rf" class="headerlink" title="注意：三要素X，f，Rf"></a>注意：三要素X，f，Rf</h3><p>在python中比进行举例，因为python中集合的值不可以直接通过下标来取，所以用元组进行代替</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment"># 假设X为像</span></span><br><span class="line">Y = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment"># 假设Y为原像</span></span><br><span class="line">x1 = X[<span class="number">0</span>] <span class="comment"># X中的一个元素</span></span><br><span class="line">y1 = Y[<span class="number">0</span>] <span class="comment"># Y中的一个元素</span></span><br></pre></td></tr></table></figure>
 <p>通过以上例子可以发现，y1至是Y中的一个值，被记做Rf，也就是Rf ⊂ Y，也就是Rf属于Y，值域为1，在这里比喻是用的数字相对，来进行匹配。<br>&lt;br/ &gt;<br>x1只需要对应其中任意一种Rf即可，不是所有的Rf都必须要用到，但是x必须要用到，上面代码中的x1 = 1，其实也可以对应其他的Y元素，只要保证x进行对应就是可以的。</p>
