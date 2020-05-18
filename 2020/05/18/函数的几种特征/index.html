@@ -20,15 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="沫的博客">
-<meta property="og:url" content="http://yoursite.com/tags/%E7%88%AC%E8%99%AB/index.html">
+  <meta name="description" content="有界性上界：∃k1 假设f(x)这个定义域最大为300，那么就是k1大于等于这个值 f(x) &lt;&#x3D; k1下界：∃k2 f(x) &gt;&#x3D; k2 最后f(x)结果永远小于k2有界：∃k1&gt;&#x3D;3 ∃k2 &lt;&#x3D;3 k1 &gt;&#x3D; f(x) &lt;&#x3D; k2 那么f(x)&#x3D;3，因为k1作为上界,他的值为3 到 无限，k2，为下界3 到 -无限,根据表达式得出他为3无界：∃m m &amp;l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数的几种特征">
+<meta property="og:url" content="http://yoursite.com/2020/05/18/%E5%87%BD%E6%95%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E7%89%B9%E5%BE%81/index.html">
 <meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="有界性上界：∃k1 假设f(x)这个定义域最大为300，那么就是k1大于等于这个值 f(x) &lt;&#x3D; k1下界：∃k2 f(x) &gt;&#x3D; k2 最后f(x)结果永远小于k2有界：∃k1&gt;&#x3D;3 ∃k2 &lt;&#x3D;3 k1 &gt;&#x3D; f(x) &lt;&#x3D; k2 那么f(x)&#x3D;3，因为k1作为上界,他的值为3 到 无限，k2，为下界3 到 -无限,根据表达式得出他为3无界：∃m m &amp;l">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-18T11:46:00.000Z">
+<meta property="article:modified_time" content="2020-05-18T12:09:20.922Z">
 <meta property="article:author" content="沫">
+<meta property="article:tag" content="数学">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/%E7%88%AC%E8%99%AB/">
+<link rel="canonical" href="http://yoursite.com/2020/05/18/%E5%87%BD%E6%95%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E7%89%B9%E5%BE%81/">
 
 
 <script id="page-configurations">
@@ -36,11 +41,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>标签: 爬虫 | 沫的博客</title>
+  <title>函数的几种特征 | 沫的博客</title>
   
 
 
@@ -149,70 +154,122 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">爬虫
-          <small>标签</small>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/18/%E5%87%BD%E6%95%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E7%89%B9%E5%BE%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          函数的几种特征
+
+<br>
+<span style="font-size:10px;"  title="post.wordcount">
+   字数统计:<span style="color:red;"> 297</span>
+</span>
+<span style="font-size:10px;" title="post.min2read">
+ 个字,阅读时间约:  <span style="color:red;"> 1</span>分钟。
+</span>
+
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-18 19:46:00 / 修改时间：20:09:20" itemprop="dateCreated datePublished" datetime="2020-05-18T19:46:00+08:00">2020-05-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index">
+                    <span itemprop="name">高等数学</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
+        <h3 id="有界性"><a href="#有界性" class="headerlink" title="有界性"></a>有界性</h3><p>上界：∃k1</p>
+<pre><code>假设f(x)这个定义域最大为300，那么就是k1大于等于这个值
+f(x) &lt;= k1</code></pre><p>下界：∃k2</p>
+<pre><code>f(x) &gt;= k2
+最后f(x)结果永远小于k2</code></pre><p>有界：∃k1&gt;=3 ∃k2 &lt;=3</p>
+<pre><code>k1 &gt;= f(x) &lt;= k2
+那么f(x)=3，因为k1作为上界,他的值为3 到 无限，k2，为下界3 到 -无限,根据表达式得出他为3</code></pre><p>无界：∃m</p>
+<pre><code>m &lt; f(x1), m2 = ∀
+m他作为一个下界，m2作为一个任意数</code></pre><h3 id="单调性"><a href="#单调性" class="headerlink" title="单调性"></a>单调性</h3><pre><code>x1 &lt; x2 f(x1) &lt; f(x2)  单调增
+x1 &lt; x2 f(x1) &gt; f(x2)  单调减</code></pre><h3 id="奇偶性D关于圆点对称"><a href="#奇偶性D关于圆点对称" class="headerlink" title="奇偶性D关于圆点对称"></a>奇偶性D关于圆点对称</h3><pre><code>f(-x) = f(x) 偶
+f (-x) = f(-x) 奇</code></pre><h3 id="周期性"><a href="#周期性" class="headerlink" title="周期性"></a>周期性</h3><p>∃正数i</p>
+<pre><code>f(x + i) = f(x)
+最小周期 y = sin x的最小周期2π</code></pre><p>并非每个周期函数都有最小周期</p>
+<pre><code>这个说实话贼抽像，电脑画图不太好画，所以就不上图了
+
+不存在最小的有理数作为周期
+假设：
+D(x) = 1  x ∈ Q   有理数
+D(x) = 0  x ∈ Qc  无理数
+任何x + r的有理数相加都数一个有理数，所以不存在最小的周期
+x + 有理数 + r = 有理数
+x + 无理数 + r = 无理数</code></pre>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-03-09T16:53:00+08:00"
-              content="2020-03-09">
-          03-09
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"># 数学</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/03/09/wangyiyun/" itemprop="url">
-            <span itemprop="name">网易云盾分析破解</span>
-          </a>
-      </h2>
+        
 
-    </header>
-  </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-02-09T22:02:00+08:00"
-              content="2020-02-09">
-          02-09
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/02/09/service_fanyi/" itemprop="url">
-            <span itemprop="name">百度翻译sign值逆向</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/15/%E5%87%BD%E6%95%B0%E5%9B%9E%E9%A1%BE-%EF%BC%88%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6%EF%BC%89/" rel="prev" title="函数回顾（高数）">
+      <i class="fa fa-chevron-left"></i> 函数回顾（高数）
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
@@ -263,6 +320,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#有界性"><span class="nav-number">1.</span> <span class="nav-text">有界性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单调性"><span class="nav-number">2.</span> <span class="nav-text">单调性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#奇偶性D关于圆点对称"><span class="nav-number">3.</span> <span class="nav-text">奇偶性D关于圆点对称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#周期性"><span class="nav-number">4.</span> <span class="nav-text">周期性</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

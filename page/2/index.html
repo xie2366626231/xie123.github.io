@@ -155,6 +155,88 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/29/venv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/29/venv/" class="post-title-link" itemprop="url">python虚拟环境</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-29 22:25:00 / 修改时间：23:37:32" itemprop="dateCreated datePublished" datetime="2020-03-29T22:25:00+08:00">2020-03-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">python学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h3><p>作者使用的macos，一切以macos为标准</p>
+<h3 id="virtualenv介绍"><a href="#virtualenv介绍" class="headerlink" title="virtualenv介绍"></a>virtualenv介绍</h3><p>virtualenv是python专用的虚拟环境，是一个python的包</p>
+<h4 id="1-虚拟环境基本作用"><a href="#1-虚拟环境基本作用" class="headerlink" title="1.虚拟环境基本作用"></a>1.虚拟环境基本作用</h4><p>虚拟环境的作用是搭建独立的python运行环境，不与其他产生冲突，说一个简单的例子，我同时开发了2个项目，一个是用的django1.11.11一个用的是Django2.0那么运行就会产生冲突，就是说，安装在虚拟环境的所有包， 均不会对环境外的其他包产生影响，反之，在虚拟环境下运行我们指定安装的包，是不会调用外部的包。</p>
+<h4 id="2-虚拟环境包安装方式"><a href="#2-虚拟环境包安装方式" class="headerlink" title="2.虚拟环境包安装方式"></a>2.虚拟环境包安装方式</h4><p>虚拟环境安装包，如果包存在的话，安装会去直接吧以前安装好的进行缓存，如果包不存在，那么就会进行下载。</p>
+<h4 id="3-删除方便"><a href="#3-删除方便" class="headerlink" title="3.删除方便"></a>3.删除方便</h4><p>venv建立的环境是很小的，就是说，如果不想用了就可以删除，删除对应的文件夹就行，同时也删除了对应的包，可以做到无任何冲突。</p>
+<h3 id="安装虚拟环境"><a href="#安装虚拟环境" class="headerlink" title="安装虚拟环境"></a>安装虚拟环境</h3><p>我自己是macos 使用python3作为例子,-i的意思是指定下载源，这里我使用的清华的源地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenv -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<h4 id="配置环境变量，如果找不到mkvirtualenc命令"><a href="#配置环境变量，如果找不到mkvirtualenc命令" class="headerlink" title="配置环境变量，如果找不到mkvirtualenc命令"></a>配置环境变量，如果找不到mkvirtualenc命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打开~/.bashrc文件，并添加如下</span></span><br><span class="line"><span class="built_in">export</span> WORKON_HOME=<span class="variable">$HOME</span>/.virtualenvs</span><br><span class="line"><span class="built_in">source</span> /usr/<span class="built_in">local</span>/bin/virtualenvwrapper.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#  运行</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<h4 id="创建虚拟环"><a href="#创建虚拟环" class="headerlink" title="创建虚拟环"></a>创建虚拟环</h4><p>我的电脑安装了python环境，并且配置好了环境变量，所以我可以直接指定python版本进行创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 直接使用配置好的环境变量进行创建</span></span><br><span class="line">virtualenv -p python3 venv</span><br><span class="line"><span class="comment"># 使用python3的地址进行创建，如果你找不到python路径位置，linux看下图</span></span><br><span class="line">virtualenv -p</span><br><span class="line"><span class="comment"># 激活虚拟</span></span><br><span class="line"><span class="built_in">source</span> venv/bin/activate</span><br><span class="line"><span class="comment"># 退出虚拟环境</span></span><br><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+<p>使用whereis寻找python3的位置<br><img src="/images/pasted-149.png" alt="upload successful"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>个人感觉就这3个命令就足够使用了，如果不想使用了直接删除就完事了，其余和python操作一样，配置pycharm需要选择虚拟环境中的python3，这样就可以完成所有的配置了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/25/django-remodel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -937,84 +1019,6 @@ for 循环迭代结束不会报StopIteration异常是因为内部处理过来，
   
   
 
-        
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/14/Hydra/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/14/Hydra/" class="post-title-link" itemprop="url">Hydra九头蛇密码破解</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-02-14 22:23:00 / 修改时间：23:26:00" itemprop="dateCreated datePublished" datetime="2020-02-14T22:23:00+08:00">2020-02-14</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Hydra介绍"><a href="#Hydra介绍" class="headerlink" title="Hydra介绍"></a>Hydra介绍</h3><p>hydra是著名黑客组织thc的一款开源的暴力密码破解工具，可以破解多种密码，可以自定义字典对目标进行爆破,并且支持多种协议进行弱口令爆破。</p>
-<h6 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-L 选择用户名字典</span><br><span class="line">-P 选择密码字典</span><br><span class="line">-T 线程数量</span><br><span class="line">-v 显示详细过程</span><br><span class="line">-l 指定用户名</span><br><span class="line">-p 指定密码</span><br><span class="line">-R 重上一次破解进度继续破解</span><br><span class="line">-s 指定端口</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="ssh演示"><a href="#ssh演示" class="headerlink" title="ssh演示"></a>ssh演示</h3><p>例：使用字典进行破解密码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l root -P password.txt -t 10  -vV 192.168.0.111 ssh</span><br></pre></td></tr></table></figure>
-<p>我不是偷懒，本来我是吧这个正确密码写到一个字典里面的，然后通过字典去破解，线程给的10，最后发现我字典太大了，所以我就改了一下，就给个最后效果图就差不多了，这个攻击工具使用方式很简单，而且很实用。</p>
-<p><img src="/images/pasted-78.png" alt="upload successful"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1087,7 +1091,7 @@ for 循环迭代结束不会报StopIteration异常是因为内部处理过来，
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
