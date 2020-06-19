@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="文件上传漏洞简介文件上传漏洞，由于没有对上传文件的类型和内容进行过滤、检查，使攻击者可以通过上传木马获取webshell权限，因此文件上传漏洞带来的危害使极高的，接下来对dvwa的三种文件上传漏洞进行分析，本次攻击针对low级别和Medium级别进行攻击测试 1.LOW1.low级别源码 12345678910111213141516171819&lt;?phpif( isset( $_POST[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DVWA-update-file(文件上传漏洞)Low-Medium">
+<meta property="og:url" content="http://yoursite.com/2020/06/19/DVWA-update-file/index.html">
+<meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="文件上传漏洞简介文件上传漏洞，由于没有对上传文件的类型和内容进行过滤、检查，使攻击者可以通过上传木马获取webshell权限，因此文件上传漏洞带来的危害使极高的，接下来对dvwa的三种文件上传漏洞进行分析，本次攻击针对low级别和Medium级别进行攻击测试 1.LOW1.low级别源码 12345678910111213141516171819&lt;?phpif( isset( $_POST[">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/pasted-168.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-169.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-170.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-171.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-172.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-173.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-174.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-175.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-176.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-177.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-179.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-180.png">
+<meta property="article:published_time" content="2020-06-18T23:45:00.000Z">
+<meta property="article:modified_time" content="2020-06-19T02:19:08.986Z">
+<meta property="article:author" content="沫">
+<meta property="article:tag" content="安全">
+<meta property="article:tag" content="靶场">
+<meta property="article:tag" content="网络攻击">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-168.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/06/19/DVWA-update-file/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>DVWA-update-file(文件上传漏洞)Low-Medium | 沫的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沫的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/19/DVWA-update-file/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DVWA-update-file(文件上传漏洞)Low-Medium
+
+<br>
+<span style="font-size:10px;"  title="post.wordcount">
+   字数统计:<span style="color:red;"> 1,576</span>
+</span>
+<span style="font-size:10px;" title="post.min2read">
+ 个字,阅读时间约:  <span style="color:red;"> 6</span>分钟。
+</span>
+
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-19 07:45:00 / 修改时间：10:19:08" itemprop="dateCreated datePublished" datetime="2020-06-19T07:45:00+08:00">2020-06-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="文件上传漏洞简介"><a href="#文件上传漏洞简介" class="headerlink" title="文件上传漏洞简介"></a>文件上传漏洞简介</h3><p>文件上传漏洞，由于没有对上传文件的类型和内容进行过滤、检查，使攻击者可以通过上传木马获取webshell权限，因此文件上传漏洞带来的危害使极高的，接下来对dvwa的三种文件上传漏洞进行分析，本次攻击针对low级别和Medium级别进行攻击测试</p>
+<h4 id="1-LOW"><a href="#1-LOW" class="headerlink" title="1.LOW"></a>1.LOW</h4><p>1.low级别源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( $_POST[ <span class="string">'Upload'</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Where are we going to be writing to?</span></span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . <span class="string">"hackable/uploads/"</span>;</span><br><span class="line">    $target_path .= basename( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'name'</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Can we move the file to the upload folder?</span></span><br><span class="line">    <span class="keyword">if</span>( !move_uploaded_file( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'tmp_name'</span> ], $target_path ) ) &#123;</span><br><span class="line">        <span class="comment">// No</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Yes!</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过阅读可以发现，没有任何的文件类型过滤和检查，存在文件上传漏洞，生成上传路径后，服务器会检测是否上传成功并且返回相关的信息</p>
+<p>文件上传漏洞利用是有一定的限制条件的，首先必须要成功上传木马，其次木马能被执行，也就是知道文件上传的路径是需要我们知道的</p>
+<h5 id="Low级别漏洞利用"><a href="#Low级别漏洞利用" class="headerlink" title="Low级别漏洞利用"></a>Low级别漏洞利用</h5><p>1.先上传一个php一句话木马，hacker.php,参数名为一句话木马，为mo_hacker,然后去dvwa进行上传</p>
+<p><img src="/images/pasted-168.png" alt="upload successful"></p>
+<p>dvwa一句话木马上传成功，因为我的靶机用的是win10，在上传木马的时候被系统拦截多次，如果要做测试的话，建议关闭win10的病毒和威胁保护<br><img src="/images/pasted-169.png" alt="upload successful"></p>
+<p>3.这个时候就可以用中国蚁剑进行链接了</p>
+<p><img src="/images/pasted-170.png" alt="upload successful"><br>4.然后中国蚁剑就会向服务器发送包含hacker_mo的post请求，在服务器执行命令，获取webshell，可以下载，修改服务器的所有文件<br><img src="/images/pasted-171.png" alt="upload successful"><br>5.获取权限后吧cmd上传，此时是没有whomi 查看连接的权限的，需要进行提取</p>
+<pre><code>补充：以下这几种命令有admin权限才能执行
+1.net user 查看用户
+2.net user username password /add 添加账户
+3.net localgroup Administrators username /add 吧新建的账号添加到管理员组
+4.net start telnet 开启靶机telnet服务 (利用telnet登陆，使用ftp吧nc下载到靶机并运行，这样就建立了后门)
+5.systeminfo 查看计算机的信息 （操作系统，位数，系统补丁状态）可以通过漏洞进行提权
+6.tasklist/svc 查看计算机的进程
+7.netstat -ano 查看计算机网络端口连接</code></pre><p>如果webshell不能执行cmd那么就需要上传一个cmd，上传cmdcmd不能添加用户，那么就需要通过一些方式进行去上传cmd进行账户添加</p>
+<p>6.low级别安全策略</p>
+<p>low级别没有进行任何的过滤，任何文件都可以上传，导致获取webshell</p>
+<h4 id="2-Medium"><a href="#2-Medium" class="headerlink" title="2.Medium"></a>2.Medium</h4><p>1.dvwa的medium难度中直接上传木马，他会告诉你，你的图像未上传，我们只能接受jpeg或者png的图片</p>
+<p><img src="/images/pasted-172.png" alt="upload successful"><br>2.先来读一下Medium难度的源码吧</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( $_POST[ <span class="string">'Upload'</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Where are we going to be writing to?</span></span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . <span class="string">"hackable/uploads/"</span>;</span><br><span class="line">    $target_path .= basename( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'name'</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// File information</span></span><br><span class="line">    $uploaded_name = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'name'</span> ];</span><br><span class="line">    $uploaded_type = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'type'</span> ];</span><br><span class="line">    $uploaded_size = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'size'</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Is it an image?</span></span><br><span class="line">    <span class="keyword">if</span>( ( $uploaded_type == <span class="string">"image/jpeg"</span> || $uploaded_type == <span class="string">"image/png"</span> ) &amp;&amp;</span><br><span class="line">        ( $uploaded_size &lt; <span class="number">100000</span> ) ) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Can we move the file to the upload folder?</span></span><br><span class="line">        <span class="keyword">if</span>( !move_uploaded_file( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'tmp_name'</span> ], $target_path ) ) &#123;</span><br><span class="line">            <span class="comment">// No</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Yes!</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Invalid file</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过阅读源码可以发现，Medium难度级别的对上传文件对类型，大小做了限制，要求文件类型必须是图片格式，大小不能超过100kb</p>
+<h5 id="Medium级别漏洞利用"><a href="#Medium级别漏洞利用" class="headerlink" title="Medium级别漏洞利用"></a>Medium级别漏洞利用</h5><p>1.先测试是否对内容就行了过滤</p>
+<p>因为我们使用的是一句话木马，所以文件大小不会出现问题。先尝试修改文件后缀<br><img src="/images/pasted-173.png" alt="upload successful"><br>修改完文件后缀去进行上传，服务器回应上传成功,虽然文件上传成功了，但是png文件是无法被解析对，所以无法获取webshell<br><img src="/images/pasted-174.png" alt="upload successful"></p>
+<p>2.打开中国蚁剑，进行连接测试查看是否可以获取webshell,如图可发现获取webshell失败<br><img src="/images/pasted-175.png" alt="upload successful"><br>3.中国蚁剑的原理是向上传的文件发送包含hack参数的post请求，通过控制ack参数来执行不同的命令，而服务器将木马文件解析成了图片，因此发送post请求时，服务只会返回这个图片文件，并不会执行命令</p>
+<p>4.通过burp抓包将解析为php文件，抓包修改文件类型，上传hacker.png文件</p>
+<p>burp抓包准备工作，配置代理，burp默认监听8080端口，在这里我抓取的是http请求，所以只需要配置http代理就行<br><img src="/images/pasted-176.png" alt="upload successful"></p>
+<p>查看该请求包，我们发现content-type是image/png，也就是这个包只能是图片类型</p>
+<p><img src="/images/pasted-177.png" alt="upload successful"><br>5.修改filename为hacke.php</p>
+<p>我们吧该包发送到repeater里进行篡改，把原有的png，改成php，然后发送这个包<br><img src="/images/pasted-179.png" alt="upload successful"></p>
+<p>6.打开中国蚁剑查看是否能获取webshell</p>
+<p>如果所示，中国蚁剑连接成功<br><img src="/images/pasted-180.png" alt="upload successful"></p>
+<p>7.Medium级别安全策略</p>
+<p>在Medium级别中，本身他过滤了文件类型，但是最后保存文件的时候，并没有判断文件后缀导致木马成功上传，所以导致被获取webshell</p>
+<h4 id="文件上传安全配置"><a href="#文件上传安全配置" class="headerlink" title="文件上传安全配置"></a>文件上传安全配置</h4><p>文件上传在业务逻辑中非常常用，但是错误的上传可能会导致服务器被恶意占用大量流量导致服务器瘫痪，也会因为判断文件类型导致服务器被获取webshell，所以我们只需要做到以下几点即可避免这些攻击</p>
+<pre><code>1.限制文件的上传大小，避免服务器被恶意文件占用大量资源
+2.用户的数据都是不可信的，我们必须判断后缀文件名，避免被解析
+3.php上传文件目录不解析php代码
+4.正式环境中可以选择使用阿里云oss，七牛云等服务来避免文件上传</code></pre>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AE%89%E5%85%A8/" rel="tag"># 安全</a>
+              <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E6%94%BB%E5%87%BB/" rel="tag"># 网络攻击</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/18/%E5%87%BD%E6%95%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E7%89%B9%E5%BE%81/" rel="prev" title="函数的几种特征">
+      <i class="fa fa-chevron-left"></i> 函数的几种特征
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件上传漏洞简介"><span class="nav-number">1.</span> <span class="nav-text">文件上传漏洞简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-LOW"><span class="nav-number">1.1.</span> <span class="nav-text">1.LOW</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Low级别漏洞利用"><span class="nav-number">1.1.1.</span> <span class="nav-text">Low级别漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Medium"><span class="nav-number">1.2.</span> <span class="nav-text">2.Medium</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Medium级别漏洞利用"><span class="nav-number">1.2.1.</span> <span class="nav-text">Medium级别漏洞利用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件上传安全配置"><span class="nav-number">1.3.</span> <span class="nav-text">文件上传安全配置</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="沫"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">沫</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沫</span>
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

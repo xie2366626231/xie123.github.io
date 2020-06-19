@@ -155,6 +155,116 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/19/DVWA-update-file/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/19/DVWA-update-file/" class="post-title-link" itemprop="url">DVWA-update-file(文件上传漏洞)Low-Medium</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-19 07:45:00 / 修改时间：10:19:08" itemprop="dateCreated datePublished" datetime="2020-06-19T07:45:00+08:00">2020-06-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="文件上传漏洞简介"><a href="#文件上传漏洞简介" class="headerlink" title="文件上传漏洞简介"></a>文件上传漏洞简介</h3><p>文件上传漏洞，由于没有对上传文件的类型和内容进行过滤、检查，使攻击者可以通过上传木马获取webshell权限，因此文件上传漏洞带来的危害使极高的，接下来对dvwa的三种文件上传漏洞进行分析，本次攻击针对low级别和Medium级别进行攻击测试</p>
+<h4 id="1-LOW"><a href="#1-LOW" class="headerlink" title="1.LOW"></a>1.LOW</h4><p>1.low级别源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( $_POST[ <span class="string">'Upload'</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Where are we going to be writing to?</span></span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . <span class="string">"hackable/uploads/"</span>;</span><br><span class="line">    $target_path .= basename( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'name'</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Can we move the file to the upload folder?</span></span><br><span class="line">    <span class="keyword">if</span>( !move_uploaded_file( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'tmp_name'</span> ], $target_path ) ) &#123;</span><br><span class="line">        <span class="comment">// No</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Yes!</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过阅读可以发现，没有任何的文件类型过滤和检查，存在文件上传漏洞，生成上传路径后，服务器会检测是否上传成功并且返回相关的信息</p>
+<p>文件上传漏洞利用是有一定的限制条件的，首先必须要成功上传木马，其次木马能被执行，也就是知道文件上传的路径是需要我们知道的</p>
+<h5 id="Low级别漏洞利用"><a href="#Low级别漏洞利用" class="headerlink" title="Low级别漏洞利用"></a>Low级别漏洞利用</h5><p>1.先上传一个php一句话木马，hacker.php,参数名为一句话木马，为mo_hacker,然后去dvwa进行上传</p>
+<p><img src="/images/pasted-168.png" alt="upload successful"></p>
+<p>dvwa一句话木马上传成功，因为我的靶机用的是win10，在上传木马的时候被系统拦截多次，如果要做测试的话，建议关闭win10的病毒和威胁保护<br><img src="/images/pasted-169.png" alt="upload successful"></p>
+<p>3.这个时候就可以用中国蚁剑进行链接了</p>
+<p><img src="/images/pasted-170.png" alt="upload successful"><br>4.然后中国蚁剑就会向服务器发送包含hacker_mo的post请求，在服务器执行命令，获取webshell，可以下载，修改服务器的所有文件<br><img src="/images/pasted-171.png" alt="upload successful"><br>5.获取权限后吧cmd上传，此时是没有whomi 查看连接的权限的，需要进行提取</p>
+<pre><code>补充：以下这几种命令有admin权限才能执行
+1.net user 查看用户
+2.net user username password /add 添加账户
+3.net localgroup Administrators username /add 吧新建的账号添加到管理员组
+4.net start telnet 开启靶机telnet服务 (利用telnet登陆，使用ftp吧nc下载到靶机并运行，这样就建立了后门)
+5.systeminfo 查看计算机的信息 （操作系统，位数，系统补丁状态）可以通过漏洞进行提权
+6.tasklist/svc 查看计算机的进程
+7.netstat -ano 查看计算机网络端口连接</code></pre><p>如果webshell不能执行cmd那么就需要上传一个cmd，上传cmdcmd不能添加用户，那么就需要通过一些方式进行去上传cmd进行账户添加</p>
+<p>6.low级别安全策略</p>
+<p>low级别没有进行任何的过滤，任何文件都可以上传，导致获取webshell</p>
+<h4 id="2-Medium"><a href="#2-Medium" class="headerlink" title="2.Medium"></a>2.Medium</h4><p>1.dvwa的medium难度中直接上传木马，他会告诉你，你的图像未上传，我们只能接受jpeg或者png的图片</p>
+<p><img src="/images/pasted-172.png" alt="upload successful"><br>2.先来读一下Medium难度的源码吧</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( $_POST[ <span class="string">'Upload'</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment">// Where are we going to be writing to?</span></span><br><span class="line">    $target_path  = DVWA_WEB_PAGE_TO_ROOT . <span class="string">"hackable/uploads/"</span>;</span><br><span class="line">    $target_path .= basename( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'name'</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// File information</span></span><br><span class="line">    $uploaded_name = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'name'</span> ];</span><br><span class="line">    $uploaded_type = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'type'</span> ];</span><br><span class="line">    $uploaded_size = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'size'</span> ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Is it an image?</span></span><br><span class="line">    <span class="keyword">if</span>( ( $uploaded_type == <span class="string">"image/jpeg"</span> || $uploaded_type == <span class="string">"image/png"</span> ) &amp;&amp;</span><br><span class="line">        ( $uploaded_size &lt; <span class="number">100000</span> ) ) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Can we move the file to the upload folder?</span></span><br><span class="line">        <span class="keyword">if</span>( !move_uploaded_file( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'tmp_name'</span> ], $target_path ) ) &#123;</span><br><span class="line">            <span class="comment">// No</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Yes!</span></span><br><span class="line">            <span class="keyword">echo</span> <span class="string">"&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Invalid file</span></span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过阅读源码可以发现，Medium难度级别的对上传文件对类型，大小做了限制，要求文件类型必须是图片格式，大小不能超过100kb</p>
+<h5 id="Medium级别漏洞利用"><a href="#Medium级别漏洞利用" class="headerlink" title="Medium级别漏洞利用"></a>Medium级别漏洞利用</h5><p>1.先测试是否对内容就行了过滤</p>
+<p>因为我们使用的是一句话木马，所以文件大小不会出现问题。先尝试修改文件后缀<br><img src="/images/pasted-173.png" alt="upload successful"><br>修改完文件后缀去进行上传，服务器回应上传成功,虽然文件上传成功了，但是png文件是无法被解析对，所以无法获取webshell<br><img src="/images/pasted-174.png" alt="upload successful"></p>
+<p>2.打开中国蚁剑，进行连接测试查看是否可以获取webshell,如图可发现获取webshell失败<br><img src="/images/pasted-175.png" alt="upload successful"><br>3.中国蚁剑的原理是向上传的文件发送包含hack参数的post请求，通过控制ack参数来执行不同的命令，而服务器将木马文件解析成了图片，因此发送post请求时，服务只会返回这个图片文件，并不会执行命令</p>
+<p>4.通过burp抓包将解析为php文件，抓包修改文件类型，上传hacker.png文件</p>
+<p>burp抓包准备工作，配置代理，burp默认监听8080端口，在这里我抓取的是http请求，所以只需要配置http代理就行<br><img src="/images/pasted-176.png" alt="upload successful"></p>
+<p>查看该请求包，我们发现content-type是image/png，也就是这个包只能是图片类型</p>
+<p><img src="/images/pasted-177.png" alt="upload successful"><br>5.修改filename为hacke.php</p>
+<p>我们吧该包发送到repeater里进行篡改，把原有的png，改成php，然后发送这个包<br><img src="/images/pasted-179.png" alt="upload successful"></p>
+<p>6.打开中国蚁剑查看是否能获取webshell</p>
+<p>如果所示，中国蚁剑连接成功<br><img src="/images/pasted-180.png" alt="upload successful"></p>
+<p>7.Medium级别安全策略</p>
+<p>在Medium级别中，本身他过滤了文件类型，但是最后保存文件的时候，并没有判断文件后缀导致木马成功上传，所以导致被获取webshell</p>
+<h4 id="文件上传安全配置"><a href="#文件上传安全配置" class="headerlink" title="文件上传安全配置"></a>文件上传安全配置</h4><p>文件上传在业务逻辑中非常常用，但是错误的上传可能会导致服务器被恶意占用大量流量导致服务器瘫痪，也会因为判断文件类型导致服务器被获取webshell，所以我们只需要做到以下几点即可避免这些攻击</p>
+<pre><code>1.限制文件的上传大小，避免服务器被恶意文件占用大量资源
+2.用户的数据都是不可信的，我们必须判断后缀文件名，避免被解析
+3.php上传文件目录不解析php代码
+4.正式环境中可以选择使用阿里云oss，七牛云等服务来避免文件上传</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/18/%E5%87%BD%E6%95%B0%E7%9A%84%E5%87%A0%E7%A7%8D%E7%89%B9%E5%BE%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -937,88 +1047,6 @@ jinja2模板中使用{ {} }语法表示，他是一个变量，它是一种特�
   
   
 
-        
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/03/mysql-dump/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/03/mysql-dump/" class="post-title-link" itemprop="url">mysql常用备份命令</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-04-03 14:02:00 / 修改时间：14:47:00" itemprop="dateCreated datePublished" datetime="2020-04-03T14:02:00+08:00">2020-04-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>我们维护过程中需要经常去操作mysql给他备份，或者吧备份导入，但是这些命令可能会因为框架的这些原因，导致我们经常不怎么会去使用，或者使用的时候就忘掉了这些命令。</p>
-<h3 id="常用备份命令如下"><a href="#常用备份命令如下" class="headerlink" title="常用备份命令如下"></a>常用备份命令如下</h3><p>1.导出整个数据库，包含数据和结构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot  -p 数据库名 &gt;  xxx.sql</span><br></pre></td></tr></table></figure>
-<p>2.导出表结构，不导出数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump --opt -d 数据库名 -uroot -p &gt; xxx.sql</span><br></pre></td></tr></table></figure>
-<p>3.导出数据不导出结构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -t 数据库名 -uroot -p &gt; xxx.sql</span><br></pre></td></tr></table></figure>
-<p>4.导出数据和表结构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -d 数据库名 -uroot -p &gt; xxx.sql</span><br></pre></td></tr></table></figure>
-<p>5.导出特定表的结构(高版本无法使用)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -uroot -p -B 数据库名 --table 表名 &gt; xxx.sql</span><br></pre></td></tr></table></figure>
-<p>6.导入数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -d 数据库名 -uroot -p &lt; xxx.sql</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1091,7 +1119,7 @@ jinja2模板中使用{ {} }语法表示，他是一个变量，它是一种特�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1104,7 +1132,7 @@ jinja2模板中使用{ {} }语法表示，他是一个变量，它是一种特�
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
