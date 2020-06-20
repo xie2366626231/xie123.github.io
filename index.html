@@ -155,6 +155,83 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/20/DVWA-injection-Medium/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/20/DVWA-injection-Medium/" class="post-title-link" itemprop="url">DVWA-sql注入POST+工具</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-20 17:01:00 / 修改时间：17:29:41" itemprop="dateCreated datePublished" datetime="2020-06-20T17:01:00+08:00">2020-06-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="攻击准备"><a href="#攻击准备" class="headerlink" title="攻击准备"></a>攻击准备</h3><pre><code>抓包工具 burp
+注入工具 sqlmap</code></pre><h4 id="Medium等级代码"><a href="#Medium等级代码" class="headerlink" title="Medium等级代码"></a>Medium等级代码</h4><p>通过以下代码可以发现，他还是没有对id这个参数进行任何过滤，只不过这次传递参数是使用的select 和 option组件，所以需要进行抓包来进行注入，这次的难度和low相比只不过是get传递变成了post传递，和回显<br><img src="/images/pasted-181.png" alt="upload successful"></p>
+<h5 id="Burp抓包"><a href="#Burp抓包" class="headerlink" title="Burp抓包"></a>Burp抓包</h5><p>配置代理，监听本地8080端口使用burp进行转发</p>
+<p><img src="/images/pasted-182.png" alt="upload successful"><br>抓这个带有漏洞的包，将他以文本的方式进行保存<br><img src="/images/pasted-183.png" alt="upload successful"><br>这里我已经把包的内容进行了保存</p>
+<p><img src="/images/pasted-184.png" alt="upload successful"></p>
+<h5 id="sqlmap开始漏洞攻击"><a href="#sqlmap开始漏洞攻击" class="headerlink" title="sqlmap开始漏洞攻击"></a>sqlmap开始漏洞攻击</h5><p>然后就和之前写的一样了，一大堆花里胡哨咯<br><img src="/images/pasted-185.png" alt="upload successful"><br>跑出来的结果也和之前一样</p>
+<p><img src="/images/pasted-186.png" alt="upload successful"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/19/DVWA-update-file/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -961,92 +1038,6 @@ jinja2模板中使用{ {} }语法表示，他是一个变量，它是一种特�
   
   
 
-        
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/03/vue-first/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/03/vue-first/" class="post-title-link" itemprop="url">vue入门--实现简单渲染和vue的介绍</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-04-03 14:47:00 / 修改时间：15:30:20" itemprop="dateCreated datePublished" datetime="2020-04-03T14:47:00+08:00">2020-04-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">vue学习</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="vue简介"><a href="#vue简介" class="headerlink" title="vue简介"></a>vue简介</h3><p>vue的作者是中国的程序员，所以他给出了十分友好的中文官网。vue是一款很强大的前端渲染的js，他能让你在不破坏html页面的同时达到动态渲染的目的，他是一个预渲染的动态js，入门也非常的简单。官方给出了vue的开发环境和生产环境的2个版本，开发版本会给你全部的错误提示，生产版本只有33kb，不依赖jquery文件。他是不兼容ie8以下的浏览器的。</p>
-<h3 id="vue的导入方式"><a href="#vue的导入方式" class="headerlink" title="vue的导入方式"></a>vue的导入方式</h3><p>我们可以在html代码中，直接使用script标签进行导入，下面这个是官方给出的最新版本，提供了CDN加速</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/vue/dist/vue.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>对于生产环境，我们推荐链接到一个明确的版本号和构建文件，以避免新版本造成的不可预期的破坏</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/vue@2.6.11"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="命令行工具-CLI"><a href="#命令行工具-CLI" class="headerlink" title="命令行工具 (CLI)"></a>命令行工具 (CLI)</h3><p>Vue 提供了一个官方的 CLI，为单页面应用 (SPA) 快速搭建繁杂的脚手架。它为现代前端工作流提供了 batteries-included 的构建设置。只需要几分钟的时间就可以运行起来并带有热重载、保存时 lint 校验，以及生产环境可用的构建版本。更多详情可查阅 Vue CLI 的文档。</p>
-<h3 id="了解vue渲染模式"><a href="#了解vue渲染模式" class="headerlink" title="了解vue渲染模式"></a>了解vue渲染模式</h3><p>我们入门只需要知道这么多就足够使用了，接下来我们可以尝试使用vue去渲染我们的第一个html页面</p>
-<p>vue.js的核心是可以选择使用简洁的语法声明式的将数据渲染进DOM系统，vue.js分为2个部分一个是视图，一个是脚本。</p>
-<p>1.视图</p>
-<p>我们写了一个div标签，并且给了一个id选择选择器，里面的 先暂时不要管</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 引用的vue文件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/vue/dist/vue.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">        &#123;&#123;text&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>2.脚本</p>
-<p>我们创建一个应用，在通过new去创建vue对象，在vue中叫vue对象，或应用对象，他会返回一个vue的一个对象，这个对象有个重要的实例熟悉，一个是el，就是element元素的意思，他通过上面的id选择器绑定了视图的div，第二个就是data，我们要渲染的数据。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">        el:<span class="string">'#app'</span>,</span><br><span class="line">        data:&#123;</span><br><span class="line">            text:<span class="string">'hello'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-<p>3.运行结果</p>
-<p><img src="/images/pasted-150.png" alt="upload successful"><br>这样我的第一个vue的程序就跑起来了。我们可以尝试如果在data这个字典里面添加新的键值对再通过他专属的模板语法渲染会怎么样，在这里我就不做尝试了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1119,7 +1110,7 @@ jinja2模板中使用{ {} }语法表示，他是一个变量，它是一种特�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
