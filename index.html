@@ -180,7 +180,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-22 13:54:00 / 修改时间：14:34:02" itemprop="dateCreated datePublished" datetime="2020-06-22T13:54:00+08:00">2020-06-22</time>
+              <time title="创建时间：2020-06-22 13:54:00 / 修改时间：14:41:03" itemprop="dateCreated datePublished" datetime="2020-06-22T13:54:00+08:00">2020-06-22</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -217,6 +217,7 @@
 <p>悲观锁</p>
 <pre><code>悲观锁类似于我们在多线程资源竞争时添加的互斥锁，容易出现死锁现象。</code></pre><p>乐观锁</p>
 <pre><code>乐观锁并不是真实存在的锁，而是在更新的时候判断此时的库存是否是之前查询出    的库存，如果相同，表示没人修改，可以更新库存，否则表示别人抢过资源，不再    执行库存更新。类似如下操作</code></pre><p>我用的解决方案是悲观锁，因为对我现在来说能更快的保障程序正常运行，但是毫无疑问的说，如果我的订单处理哪里发生异常，那么用户的访问就会一直进行堵塞。</p>
+<h4 id="分析日志抓恶意账号"><a href="#分析日志抓恶意账号" class="headerlink" title="分析日志抓恶意账号"></a>分析日志抓恶意账号</h4><p>存在这个漏洞的接口有好几个，经过各种不懈的测试都通过加锁进行了修复，是时候分析日志抓取这些，这里就不上代码了。就是分析行为，emmm对于本次攻击事件完美善后，写个blog 压压惊。<br><img src="/images/pasted-189.png" alt="upload successful"></p>
 
       
     </div>
