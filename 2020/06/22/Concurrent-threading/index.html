@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="漏洞介绍本次漏洞环境由python的Django框架，uwsgi，nginx进行搭配的一个生产环境，本次漏洞发生是这样的，前几天我的app被这漏洞进行攻击产生了一定的资金损失，当时去查看日志操作日志时发现，他们发送包请求的时候基本无任何延迟，重下图即可看出他应该是利用了多线程的爬虫对接口进行访问，那么访问过程中会产生多个线程，因为线程和线程之间本来就会出现资源竞争，所以导致了这次攻击事件发生  编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈并发漏洞与修复方案">
+<meta property="og:url" content="http://yoursite.com/2020/06/22/Concurrent-threading/index.html">
+<meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="漏洞介绍本次漏洞环境由python的Django框架，uwsgi，nginx进行搭配的一个生产环境，本次漏洞发生是这样的，前几天我的app被这漏洞进行攻击产生了一定的资金损失，当时去查看日志操作日志时发现，他们发送包请求的时候基本无任何延迟，重下图即可看出他应该是利用了多线程的爬虫对接口进行访问，那么访问过程中会产生多个线程，因为线程和线程之间本来就会出现资源竞争，所以导致了这次攻击事件发生  编">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/pasted-187.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-188.png">
+<meta property="article:published_time" content="2020-06-22T05:54:00.000Z">
+<meta property="article:modified_time" content="2020-06-22T06:34:02.529Z">
+<meta property="article:author" content="沫">
+<meta property="article:tag" content="we b">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-187.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/06/22/Concurrent-threading/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>浅谈并发漏洞与修复方案 | 沫的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沫的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/22/Concurrent-threading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅谈并发漏洞与修复方案
+
+<br>
+<span style="font-size:10px;"  title="post.wordcount">
+   字数统计:<span style="color:red;"> 1,561</span>
+</span>
+<span style="font-size:10px;" title="post.min2read">
+ 个字,阅读时间约:  <span style="color:red;"> 7</span>分钟。
+</span>
+
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-22 13:54:00 / 修改时间：14:34:02" itemprop="dateCreated datePublished" datetime="2020-06-22T13:54:00+08:00">2020-06-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="漏洞介绍"><a href="#漏洞介绍" class="headerlink" title="漏洞介绍"></a>漏洞介绍</h3><p>本次漏洞环境由python的Django框架，uwsgi，nginx进行搭配的一个生产环境，本次漏洞发生是这样的，前几天我的app被这漏洞进行攻击产生了一定的资金损失，当时去查看日志操作日志时发现，他们发送包请求的时候基本无任何延迟，重下图即可看出他应该是利用了多线程的爬虫对接口进行访问，那么访问过程中会产生多个线程，因为线程和线程之间本来就会出现资源竞争，所以导致了这次攻击事件发生</p>
+<p><img src="/images/pasted-187.png" alt="upload successful"></p>
+<h4 id="编写测试脚本证实漏洞"><a href="#编写测试脚本证实漏洞" class="headerlink" title="编写测试脚本证实漏洞"></a>编写测试脚本证实漏洞</h4><p>如果我们要复线上面这样的漏洞的话，必须要保障爬虫支持并发,以下代码是作为对漏洞测试作出的一个针对性脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="string">"""程序要求，支持高并发"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send_post</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""发送post请求进行并发"""</span></span><br><span class="line">    url = <span class="string">'http://yxzg.kurjnij.cn/purchase/'</span></span><br><span class="line">    cookie = &#123;</span><br><span class="line">        <span class="string">'csrftoken'</span>: <span class="string">'y1bhsa9gyjkc0OwxvAHwZWGXTL53UcHynNlDTrK3oecxT7CA6iitDLgiVJw6II8g;'</span>,</span><br><span class="line">        <span class="string">'sessionid'</span>: <span class="string">'xhbh946pclgsohncrk1to0jvwbkn6gv8khcet'</span></span><br><span class="line">    &#125;</span><br><span class="line">    datas = &#123;</span><br><span class="line">        <span class="string">'id'</span>: <span class="string">'23889'</span>,</span><br><span class="line">        <span class="string">'password'</span>: <span class="string">'xie123456'</span></span><br><span class="line">    &#125;</span><br><span class="line">    header = &#123;</span><br><span class="line">        <span class="string">'X-CSRFtoken'</span>: <span class="string">'gFKsN2en0rITGOP6tQOBj416New3LMEo5rUOejPaQmAez7V94ypyXTBrPcX6zi56'</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    r_post = requests.post(url=url, data=json.dumps(datas), cookies=cookie, headers=header)</span><br><span class="line">    r_result = eval(r_post.content.decode())</span><br><span class="line">    <span class="comment"># print(r_result)</span></span><br><span class="line">    print(r_result[<span class="string">'errmsg'</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">        t_obj = threading.Thread(target=send_post)</span><br><span class="line">        t_obj.start()</span><br></pre></td></tr></table></figure>
+<p>程序运行结果，果然存在该漏洞，当时攻击放应该是通过爬虫收集订单上的id，然后通过并发爬虫同时发起请求完成下单，所以他扣款只有一次，但是日志只要下单成功都会写入，由此我可以通过这个程序来测试自己的接口是否存在并发漏洞</p>
+<p><img src="/images/pasted-188.png" alt="upload successful"></p>
+<h4 id="使用锁来进行漏洞修复"><a href="#使用锁来进行漏洞修复" class="headerlink" title="使用锁来进行漏洞修复"></a>使用锁来进行漏洞修复</h4><p>这个漏洞是由线程之间资源抢夺发生的，所以最好的解决方案是，如果有很多个线程来访问这个接口，肯定有个第一个先来的，让他们通过排队的方式进行访问，因为数据库的四大特性，我只需要调用事务里面的，悲观锁即，悲观锁其实就是在当执行查询语句的时候加入了互斥锁，当在查询的时候上锁，在完成操作执行commit的时候就解锁，允许下一个线程进入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PurchaseOrderView</span><span class="params">(LoginRequiredMixin, View)</span>:</span></span><br><span class="line">    <span class="string">"""这个视图用户订单购买"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        <span class="string">"""进行订单购买"""</span></span><br><span class="line">        json_dict = loads(request.body.decode())</span><br><span class="line">        order_id = json_dict.get(<span class="string">'id'</span>)</span><br><span class="line">        paypassword = json_dict.get(<span class="string">'password'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> all([order_id, paypassword]):</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: Incomplete, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'参数不完整'</span>&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 校验账号实名状态</span></span><br><span class="line">        <span class="keyword">if</span> request.user.status != <span class="string">'2'</span>:</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: UserNotAuth, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'请先实名在进行交易'</span>&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            order_id = int(order_id)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            print(Error)</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: Malice, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'禁止串改数据'</span>&#125;)</span><br><span class="line"></span><br><span class="line">        user_pay_password = request.user.password2</span><br><span class="line">        pay_password = md5_encode(paypassword)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># check pay password</span></span><br><span class="line">        <span class="keyword">if</span> user_pay_password != pay_password:</span><br><span class="line">            <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: Consistent, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'支付密码错误'</span>&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># if order_obj.user_order == int(order_id):</span></span><br><span class="line">        <span class="comment">#     print('是自己的订单')</span></span><br><span class="line">        <span class="comment"># print(order_obj.id)</span></span><br><span class="line">        <span class="comment"># mr_id = order_obj.user_order</span></span><br><span class="line">        <span class="comment"># print(mr_id)</span></span><br><span class="line">        <span class="comment"># 如果订单下单，就回显，订单下单</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 使用事务，开始处理业务逻辑</span></span><br><span class="line">        <span class="keyword">with</span> transaction.atomic():</span><br><span class="line">            <span class="comment"># 创建事务节点</span></span><br><span class="line">            save_id = transaction.savepoint()</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 给自己的余额余额加锁</span></span><br><span class="line">            user_obj_lock = Account.objects.select_for_update().get(username=request.user.username)</span><br><span class="line">            <span class="comment"># 判断当前账户的资金是否有资金对货币进行购买</span></span><br><span class="line">            before_mc = float(user_obj_lock.money)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                order_obj = Order.objects.get(id=int(order_id))</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">                print(Error)</span><br><span class="line">                JsonResponse(&#123;<span class="string">'code'</span>: Malice, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'该订单不存在'</span>&#125;)</span><br><span class="line">            <span class="comment"># 判断这个订单是自己的么，如果是自己的就不可以进行交易</span></span><br><span class="line">            <span class="comment"># print(order_obj.user_order_id)</span></span><br><span class="line">            <span class="comment"># print(request.user.id)</span></span><br><span class="line">            <span class="keyword">if</span> order_obj.user_order_id == request.user.id:</span><br><span class="line">                <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: SelfOrder, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'对不起你不能购买自己的订单'</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> order_obj.num + order_obj.num * Service_charge &gt;= before_mc:</span><br><span class="line">                <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: BalanceInsufficient, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'对不起余额不足'</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 如果订单下单，就回显，订单下单</span></span><br><span class="line">            <span class="keyword">if</span> order_obj.status != <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: SelfOrder, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'该订单已被下单，请刷新试试'</span>&#125;)</span><br><span class="line">            <span class="comment"># 对账户余额进行扣钱</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># print(order_obj.num + order_obj.num * Service_charge)</span></span><br><span class="line">                <span class="comment"># return 1</span></span><br><span class="line">                request.user.money = float(request.user.money) - (order_obj.num + order_obj.num * Service_charge)</span><br><span class="line">                request.user.save()</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">                print(Error)</span><br><span class="line">                <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: Malice, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'对账户扣款操作失败'</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 写入日志</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                MachineBuyLog.objects.create(</span><br><span class="line">                    user=request.user.username,</span><br><span class="line">                    content=<span class="string">'货币卖出:扣除&#123;&#125;YXC'</span>.format(order_obj.num + order_obj.num * Service_charge),</span><br><span class="line">                    user_key_id=request.user.id</span><br><span class="line">                ).save()</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">                print(Error)</span><br><span class="line">                <span class="comment"># 回滚</span></span><br><span class="line">                transaction.savepoint_rollback(save_id)</span><br><span class="line">                <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: LogError, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'日志写入错误，请重新下单，联系客服'</span>&#125;)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="comment"># 订单进行更新到交易中状态  状态码修改为1 到交易中状态，添加卖家的账号</span></span><br><span class="line">                order_obj.mc_user = request.user.username</span><br><span class="line">                order_obj.frozen = order_obj.num + order_obj.num * Service_charge</span><br><span class="line">                order_obj.status = <span class="number">1</span></span><br><span class="line">                order_obj.purchase_time = time.time()</span><br><span class="line">                order_obj.save()</span><br><span class="line">                <span class="comment"># 发送短信，通知卖家</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> send_verifications(order_obj.mr_user, <span class="string">'1234'</span>, <span class="string">'down_order'</span>):</span><br><span class="line">                    <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: SendMobileError, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'订单卖出成功，短信通知失败'</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                print(e)</span><br><span class="line">                transaction.savepoint_rollback(save_id)</span><br><span class="line">                <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: BuyError, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'订单购买失败'</span>&#125;)</span><br><span class="line">            <span class="comment"># 写入日志</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 提交成功，执行事务提交</span></span><br><span class="line">        transaction.savepoint_commit(save_id)</span><br><span class="line">        <span class="keyword">return</span> JsonResponse(&#123;<span class="string">'code'</span>: Ok, <span class="string">'error'</span>: <span class="string">'OK'</span>, <span class="string">'errmsg'</span>: <span class="string">'订单卖出成功请到我的卖出进行查看'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>说实话，我不太想爆出我系统购买订单的源码的，关于django框架在这里也不多说，</p>
+<p>悲观锁</p>
+<pre><code>悲观锁类似于我们在多线程资源竞争时添加的互斥锁，容易出现死锁现象。</code></pre><p>乐观锁</p>
+<pre><code>乐观锁并不是真实存在的锁，而是在更新的时候判断此时的库存是否是之前查询出    的库存，如果相同，表示没人修改，可以更新库存，否则表示别人抢过资源，不再    执行库存更新。类似如下操作</code></pre><p>我用的解决方案是悲观锁，因为对我现在来说能更快的保障程序正常运行，但是毫无疑问的说，如果我的订单处理哪里发生异常，那么用户的访问就会一直进行堵塞。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/we-b/" rel="tag"># we b</a>
+              <a href="/tags/web/" rel="tag"># web</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/20/DVWA-injection-Medium/" rel="prev" title="DVWA-sql注入POST+工具">
+      <i class="fa fa-chevron-left"></i> DVWA-sql注入POST+工具
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞介绍"><span class="nav-number">1.</span> <span class="nav-text">漏洞介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编写测试脚本证实漏洞"><span class="nav-number">1.1.</span> <span class="nav-text">编写测试脚本证实漏洞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用锁来进行漏洞修复"><span class="nav-number">1.2.</span> <span class="nav-text">使用锁来进行漏洞修复</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="沫"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">沫</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沫</span>
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
